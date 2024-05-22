@@ -1,8 +1,20 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import './globals.css';
+import localFont from 'next/font/local';
 
-const inter = Inter({ subsets: ['latin'] });
+// const inter = Inter({ subsets: ['latin'] });
+
+const yungothic = localFont({
+  src: '../../public/fonts/yungothic320.ttf',
+  weight: '320',
+  variable: '--font-yungothic',
+});
+
+const roborobo = localFont({
+  src: '../../public/fonts/pixelroborobo.ttf',
+  variable: '--font-roborobo',
+});
 
 export const metadata: Metadata = {
   title: 'GYMMI',
@@ -16,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={`${yungothic.variable} ${roborobo.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }
