@@ -1,5 +1,15 @@
 'use client';
 
-export default function AuthButton() {
-  return <div className="w-80 h-12 rounded-4xl bg-blue">로그인</div>;
+type Props = {
+  title: string;
+};
+
+import { Button } from '@/components/ui/button';
+
+export default function AuthButton({ title }: Props) {
+  return (
+    <div className="flex justify-center items-center mb-4">
+      <Button className="w-full h-12 rounded-3xl">{title}</Button>
+    </div>
+  );
 }
