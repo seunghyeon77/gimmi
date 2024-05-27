@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import AuthButton from '../_components/AuthButton';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import customAxios from '@/utils/cutstomAxios';
 
 type FormProps = {
   id: string;
@@ -10,9 +11,8 @@ type FormProps = {
 };
 
 // 유효성 검사
-const emailRegex =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[!@#])[\da-zA-Z!@#]{8,20}$/;
+const idRegex = /^[a-zA-Z](?=.*[a-zA-Z])(?=.*[0-9]).{6,12}$/g;
+const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
 
 export default function Page() {
   const router = useRouter();
@@ -22,11 +22,20 @@ export default function Page() {
     handleSubmit,
     formState: { errors },
     reset,
+    setError,
   } = useForm<FormProps>();
 
-  const onsubmit: SubmitHandler<FormProps> = (data) => {
+  const onsubmit: SubmitHandler<FormProps> = async (data) => {
     try {
+      const res = await customAxios.post('/auth/welcome', {
+        id: data.id,
+        password: data.password,
+      });
+      localStorage.clear();
+      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('refreshToken', res.data.refreshToken);
     } catch (error) {
+      console.error(error);
     } finally {
       reset();
     }
@@ -48,7 +57,7 @@ export default function Page() {
             {...register('id', {
               required: '아이디를 입력해주세요.',
               pattern: {
-                value: emailRegex,
+                value: idRegex,
                 message: '형식 맞게 써라',
               },
             })}
