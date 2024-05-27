@@ -25,10 +25,6 @@ export default function Page() {
   } = useForm<FormProps>();
 
   const onsubmit: SubmitHandler<FormProps> = (data) => {
-    // signIn('credentials', {
-    //   email: data.id,
-    //   password: data.password,
-    // });
     try {
     } catch (error) {
     } finally {
