@@ -10,6 +10,11 @@ const yungothic = localFont({
   weight: '320',
   variable: '--font-yungothic',
 });
+const galmuri = localFont({
+  src: '../../public/fonts/Galmuri7.ttf',
+  weight: '320',
+  variable: '--font-galmuri',
+});
 
 export const metadata: Metadata = {
   title: 'GYMMI',
@@ -23,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${yungothic.variable} `}>
+    <html lang="en" className={`${yungothic.variable} ${galmuri.variable}`}>
       <body>{children}</body>
     </html>
   );

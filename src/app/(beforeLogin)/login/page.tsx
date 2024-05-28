@@ -10,17 +10,13 @@ type FormProps = {
   password: string;
 };
 
-// 유효성 검사
-const idRegex = /^[a-zA-Z](?=.*[a-zA-Z])(?=.*[0-9]).{6,12}$/g;
-const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
-
 export default function Page() {
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
     reset,
     setError,
   } = useForm<FormProps>();
@@ -45,7 +41,7 @@ export default function Page() {
   return (
     <div>
       <div className="mt-44 mb-16 flex justify-center items-center flex-col font-medium">
-        <h1 className="text-5xl mb-3">GYMMI</h1>
+        <h1 className="text-5xl mb-3 font-galmuri">GYMMI</h1>
         <h3 className="text-sm">지미와 함께 운동의욕을 채워보세요!</h3>
       </div>
       <div className="mb-20">
@@ -56,10 +52,6 @@ export default function Page() {
             placeholder="아이디"
             {...register('id', {
               required: '아이디를 입력해주세요.',
-              pattern: {
-                value: idRegex,
-                message: '형식 맞게 써라',
-              },
             })}
           />
           <input
@@ -68,10 +60,6 @@ export default function Page() {
             placeholder="비밀번호"
             {...register('password', {
               required: '비밀번호를 입력해주세요.',
-              pattern: {
-                value: passwordRegex,
-                message: '형식 맞게 쓰라고',
-              },
             })}
           />
         </form>
@@ -79,7 +67,11 @@ export default function Page() {
       {errors?.id?.type === 'required' && <p>{errors?.id?.message}</p>}
 
       <div onClick={handleSubmit(onsubmit)}>
-        <AuthButton title="로그인" type="submit" />
+        <AuthButton
+          title="로그인"
+          type="submit"
+          disabled={!isValid || isSubmitting}
+        />
       </div>
       <div onClick={() => router.push('/signup')}>
         <AuthButton title="회원가입" />
