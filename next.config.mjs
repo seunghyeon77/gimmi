@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
-import nextPWA from 'next-pwa';
-const withPWA = nextPWA({ dest: 'public' });
+import withPWAInit from '@ducanh2912/next-pwa';
+
+const withPWA = withPWAInit({
+  dest: 'public',
+});
 
 const nextConfig = {
   async rewrites() {

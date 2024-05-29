@@ -19,6 +19,7 @@ const config = {
     },
     extend: {
       colors: {
+        main: '#1180FC',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -53,7 +54,7 @@ const config = {
           foreground: 'hsl(var(--card-foreground))',
         },
       },
-      fontFamily: { galmuri: '--font-galmuri' },
+      fontFamily: { galmuri: 'var(--font-galmuri)' },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
