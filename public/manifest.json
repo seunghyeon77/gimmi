@@ -1,7 +1,7 @@
 {
   "theme_color": "#1180FC",
   "background_color": "#1180FC",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "/",
   "start_url": "/",
   "name": "GYMMI",

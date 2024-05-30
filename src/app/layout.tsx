@@ -58,7 +58,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${yungothic.variable} ${galmuri.variable}`}>
+    <html lang="kor" className={`${yungothic.variable} ${galmuri.variable}`}>
       <body>{children}</body>
     </html>
   );
