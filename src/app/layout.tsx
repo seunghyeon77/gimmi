@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-// import { Inter } from 'next/font/google';
 import './globals.css';
 import localFont from 'next/font/local';
 
@@ -41,14 +40,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: APP_NAME,
-    title: {
-      default: APP_DEFAULT_TITLE,
-      template: APP_TITLE_TEMPLATE,
-    },
-    description: APP_DESCRIPTION,
-  },
-  twitter: {
-    card: 'summary',
     title: {
       default: APP_DEFAULT_TITLE,
       template: APP_TITLE_TEMPLATE,
