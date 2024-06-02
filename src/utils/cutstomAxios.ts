@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const customAxios = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   withCredentials: true,
 });
 
@@ -32,6 +32,7 @@ customAxios.interceptors.response.use(
       await refreshAccessToken();
       return customAxios(originalRequest);
     }
+
     return Promise.reject(error);
   },
 );

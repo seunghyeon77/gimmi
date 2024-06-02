@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    max-width: 530px;
+    max-width: 480px;
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
 
@@ -78,6 +78,5 @@
   body {
     @apply bg-background text-foreground;
     overflow-y: auto;
-    overflow: hidden;
   }
 }
