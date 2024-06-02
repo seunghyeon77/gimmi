@@ -11,6 +11,7 @@ import 'swiper/css/pagination';
 
 import './styles.css';
 import { useRouter } from 'next/navigation';
+import customAxios from '@/utils/cutstomAxios';
 
 const data = [
   {
@@ -40,10 +41,16 @@ const data = [
   },
 ];
 
+const handleTest = async () => {
+  const res = await customAxios.get('health-check');
+  console.log(res);
+};
+
 export default function MainCarousel() {
   const router = useRouter();
   return (
     <div className="w-full h-full overflow-hidden">
+      <button onClick={handleTest}>its test</button>
       <Swiper
         slidesPerView={1}
         spaceBetween={18}

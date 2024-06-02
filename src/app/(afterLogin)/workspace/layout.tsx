@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import ReactQueryProvider from '@/app/(afterLogin)/_components/ReactQueryProvider';
 import LoadingScreen from '@/app/(afterLogin)/_components/LoadingScreen';
 import UpperLayout from './_components/UpperLayout';
-import NavBar from '../_components/NavBar';
+import NavBar from '@/app/(afterLogin)/workspace/_components/NavBar';
 
 //여기에서만 네브바 넣기 - 워크스페이스 부분,
 
@@ -16,7 +16,9 @@ export default function Layout({ children }: Props) {
       <LoadingScreen />
       <div className="bg-main w-full h-screen">
         <UpperLayout />
-        <div className="w-full bg-white h-full rounded-t-2xl">{children}</div>
+        <div className="w-full bg-white h-full rounded-t-2xl px-[26px] py-3.5">
+          {children}
+        </div>
         <NavBar />
       </div>
     </ReactQueryProvider>
