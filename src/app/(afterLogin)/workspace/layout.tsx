@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import ReactQueryProvider from '@/app/(afterLogin)/_components/ReactQueryProvider';
 import LoadingScreen from '@/app/(afterLogin)/_components/LoadingScreen';
+import UpperLayout from './_components/UpperLayout';
+import NavBar from '../_components/NavBar';
 
 //여기에서만 네브바 넣기 - 워크스페이스 부분,
 
@@ -12,7 +14,11 @@ export default function Layout({ children }: Props) {
   return (
     <ReactQueryProvider>
       <LoadingScreen />
-      {children}
+      <div className="bg-main w-full h-screen">
+        <UpperLayout />
+        <div className="w-full bg-white h-full rounded-t-2xl">{children}</div>
+        <NavBar />
+      </div>
     </ReactQueryProvider>
   );
 }
