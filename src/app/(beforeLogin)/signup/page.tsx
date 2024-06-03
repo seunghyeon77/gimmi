@@ -14,7 +14,11 @@ import {
   nicknameRegex,
   passwordRegex,
 } from '@/constants/validation';
-import customAxios from '@/utils/cutstomAxios';
+
+import { postSignup } from '@/api/auth';
+import { verlifyDuplication } from '@/api/duplication';
+import { duplicationType } from '@/constants/duplication';
+import { useState } from 'react';
 
 type FormProps = {
   id: string;
@@ -26,26 +30,73 @@ type FormProps = {
 
 export default function Page() {
   const router = useRouter();
+
+  const [idCheck, setIdCheck] = useState(false);
+  const [niknameCheck, setNicknameCheck] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
     reset,
     watch,
+    setError,
   } = useForm<FormProps>({
     mode: 'onSubmit',
     defaultValues: {},
   });
+
   const pwd = watch('password');
-  const onsubmit: SubmitHandler<FormProps> = async (data) => {
+  const id = watch('id');
+  const nickname = watch('nickname');
+
+  // if (errors.id) setIdCheck(false);
+  // if (errors.nickname) setNicknameCheck(false);
+
+  const verliffyDuplicate = async (type: string, value: string) => {
     try {
-      console.log(data);
-      const res = await customAxios.post('/auth/join', {
-        id: data.id,
+      const res = await verlifyDuplication({
+        type,
+        value,
+      });
+      //중복 검사 되었을때 상태 바꿔주기
+      if (type === duplicationType.loginId) {
+        if (res.data.duplication === true) {
+          setError('id', { message: '중복된 아이디입니다.' });
+        } else {
+          setIdCheck(true);
+        }
+      }
+      if (type === duplicationType.nickname) {
+        if (res.data.duplication === true) {
+          setError('nickname', { message: '중복된 닉네임입니다.' });
+        } else {
+          setNicknameCheck(true);
+        }
+      }
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onsubmit: SubmitHandler<FormProps> = async (data) => {
+    if (!idCheck) {
+      setError('id', { message: '아이디 중복확인이 필요합니다.' });
+      return;
+    }
+    if (!niknameCheck) {
+      setError('nickname', { message: '닉네임 중복확인이 필요합니다.' });
+      return;
+    }
+    try {
+      const res = await postSignup({
+        loginId: data.id,
         nickname: data.nickname,
         email: data.email,
         password: data.password,
       });
+      console.log(res);
       if (res.status === 200) {
         router.push('/login');
       }
@@ -55,7 +106,7 @@ export default function Page() {
       reset();
     }
   };
-  console.log(errors);
+
   return (
     <div className="mt-14 relative">
       <Image
@@ -84,10 +135,19 @@ export default function Page() {
                 },
               })}
             />
-            <Button className="w-24">중복확인</Button>
+            <Button
+              className="w-24"
+              onClick={() => verliffyDuplicate(duplicationType.loginId, id)}
+            >
+              중복확인
+            </Button>
           </div>
         </div>
-        {errors?.id && <p>{errors?.id?.message}</p>}
+        {errors?.id ? (
+          <p>{errors?.id?.message}</p>
+        ) : idCheck ? (
+          <p>사용 가능한 아이디입니다.</p>
+        ) : null}
       </div>
       <div className="mb-8">
         <div className="grid w-full max-w-sm items-center gap-1.5 mb-3.5">
@@ -146,10 +206,22 @@ export default function Page() {
               pattern: { value: nicknameRegex, message: '2자~5자 이하입니다.' },
             })}
           />
-          <Button className="w-24">중복확인</Button>
+          <Button
+            className="w-24"
+            onClick={() =>
+              verliffyDuplicate(duplicationType.nickname, nickname)
+            }
+          >
+            중복확인
+          </Button>
         </div>
       </div>
-      {errors?.nickname && <p>{errors?.nickname?.message}</p>}
+      {errors?.nickname ? (
+        <p>{errors?.nickname?.message}</p>
+      ) : niknameCheck ? (
+        <p>사용 가능한 닉네임입니다.</p>
+      ) : null}
+
       <div className="grid w-full max-w-sm items-center gap-1.5 mb-48">
         <Label htmlFor="email" className="text-xs">
           이메일
