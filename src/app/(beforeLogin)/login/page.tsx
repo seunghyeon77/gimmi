@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import AuthButton from '../_components/AuthButton';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import customAxios from '@/utils/cutstomAxios';
+import { AxiosError } from 'axios';
 
 type FormProps = {
   id: string;
@@ -24,16 +25,19 @@ export default function Page() {
   const onsubmit: SubmitHandler<FormProps> = async (data) => {
     try {
       const res = await customAxios.post('/auth/welcome', {
-        id: data.id,
+        loginId: data.id,
         password: data.password,
       });
       localStorage.clear();
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('refreshToken', res.data.refreshToken);
+      router.push('/');
     } catch (error) {
       console.error(error);
+      if (error instanceof AxiosError) {
+        setError('id', { message: error.response?.data.message });
+      }
     } finally {
-      reset();
     }
   };
   console.log(errors);
@@ -64,7 +68,8 @@ export default function Page() {
           />
         </form>
       </div>
-      {errors?.id?.type === 'required' && <p>{errors?.id?.message}</p>}
+
+      {errors.id && <p>{errors?.id?.message}</p>}
 
       <div onClick={handleSubmit(onsubmit)}>
         <AuthButton

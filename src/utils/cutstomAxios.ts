@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const customAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  withCredentials: true,
+  // withCredentials: true,
 });
 
 // 토큰 갱신
