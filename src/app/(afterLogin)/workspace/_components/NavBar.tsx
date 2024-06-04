@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 export default function NavBar() {
   const router = useRouter();
   return (
-    <div className="w-full h-[50px] bg-main fixed bottom-0 flex justify-around items-center">
+    <div className="w-full h-[50px] bg-main fixed bottom-0 flex justify-around items-center mb-11">
       <div className="flex flex-col items-center">
         <Image src={createGroup} alt="createGroupIcon" className="my-0.5" />
         <span className="text-[6px] ">그룹만들기</span>
