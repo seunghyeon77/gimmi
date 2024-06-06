@@ -11,6 +11,7 @@ import 'swiper/css/pagination';
 
 import './styles.css';
 import { useRouter } from 'next/navigation';
+import { logout } from '@/utils/handleAuth';
 
 const data = [
   {
