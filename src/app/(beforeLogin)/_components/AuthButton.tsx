@@ -14,7 +14,7 @@ export default function AuthButton({ title, type, disabled }: Props) {
       <Button
         disabled={disabled}
         type={type}
-        className="w-full h-12 rounded-3xl"
+        className="w-full h-12 rounded-3xl bg-main"
       >
         {title}
       </Button>

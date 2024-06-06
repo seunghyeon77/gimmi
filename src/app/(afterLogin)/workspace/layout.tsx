@@ -14,7 +14,7 @@ export default function Layout({ children }: Props) {
   return (
     <ReactQueryProvider>
       <LoadingScreen />
-      <div className="bg-main w-full h-screen">
+      <div className="bg-[#071642] w-full h-screen">
         <UpperLayout />
         <div className="w-full bg-white h-full rounded-t-2xl px-[26px] py-3.5">
           {children}

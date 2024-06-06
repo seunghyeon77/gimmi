@@ -26,11 +26,11 @@ export default function AllGroupTabs() {
       </TabsList>
       <div className="border-b-2 mt-2 w-full mb-4"></div>
       <TabsContent value="before-p">
-        <div className="w-full h-20 bg-slate-200 rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
-          <h2 className="text-[22px] -mb-3">인식이네그룹</h2>
+        <div className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
+          <h2 className="text-[22px] -mb-3 text-white">인식이네그룹</h2>
           <Progress className="h-1.5" value={22} />
         </div>
-        <div className="w-full h-20 bg-slate-200 rounded-lg flex justify-between items-center px-3.5">
+        <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5">
           <h1 className="text-[22px]">Zㅣ존우리팀</h1>
           <div>
             <Image src={nextArrow} alt="next-arrow" />
@@ -38,13 +38,13 @@ export default function AllGroupTabs() {
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <div className="w-full h-20 bg-slate-200 rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
-              <h2 className="text-[22px] -mb-3">인식이네그룹</h2>
+            <div className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
+              <h2 className="text-[22px] -mb-3 text-white">인식이네그룹</h2>
               <Progress className="h-1.5" value={22} />
             </div>
           </DialogTrigger>
           <DialogContent className="w-4/6 rounded-lg h-40">
-            <DialogHeader>이 그룹에 참여하시겠습니까?</DialogHeader>
+            <DialogHeader>비밀번호를 입력해주세요</DialogHeader>
             <div className="flex justify-center items-center">
               <form>
                 <input type="password" placeholder="12" />
