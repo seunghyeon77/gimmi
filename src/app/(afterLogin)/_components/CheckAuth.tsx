@@ -11,9 +11,6 @@ export default function CheckAuth() {
     if (!accessToken) {
       router.push('/login');
     }
-    if (accessToken) {
-      router.push('/');
-    }
   }, [router]);
 
   return <></>;
