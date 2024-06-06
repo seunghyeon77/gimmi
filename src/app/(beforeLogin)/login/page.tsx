@@ -5,6 +5,8 @@ import AuthButton from '../_components/AuthButton';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import customAxios from '@/utils/cutstomAxios';
 import { AxiosError } from 'axios';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 type FormProps = {
   id: string;
@@ -45,8 +47,10 @@ export default function Page() {
   return (
     <div>
       <div className="mt-44 mb-16 flex justify-center items-center flex-col font-medium">
-        <h1 className="text-5xl mb-3 font-galmuri">GYMMI</h1>
-        <h3 className="text-sm">지미와 함께 운동의욕을 채워보세요!</h3>
+        <h1 className="text-5xl mb-3 font-galmuri text-[#2563EB]">GYMMI</h1>
+        <h3 className="text-sm text-[#2563EB] font-galmuri">
+          지미와 함께 운동의욕을 채워보세요!
+        </h3>
       </div>
       <div className="mb-20">
         <form>
@@ -78,9 +82,17 @@ export default function Page() {
           disabled={!isValid || isSubmitting}
         />
       </div>
-      <div onClick={() => router.push('/signup')}>
-        <AuthButton title="회원가입" />
-      </div>
+
+      <Link href={'/signup'}>
+        <div className="flex justify-center items-center mb-4">
+          <Button
+            type="submit"
+            className="w-full h-12 rounded-3xl bg-[#F9FAFB] text-main"
+          >
+            이메일로 회원가입
+          </Button>
+        </div>
+      </Link>
     </div>
   );
 }

@@ -11,7 +11,6 @@ import 'swiper/css/pagination';
 
 import './styles.css';
 import { useRouter } from 'next/navigation';
-import customAxios from '@/utils/cutstomAxios';
 
 const data = [
   {

@@ -41,6 +41,7 @@ export default function Page() {
     reset,
     watch,
     setError,
+    clearErrors,
   } = useForm<FormProps>({
     mode: 'onSubmit',
     defaultValues: {},
@@ -61,6 +62,8 @@ export default function Page() {
       });
       //중복 검사 되었을때 상태 바꿔주기
       if (type === duplicationType.loginId) {
+        clearErrors('id');
+        setIdCheck(false);
         if (res.data.duplication === true) {
           setError('id', { message: '중복된 아이디입니다.' });
         } else {
@@ -68,6 +71,8 @@ export default function Page() {
         }
       }
       if (type === duplicationType.nickname) {
+        clearErrors('nickname');
+        setNicknameCheck(false);
         if (res.data.duplication === true) {
           setError('nickname', { message: '중복된 닉네임입니다.' });
         } else {
@@ -126,7 +131,7 @@ export default function Page() {
               type="text"
               id="id"
               placeholder="영어+숫자 8자~12자"
-              className="w-56"
+              className="w-56 bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
               {...register('id', {
                 required: '필수 입력 사항입니다.',
                 pattern: {
@@ -136,7 +141,7 @@ export default function Page() {
               })}
             />
             <Button
-              className="w-24"
+              className="w-24 bg-[#E5E7EB] text-[#6B7280]"
               onClick={() => verliffyDuplicate(duplicationType.loginId, id)}
             >
               중복확인
@@ -144,9 +149,11 @@ export default function Page() {
           </div>
         </div>
         {errors?.id ? (
-          <p>{errors?.id?.message}</p>
+          <p className="text-[8px] text-[#EF4444] mt-1">
+            {errors?.id?.message}
+          </p>
         ) : idCheck ? (
-          <p>사용 가능한 아이디입니다.</p>
+          <p className="text-[8px] text-main mt-1">사용 가능한 아이디입니다.</p>
         ) : null}
       </div>
       <div className="mb-8">
@@ -159,7 +166,7 @@ export default function Page() {
               type="password"
               id="password"
               placeholder="영어+숫자+특수문자 8자 이상,20자 이하"
-              className="w-full"
+              className="w-full bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
               {...register('password', {
                 required: '필수 입력 사항입니다.',
                 pattern: {
@@ -169,9 +176,13 @@ export default function Page() {
               })}
             />
           </div>
-          {errors?.password && <p>{errors?.password?.message}</p>}
+          {errors?.password && (
+            <p className="text-[8px] text-[#EF4444] mt-1">
+              {errors?.password?.message}
+            </p>
+          )}
         </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5 mb-3.5">
+        <div className="grid w-full max-w-sm items-center gap-1.5 mb-1">
           <Label htmlFor="password2" className="text-xs">
             비밀번호 재확인
           </Label>
@@ -180,7 +191,7 @@ export default function Page() {
               type="password"
               id="password2"
               placeholder="비밀번호 재확인"
-              className="w-full"
+              className="w-full bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
               {...register('password2', {
                 required: '비밀번호 재확인이 필요합니다.',
                 validate: (value) =>
@@ -189,7 +200,11 @@ export default function Page() {
             />
           </div>
         </div>
-        {errors?.password2 && <p>{errors?.password2?.message}</p>}
+        {errors?.password2 && (
+          <p className="text-[8px] text-[#EF4444]">
+            {errors?.password2?.message}
+          </p>
+        )}
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5 mb-5">
         <Label htmlFor="nickname" className="text-xs">
@@ -200,14 +215,14 @@ export default function Page() {
             type="text"
             id="nickname"
             placeholder="영어+한글+초성+숫자 2자~5자"
-            className="w-56"
+            className="w-56 bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
             {...register('nickname', {
               required: '필수 입력 사항입니다.',
               pattern: { value: nicknameRegex, message: '2자~5자 이하입니다.' },
             })}
           />
           <Button
-            className="w-24"
+            className="w-24 bg-[#E5E7EB] text-[#6B7280]"
             onClick={() =>
               verliffyDuplicate(duplicationType.nickname, nickname)
             }
@@ -215,12 +230,14 @@ export default function Page() {
             중복확인
           </Button>
         </div>
+        {errors?.nickname ? (
+          <p className="text-[8px] text-[#EF4444]">
+            {errors?.nickname?.message}
+          </p>
+        ) : niknameCheck ? (
+          <p className="text-[8px] text-main">사용 가능한 닉네임입니다.</p>
+        ) : null}
       </div>
-      {errors?.nickname ? (
-        <p>{errors?.nickname?.message}</p>
-      ) : niknameCheck ? (
-        <p>사용 가능한 닉네임입니다.</p>
-      ) : null}
 
       <div className="grid w-full max-w-sm items-center gap-1.5 mb-48">
         <Label htmlFor="email" className="text-xs">
@@ -231,14 +248,16 @@ export default function Page() {
             type="email"
             id="email"
             placeholder="이메일 형식 @naver.com"
-            className="w-full"
+            className="w-full bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
             {...register('email', {
               required: '필수 입력 사항입니다.',
               pattern: { value: emailRegex, message: '형식에 맞지 않습니다.' },
             })}
           />
         </div>
-        {errors?.email && <p>{errors?.email?.message}</p>}
+        {errors?.email && (
+          <p className="text-[8px] text-[#EF4444]">{errors?.email?.message}</p>
+        )}
       </div>
 
       <div onClick={handleSubmit(onsubmit)}>

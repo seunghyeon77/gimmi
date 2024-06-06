@@ -6,7 +6,7 @@
 
 .swiper-slide {
   font-size: 18px;
-  background: skyblue;
+  background: #dbeafe;
   border-radius: 8px;
 }
 
@@ -27,5 +27,5 @@
   bottom: 15px;
 }
 .swiper .swiper-pagination-bullet {
-  background-color: #000;
+  background-color: #1e40af;
 }
