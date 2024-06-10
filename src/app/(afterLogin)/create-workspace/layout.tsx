@@ -9,7 +9,7 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   return (
-    <div className="px-6 py-12 ">
+    <div className="px-6 py-12">
       <TopBar />
       {children}
     </div>

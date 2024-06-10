@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
+import Link from 'next/link';
 
 export default function Page() {
   return (
@@ -38,10 +39,13 @@ export default function Page() {
           />
         </div>
       </div>
-
-      <button className="w-full h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]">
-        계속하기
-      </button>
+      <Link href={'/create-workspace/second'}>
+        <div className="w-full flex justify-center items-center">
+          <button className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]">
+            계속하기
+          </button>
+        </div>
+      </Link>
     </>
   );
 }

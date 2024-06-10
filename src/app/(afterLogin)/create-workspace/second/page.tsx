@@ -7,6 +7,7 @@ import Image from 'next/image';
 import plus from '@/../public/svgs/plus.svg';
 import delIcon from '@/../public/svgs/delete.svg';
 import { useRef, useState } from 'react';
+import Link from 'next/link';
 
 interface InputItem {
   id: number;
@@ -95,10 +96,13 @@ export default function Page() {
           </div>
         ))}
       </div>
-
-      <button className="w-full h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]">
-        계속하기
-      </button>
+      <Link href={'/create-workspace/third'}>
+        <div className="w-full flex justify-center items-center">
+          <button className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]">
+            계속하기
+          </button>
+        </div>
+      </Link>
     </>
   );
 }
