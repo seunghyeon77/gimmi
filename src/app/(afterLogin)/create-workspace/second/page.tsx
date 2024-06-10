@@ -8,6 +8,7 @@ import plus from '@/../public/svgs/plus.svg';
 import delIcon from '@/../public/svgs/delete.svg';
 import { useRef, useState } from 'react';
 import Link from 'next/link';
+import { useWorkSpaceStore } from '@/hooks/useWorkSpaceStore';
 
 interface InputItem {
   id: number;
@@ -16,6 +17,7 @@ interface InputItem {
 }
 
 export default function Page() {
+  const { groupMaker } = useWorkSpaceStore();
   const nextID = useRef<number>(0);
   const [inputItems, setInputItems] = useState<InputItem[]>([
     { id: 0, title: '', placeholder: 'ex 풀업 10회' },
@@ -23,6 +25,8 @@ export default function Page() {
     { id: 2, title: '', placeholder: '스쿼트 10회' },
     { id: 3, title: '', placeholder: '러닝 20분' },
   ]);
+
+  console.log(groupMaker);
 
   // 추가
   function addInput() {

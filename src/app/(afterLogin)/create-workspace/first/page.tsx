@@ -5,8 +5,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import Link from 'next/link';
+import { useWorkSpaceStore } from '@/hooks/useWorkSpaceStore';
+import { useState } from 'react';
 
 export default function Page() {
+  const { groupMaker, add1Page } = useWorkSpaceStore();
+
+  const [name, setName] = useState(groupMaker.name);
+  const [headCount, setHeadCount] = useState(groupMaker.headCount);
+
+  const handleClick = () => {
+    add1Page({ name, headCount });
+  };
+
+  console.log(groupMaker);
   return (
     <>
       <Progress value={33} className="h-[1px] mb-9" />
@@ -20,6 +32,8 @@ export default function Page() {
             id="id"
             placeholder="최대 9자"
             className="w-56 h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
           <Button className="w-24 h-[52px] bg-[#D1D5DB] text-[#6B7280]">
             중복확인
@@ -36,11 +50,16 @@ export default function Page() {
             id="id"
             placeholder="최소 2명 ~ 최대 9명"
             className="w-56 h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
+            value={headCount}
+            onChange={(e) => setHeadCount(e.target.value)}
           />
         </div>
       </div>
       <Link href={'/create-workspace/second'}>
-        <div className="w-full flex justify-center items-center">
+        <div
+          onClick={handleClick}
+          className="w-full flex justify-center items-center"
+        >
           <button className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]">
             계속하기
           </button>
