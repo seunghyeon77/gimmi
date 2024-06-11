@@ -14,7 +14,7 @@ export default function Page() {
   const [name, setName] = useState(groupMaker.name);
   const [headCount, setHeadCount] = useState(groupMaker.headCount);
 
-  const handleClick = () => {
+  const handleNext = () => {
     add1Page({ name, headCount });
   };
 
@@ -28,6 +28,7 @@ export default function Page() {
         </Label>
         <div className="flex justify-between items-center">
           <Input
+            maxLength={9}
             type="text"
             id="id"
             placeholder="최대 9자"
@@ -46,18 +47,18 @@ export default function Page() {
         </Label>
         <div className="flex justify-between items-center">
           <Input
-            type="text"
+            type="number"
             id="id"
             placeholder="최소 2명 ~ 최대 9명"
             className="w-56 h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
             value={headCount}
-            onChange={(e) => setHeadCount(e.target.value)}
+            onChange={(e) => setHeadCount(e.currentTarget.valueAsNumber)}
           />
         </div>
       </div>
       <Link href={'/create-workspace/second'}>
         <div
-          onClick={handleClick}
+          onClick={handleNext}
           className="w-full flex justify-center items-center"
         >
           <button className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]">

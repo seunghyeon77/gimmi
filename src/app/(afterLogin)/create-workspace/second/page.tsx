@@ -13,20 +13,25 @@ import { useWorkSpaceStore } from '@/hooks/useWorkSpaceStore';
 interface InputItem {
   id: number;
   title: string;
+  score: number;
   placeholder?: string;
 }
 
 export default function Page() {
-  const { groupMaker } = useWorkSpaceStore();
-  const nextID = useRef<number>(0);
-  const [inputItems, setInputItems] = useState<InputItem[]>([
-    { id: 0, title: '', placeholder: 'ex 풀업 10회' },
-    { id: 1, title: '', placeholder: 'ex 벤치프레스 10회' },
-    { id: 2, title: '', placeholder: '스쿼트 10회' },
-    { id: 3, title: '', placeholder: '러닝 20분' },
-  ]);
+  const { groupMaker, add2Page } = useWorkSpaceStore();
+
+  const [goalScore, setGoalScore] = useState(groupMaker.goalScore);
+  const nextID = useRef<number>(groupMaker.missionBoard.length);
+  const [inputItems, setInputItems] = useState<InputItem[]>(
+    groupMaker.missionBoard,
+  );
 
   console.log(groupMaker);
+  console.log(inputItems);
+
+  const handleNext = () => {
+    add2Page({ missionBoard: inputItems, goalScore });
+  };
 
   // 추가
   function addInput() {
@@ -34,6 +39,7 @@ export default function Page() {
       // 새로운 인풋객체를 하나 만들고,
       id: nextID.current, // id 값은 변수로 넣어주고,
       title: '', // 내용은 빈칸으로 만들자
+      score: 0,
     };
 
     setInputItems([...inputItems, input]); // 기존 값에 새로운 인풋객체를 추가해준다.
@@ -47,12 +53,20 @@ export default function Page() {
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>, index: number) {
-    // ↓ 이벤트 객체를 받고, 인덱스를 받자
     if (index > inputItems.length) return; // 혹시 모르니 예외처리
     // 인풋배열을 copy 해주자
     const inputItemsCopy: InputItem[] = JSON.parse(JSON.stringify(inputItems));
     inputItemsCopy[index].title = e.target.value; // 그리고 해당 인덱스를 가진 <input>의 내용을 변경해주자
     setInputItems(inputItemsCopy); // 그걸 InputItems 에 저장해주자
+  }
+
+  function scoreHandleChange(
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) {
+    const inputItemsCopy: InputItem[] = JSON.parse(JSON.stringify(inputItems));
+    inputItemsCopy[index].score = e.currentTarget.valueAsNumber;
+    setInputItems(inputItemsCopy);
   }
 
   return (
@@ -64,10 +78,12 @@ export default function Page() {
         </Label>
         <div className="flex justify-between items-center">
           <Input
-            type="text"
+            type="number"
             id="id"
             placeholder="10 단위로만 설정가능해요"
             className="w-full h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
+            value={goalScore}
+            onChange={(e) => setGoalScore(e.currentTarget.valueAsNumber)}
           />
         </div>
       </div>
@@ -86,22 +102,33 @@ export default function Page() {
             <Input
               type="text"
               id="id"
-              className="w-full h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
+              className="w-8/12 h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB] relative"
               placeholder={item.placeholder}
               onChange={(e) => handleChange(e, index)}
               value={item.title}
             />
             <div
-              className="flex justify-center items-center absolute right-10"
+              className="flex justify-center items-center absolute right-36"
               onClick={() => deleteInput(index)}
             >
               <Image src={delIcon} alt="delete-icon" />
+            </div>
+            <div className="flex justify-center items-center w-24 h-[52px] text-[#6B7280] rounded-lg text-[12px]">
+              <Input
+                type="number"
+                className="w-full h-full bg-[#E5E7EB] text-center"
+                value={`${item.score}`}
+                onChange={(e) => scoreHandleChange(e, index)}
+              />
             </div>
           </div>
         ))}
       </div>
       <Link href={'/create-workspace/third'}>
-        <div className="w-full flex justify-center items-center">
+        <div
+          className="w-full flex justify-center items-center"
+          onClick={handleNext}
+        >
           <button className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]">
             계속하기
           </button>
