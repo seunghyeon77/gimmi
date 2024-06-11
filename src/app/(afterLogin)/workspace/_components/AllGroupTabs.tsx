@@ -7,16 +7,28 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import nextArrow from '@/../public/svgs/nextArrow.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
+import { useState } from 'react';
 
 export default function AllGroupTabs() {
   const router = useRouter();
+  const [password, setPassword] = useState('');
+
+  const handleChange = (e: any) => {
+    setPassword(e);
+  };
+  console.log(password);
   return (
     <Tabs defaultValue="all">
       <TabsList>
@@ -45,11 +57,35 @@ export default function AllGroupTabs() {
           </DialogTrigger>
           <DialogContent className="w-4/6 rounded-lg h-40">
             <DialogHeader>비밀번호를 입력해주세요</DialogHeader>
-            <div className="flex justify-center items-center">
-              <form>
-                <input type="password" placeholder="12" />
-              </form>
-            </div>
+            <DialogDescription>
+              <div className="flex justify-center items-center">
+                <form>
+                  <InputOTP
+                    value={password}
+                    onChange={handleChange}
+                    maxLength={4}
+                    pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </form>
+              </div>
+            </DialogDescription>
+            <DialogFooter>
+              <div className="w-full flex items-center justify-around text-[#676767]">
+                <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
+                  cancel
+                </span>
+                <span className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg">
+                  next
+                </span>
+              </div>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </TabsContent>
