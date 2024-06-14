@@ -1,26 +1,5 @@
+import { IW, IWorkspaceInputs } from '@/types/\bworkSpace';
 import { create } from 'zustand';
-
-interface IMissionBoard {
-  id: number;
-  title: string;
-  score: number;
-  placeholder?: string;
-}
-interface IWorkspaceInputs {
-  name: string;
-  headCount: number;
-  goalScore: number;
-  description: string;
-  tag: [];
-  missionBoard: IMissionBoard[];
-  task: string;
-}
-
-interface IW {
-  groupMaker: IWorkspaceInputs;
-  add1Page: ({ name, headCount }: any) => void;
-  add2Page: ({ missionBoard, goalScore }: any) => void;
-}
 
 export const useWorkSpaceStore = create<IW>((set) => ({
   groupMaker: {
@@ -47,6 +26,14 @@ export const useWorkSpaceStore = create<IW>((set) => ({
         ...state.groupMaker,
         missionBoard,
         goalScore,
+      },
+    })),
+  add3Page: ({ task, tag, description }: IWorkspaceInputs) =>
+    set((state) => ({
+      groupMaker: {
+        ...state.groupMaker,
+        task,
+        description,
       },
     })),
 }));

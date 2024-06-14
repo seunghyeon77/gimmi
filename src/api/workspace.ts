@@ -1,3 +1,4 @@
+import { IWorkspaceInputs } from '@/types/\bworkSpace';
 import customAxios from '@/utils/cutstomAxios';
 
 enum ListType {
@@ -24,4 +25,9 @@ const allWorkspaces = async ({ type, keyword }: SearchProps) => {
   return res;
 };
 
-export { myWorkspaces, allWorkspaces };
+const createWorkspace = async (data: IWorkspaceInputs) => {
+  const res = await customAxios.post('/workspaces', data);
+  return res;
+};
+
+export { myWorkspaces, allWorkspaces, createWorkspace };

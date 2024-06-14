@@ -1,13 +1,31 @@
 'use client';
 
+import { createWorkspace } from '@/api/workspace';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { useWorkSpaceStore } from '@/hooks/useWorkSpaceStore';
+import { useState } from 'react';
 
 export default function Page() {
-  const { groupMaker } = useWorkSpaceStore();
-  console.log(groupMaker);
+  const { groupMaker, add3Page } = useWorkSpaceStore();
+  const [task, setTast] = useState(groupMaker.task);
+  const [tag, setTag] = useState(groupMaker.tag);
+  const [description, setDescription] = useState(groupMaker.description);
+
+  // console.log(groupMaker);
+  const submitData = { ...groupMaker, task };
+  console.log(submitData);
+
+  const handleSubmit = async () => {
+    try {
+      const res = await createWorkspace(submitData);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Progress value={99} className="h-[1px] mb-9" />
@@ -21,6 +39,8 @@ export default function Page() {
             id="id"
             placeholder="일등에게 맛있는 밥 사주기"
             className="w-full h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
+            value={task}
+            onChange={(e) => setTast(e.target.value)}
           />
         </div>
       </div>
@@ -47,10 +67,15 @@ export default function Page() {
             id="id"
             placeholder="그룹목표, 소개 등"
             className="w-[210px] h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
       </div>
-      <div className="w-full flex justify-center items-center">
+      <div
+        onClick={handleSubmit}
+        className="w-full flex justify-center items-center"
+      >
         <button className="fixed bottom-10 w-11/12 h-11 bg-[#3B82F6] rounded-lg text-base text-white">
           그룹 만들기 완료
         </button>
