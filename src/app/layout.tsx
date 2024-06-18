@@ -46,6 +46,17 @@ export const metadata: Metadata = {
     },
     description: APP_DESCRIPTION,
   },
+  themeColor: 'white',
+  icons: {
+    other: [
+      {
+        url: 'public/images/splash_screens/iPhone_13_mini__iPhone_12_mini__iPhone_11_Pro__iPhone_XS__iPhone_X_landscape.png',
+        media:
+          '(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)',
+        rel: 'apple-touch-startup-image',
+      },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
