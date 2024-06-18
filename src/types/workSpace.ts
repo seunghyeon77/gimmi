@@ -24,3 +24,25 @@ export interface IWorkspace {
   taskScore: number;
   title: string;
 }
+
+interface IMissionBoard {
+  id: number;
+  title: string;
+  score: number;
+  placeholder?: string;
+}
+export interface IWorkspaceInputs {
+  name: string;
+  headCount: number;
+  goalScore: number;
+  description: string;
+  tag: [];
+  missionBoard: IMissionBoard[];
+  task: string;
+}
+export interface IW {
+  groupMaker: IWorkspaceInputs;
+  add1Page: ({ name, headCount }: any) => void;
+  add2Page: ({ missionBoard, goalScore }: any) => void;
+  add3Page: ({ task, description }: any) => void;
+}
