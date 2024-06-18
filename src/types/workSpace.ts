@@ -33,10 +33,10 @@ interface IMissionBoard {
 }
 export interface IWorkspaceInputs {
   name: string;
-  headCount: number;
-  goalScore: number;
+  headCount: number | string;
+  goalScore: number | string;
   description: string;
-  tag: [];
+  tag: string;
   missionBoard: IMissionBoard[];
   task: string;
 }

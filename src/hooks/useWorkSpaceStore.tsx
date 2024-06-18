@@ -4,15 +4,16 @@ import { create } from 'zustand';
 export const useWorkSpaceStore = create<IW>((set) => ({
   groupMaker: {
     name: '',
-    headCount: 0,
-    goalScore: 0,
+    headCount: '',
+    goalScore: '',
     description: '',
-    tag: [],
+    tag: '',
     missionBoard: [
       { id: 0, title: '', placeholder: 'ex 풀업 10회', score: 0 },
       { id: 1, title: '', placeholder: 'ex 벤치프레스 10회', score: 0 },
       { id: 2, title: '', placeholder: '스쿼트 10회', score: 0 },
       { id: 3, title: '', placeholder: '러닝 20분', score: 0 },
+      { id: 4, title: '', placeholder: '런지 10회', score: 0 },
     ],
     task: '',
   },
@@ -34,6 +35,7 @@ export const useWorkSpaceStore = create<IW>((set) => ({
         ...state.groupMaker,
         task,
         description,
+        tag,
       },
     })),
 }));

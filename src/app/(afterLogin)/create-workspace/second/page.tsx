@@ -37,9 +37,9 @@ export default function Page() {
     }
     if (
       goalScore === 0 ||
-      goalScore < 100 ||
-      goalScore > 1000 ||
-      goalScore % 10 !== 0
+      (goalScore as number) < 100 ||
+      (goalScore as number) > 1000 ||
+      (goalScore as number) % 10 !== 0
     ) {
       setError('형식에 맞게 작성해주세요.');
       setDisabled(true);
@@ -61,7 +61,7 @@ export default function Page() {
 
   // 추가
   function addInput() {
-    if (inputItems.length > 8) return;
+    if (inputItems.length > 16) return;
     const input = {
       id: nextID.current,
       title: '',
@@ -97,12 +97,18 @@ export default function Page() {
     <>
       <Progress value={66} className="h-[1px] mb-9" />
       <div className="grid w-full max-w-sm items-center mb-11">
-        <Label
-          htmlFor="goal"
-          className="text-xs text-[#6B7280] font-normal mb-2"
-        >
-          3. 그룹의 목표점수를 설정해주세요!
-        </Label>
+        <div className="flex items-center">
+          <Label
+            htmlFor="goal"
+            className="text-sm text-[#6B7280] font-normal mb-2 mr-2"
+          >
+            3. 그룹의 목표점수를 설정해주세요!
+          </Label>
+          <span className="text-[#D1D5DB] text-[8px]">
+            100~1000점까지 가능해요
+          </span>
+        </div>
+
         <div className="flex justify-between items-center">
           <Input
             autoFocus
@@ -110,19 +116,25 @@ export default function Page() {
             type="number"
             id="goal"
             placeholder="10 단위로만 설정가능해요"
-            className="w-full h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
+            className="w-full h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB]"
             value={goalScore}
             onChange={(e) => setGoalScore(e.currentTarget.valueAsNumber)}
           />
         </div>
       </div>
       <div className="grid w-full max-w-sm items-center">
-        <Label
-          htmlFor="mission"
-          className="text-xs text-[#6B7280] font-normal mb-2"
-        >
-          4. 미션 항목을 만들어주세요!
-        </Label>
+        <div className="flex items-center">
+          <Label
+            htmlFor="mission"
+            className="text-xs text-[#6B7280] font-normal mb-2 mr-2"
+          >
+            4. 미션 항목을 만들어주세요!
+          </Label>
+          <span className="text-[#D1D5DB] text-[8px]">
+            최대 15개까지 설정 가능해요.
+          </span>
+        </div>
+
         <div
           className="w-full h-8 flex justify-center items-center mb-3 mt-1"
           onClick={addInput}
@@ -132,9 +144,10 @@ export default function Page() {
         {inputItems.map((item, index) => (
           <div className="flex justify-between items-center mb-3" key={index}>
             <Input
+              maxLength={15}
               type="text"
               id="mission"
-              className="w-8/12 h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB] relative"
+              className="w-8/12 h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB] relative"
               placeholder={item.placeholder}
               onChange={(e) => handleChange(e, index)}
               value={item.title}
