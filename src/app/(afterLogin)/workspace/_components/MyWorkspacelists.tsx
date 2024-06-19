@@ -13,12 +13,15 @@ export default function MyWorkspacelits() {
     queryKey: [workspace.mylists],
     queryFn: myWorkspaces,
   });
+  console.log(workSpaceData);
   return (
     <div>
       {workSpaceData.map((item) => {
         return (
           <div
-            className="bg-[#60A5FA] w-full h-[136px] rounded-lg p-4 mb-7"
+            className={`bg-[#60A5FA] w-full h-[136px] rounded-lg p-4 mb-7 ${
+              item.state === '완료됨' ? 'opacity-50' : null
+            }`}
             key={item.id}
           >
             <h2 className="text-2xl mb-3.5 text-white">{item.title}</h2>

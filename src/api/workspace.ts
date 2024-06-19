@@ -13,6 +13,12 @@ type SearchProps = {
   keyword?: string;
 };
 
+type JoinWorkspace = {
+  password: number;
+  task: string;
+  workspaceId: number;
+};
+
 const myWorkspaces = async () => {
   const res = await customAxios.get('/workspaces/my');
   return res;
@@ -30,4 +36,17 @@ const createWorkspace = async (data: IWorkspaceInputs) => {
   return res;
 };
 
-export { myWorkspaces, allWorkspaces, createWorkspace };
+const joinWorkspace = async ({
+  password,
+  task,
+  workspaceId,
+}: JoinWorkspace) => {
+  const formData = { password, task };
+  const res = await customAxios.post(
+    `/workspaces/${workspaceId}/join`,
+    formData,
+  );
+  return res;
+};
+
+export { myWorkspaces, allWorkspaces, createWorkspace, joinWorkspace };
