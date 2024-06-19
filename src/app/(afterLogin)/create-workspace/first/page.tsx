@@ -27,7 +27,7 @@ export default function Page() {
 
   useEffect(() => {
     // api 검사 마치면 && nameCheck 넣어주기
-    if (name.length > 1 && headCount > 1) {
+    if (name.length > 1 && (headCount as number) > 1) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -70,12 +70,13 @@ export default function Page() {
             type="text"
             id="name"
             placeholder="최대 9자"
-            className="w-56 h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
+            className="w-56 h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB] mr-1"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+          <span className="text-xs text-[#D1D5DB]">{`${name.length}/9`}</span>
           <Button
-            className="w-24 h-[52px] bg-[#D1D5DB] text-[#6B7280]"
+            className="w-[93px] h-[52px] bg-[#D1D5DB] text-[#6B7280] text-xs"
             onClick={() => duplicateGroupName(duplicationType.workspaceName)}
           >
             중복확인
@@ -91,14 +92,14 @@ export default function Page() {
         >
           2. 그룹 인원수를 설정하세요!
         </Label>
-        <div className="flex justify-between items-center">
+        <div className="flex items-center">
           <Input
             autoFocus
             required
             type="number"
             id="groupNum"
             placeholder="최소 2명 ~ 최대 9명"
-            className="w-56 h-[52px] bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
+            className="w-56 h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB] mr-1"
             value={headCount}
             onChange={(e) => setHeadCount(e.currentTarget.valueAsNumber)}
           />
