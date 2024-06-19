@@ -24,7 +24,7 @@ import { useState } from 'react';
 import { joinWorkspace } from '@/api/workspace';
 
 export default function AllGroupTabs() {
-  const [password, setPassword] = useState<Number>();
+  const [password, setPassword] = useState('');
   const [task, setTask] = useState('');
 
   const [isFirstDialogOpen, setIsFirstDialogOpen] = useState(false);
@@ -42,7 +42,7 @@ export default function AllGroupTabs() {
     try {
       //워크스페이스 아이디 받아서 전해주기
       // const res = await joinWorkspace({ password, task, workspaceId });
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.error(error);
     }

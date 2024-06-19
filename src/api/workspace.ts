@@ -14,7 +14,7 @@ type SearchProps = {
 };
 
 type JoinWorkspace = {
-  password: number;
+  password: string;
   task: string;
   workspaceId: number;
 };
