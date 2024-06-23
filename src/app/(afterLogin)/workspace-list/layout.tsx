@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import UpperLayout from './_components/UpperLayout';
-import NavBar from '@/app/(afterLogin)/workspace/_components/NavBar';
+import NavBar from '@/app/(afterLogin)/workspace-list/_components/NavBar';
 
 //여기에서만 네브바 넣기 - 워크스페이스 부분,
 

@@ -20,12 +20,13 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { allWorkspaces, joinWorkspace } from '@/api/workspace';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { IWorkspace } from '@/types/\bworkSpace';
 import { workspaceList } from '@/constants/workSpace';
+import { useInView } from 'react-intersection-observer';
 
 export default function AllGroupTabs() {
   const [search, setSearch] = useState('');
@@ -36,7 +37,7 @@ export default function AllGroupTabs() {
   const [isFirstDialogOpen, setIsFirstDialogOpen] = useState(false);
   const [isSecondDialogOpen, setIsSecondDialogOpen] = useState(false);
 
-  // const { data, fetchNextPage, hasNextPage } = useInfiniteQuery<
+  // const { data, fetchNextPage, hasNextPage ,isFetching} = useInfiniteQuery<
   //   IWorkspace[],
   //   InfiniteData<IWorkspace[]>
   // >({
@@ -69,9 +70,25 @@ export default function AllGroupTabs() {
     console.log(e.currentTarget.id);
     setTabValue(e.currentTarget.id);
   };
+  const { ref, inView } = useInView({
+    //아래 ref div가 보이고 나서 몇픽셀정도가 호출될건가? -> 보이자마자 호출하기에 0으로 설정
+    threshold: 0,
+    //아래 ref div가 보이고 나서 몇초후에 이벤트 발생할지
+    delay: 0,
+  });
 
-  console.log('search', search);
-  console.log('type', tabValue);
+  // useEffect(() => {
+  //   //처음엔 false 화면에 안보이면 false임, 보이면 true로 변함
+  //   if (inView) {
+  //     //데이터 가져오고 있는데 또 가져오지 않기 위해 isFetching까지
+  //     !isFetching && hasNextPage && fetchNextPage();
+  //   }
+  // }, [inView, hasNextPage, fetchNextPage, isFetching]);
+
+  console.log(ref);
+
+  // console.log('search', search);
+  // console.log('type', tabValue);
 
   //전체적으로 client component 더 분리해보기 (일단 로직 작성 하고 나서 )
   return (
@@ -208,6 +225,7 @@ export default function AllGroupTabs() {
         <TabsContent value="ing-p">이건 진행중2222222</TabsContent>
         <TabsContent value="all">이건 모두333333333</TabsContent>
       </Tabs>
+      <div ref={ref} style={{ height: 10 }} />
     </>
   );
 }
