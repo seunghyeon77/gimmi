@@ -20,7 +20,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { ReactEventHandler, useState } from 'react';
+import { useState } from 'react';
 import { allWorkspaces, joinWorkspace } from '@/api/workspace';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
