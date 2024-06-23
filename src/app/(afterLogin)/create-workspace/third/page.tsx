@@ -14,7 +14,7 @@ export default function Page() {
   const [description, setDescription] = useState(groupMaker.description);
 
   // console.log(groupMaker);
-  const submitData = { ...groupMaker, tag, task };
+  const submitData = { ...groupMaker, tag, task, description };
   console.log(submitData);
 
   const handleSubmit = async () => {

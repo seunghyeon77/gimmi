@@ -2,7 +2,7 @@ import { IWorkspaceInputs } from '@/types/\bworkSpace';
 import customAxios from '@/utils/cutstomAxios';
 
 enum ListType {
-  'READY',
+  'PREPARING',
   'IN-PROGRESS',
   'COMPLETED',
   '',
