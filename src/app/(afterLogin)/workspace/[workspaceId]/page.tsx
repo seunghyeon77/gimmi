@@ -1,4 +1,3 @@
-import backArrow from '@/../public/svgs/backArrow.svg';
 import closedMail from '@/../public/svgs/closedMail.svg';
 import mainLogo from '@/../public/svgs/mainLogo.svg';
 import good from '@/../public/svgs/good.svg';
@@ -35,9 +34,6 @@ const data = {
 export default function Page() {
   return (
     <div>
-      <div className="mb-5">
-        <Image src={backArrow} alt="backArrow" />
-      </div>
       <div className="flex items-end mb-11">
         <h1 className="font-galmuri text-3xl">{data.name}</h1>
         <div>
@@ -49,7 +45,10 @@ export default function Page() {
       </div>
       <div className="flex flex-col mb-5">
         <div className="text-[8px] text-[#D1D5DB] mb-3.5">목표 달성률</div>
-        <Progress className="h-1.5 bg-[#DBEAFE] mb-1" value={22} />
+        <Progress
+          className="h-1.5 bg-[#DBEAFE] mb-1"
+          value={(data.achievementScore / data.goalScore) * 100}
+        />
         <div className="text-[10px] text-[#4B5563] text-right">{`${data.achievementScore}/${data.goalScore}점`}</div>
       </div>
       <div className="flex items-center ml-3.5 mb-2">
