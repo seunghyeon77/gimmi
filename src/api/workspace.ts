@@ -1,8 +1,9 @@
+import { workspace } from '@/constants/queryKey';
 import { IWorkspaceInputs } from '@/types/\bworkSpace';
 import customAxios from '@/utils/cutstomAxios';
 
 enum ListType {
-  'READY',
+  'PREPARING',
   'IN-PROGRESS',
   'COMPLETED',
   '',
@@ -17,6 +18,16 @@ type JoinWorkspace = {
   password: string;
   task: string;
   workspaceId: number;
+};
+
+interface IMissions {
+  id: number;
+  count: number;
+}
+
+type Mission = {
+  workspaceId: number;
+  missions: IMissions[];
 };
 
 const myWorkspaces = async () => {
@@ -36,6 +47,13 @@ const createWorkspace = async (data: IWorkspaceInputs) => {
   return res;
 };
 
+const matchPassword = async (workspaceId: number) => {
+  const res = await customAxios.get(
+    `/workspaces/${workspaceId}/match-password`,
+  );
+  return res;
+};
+
 const joinWorkspace = async ({
   password,
   task,
@@ -49,4 +67,37 @@ const joinWorkspace = async ({
   return res;
 };
 
-export { myWorkspaces, allWorkspaces, createWorkspace, joinWorkspace };
+const startWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.patch(`/workspaces/${workspaceId}/start`);
+  return res;
+};
+
+const infoWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.get(`/workspaces/${workspaceId}`);
+  return res;
+};
+
+const missionsWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.get(`/workspaces/${workspaceId}/missions`);
+  return res;
+};
+
+const postMissions = async ({ workspaceId, missions }: Mission) => {
+  const res = await customAxios.post(
+    `/workspaces/${workspaceId}/missions`,
+    missions,
+  );
+  return res;
+};
+
+export {
+  myWorkspaces,
+  allWorkspaces,
+  createWorkspace,
+  joinWorkspace,
+  startWorkspace,
+  infoWorkspace,
+  matchPassword,
+  missionsWorkspace,
+  postMissions,
+};

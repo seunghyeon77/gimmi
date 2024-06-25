@@ -1,5 +1,5 @@
 import { IWorkspace, IWorkspaceDetail } from '@/types/\bworkSpace';
-import { faker, ko } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 //워크스페이스 목록
 const workspaceList = (): IWorkspace => ({

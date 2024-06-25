@@ -60,13 +60,13 @@ export default function MainCarousel() {
           return (
             <Link href={`workspace/${'gymmi'}/mygroup`} key={item.id}>
               <SwiperSlide
-                onClick={() => router.push(`workspace/${'gymmi'}/mygroup`)}
+                onClick={() => router.push(`workspace-list/${'gymmi'}/mygroup`)}
               >
                 <div className="pt-5 px-6">
                   <h2 className="font-galmuri text-2xl font-medium mb-3.5">
                     {item.name}
                   </h2>
-                  <Progress value={item.value} className="h-1.5" />
+                  <Progress value={item.value} className="h-1.5 " />
                 </div>
               </SwiperSlide>
             </Link>

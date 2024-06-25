@@ -9,13 +9,28 @@ import { useState } from 'react';
 
 export default function Page() {
   const { groupMaker, add3Page } = useWorkSpaceStore();
-  const [task, setTast] = useState(groupMaker.task);
+  const [task, setTask] = useState(groupMaker.task);
   const [tag, setTag] = useState(groupMaker.tag);
   const [description, setDescription] = useState(groupMaker.description);
 
   // console.log(groupMaker);
-  const submitData = { ...groupMaker, tag, task };
-  console.log(submitData);
+  const submitData = { ...groupMaker, tag, task, description };
+
+  console.log(groupMaker);
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const id = e.target.id;
+    if (id === 'task') {
+      setTask(e.target.value);
+    }
+    if (id === 'tag') {
+      setTag(e.target.value);
+    }
+    if (id === 'description') {
+      setDescription(e.target.value);
+    }
+    add3Page({ task, tag, description });
+  };
 
   const handleSubmit = async () => {
     if (task.length < 1) return;
@@ -31,49 +46,59 @@ export default function Page() {
     <>
       <Progress value={99} className="h-[1px] mb-9" />
       <div className="grid w-full max-w-sm items-center mb-11">
-        <Label htmlFor="id" className="text-xs text-[#1F2937] font-normal mb-3">
+        <Label
+          htmlFor="task"
+          className="text-xs text-[#1F2937] font-normal mb-3"
+        >
           5. 본인의 테스크를 작성해주세요!
         </Label>
         <div className="flex justify-between items-center">
           <Input
             required
             type="text"
-            id="id"
+            id="task"
             placeholder="일등에게 맛있는 밥 사주기"
             className="w-full h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB]"
             value={task}
-            onChange={(e) => setTast(e.target.value)}
+            onChange={handleFormChange}
           />
         </div>
       </div>
       <div className="grid w-full max-w-sm items-center mb-11">
-        <Label htmlFor="id" className="text-xs text-[#1F2937] font-normal mb-3">
+        <Label
+          htmlFor="tag"
+          className="text-xs text-[#1F2937] font-normal mb-3"
+        >
           + 그룹을 나타내는 태그를 적어주세요! (선택)
         </Label>
         <div className="flex items-center">
           <Input
             type="text"
-            id="id"
+            id="tag"
             maxLength={10}
             placeholder="헬스, 러닝, 필라테스 등"
             className="w-[210px] h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB] mr-1"
-            onChange={(e) => setTag(e.target.value)}
+            onChange={handleFormChange}
+            value={tag}
           />
           <span className="text-xs text-[#D1D5DB]">{`${tag.length}/10`}</span>
         </div>
       </div>
       <div className="grid w-full max-w-sm items-center mb-11">
-        <Label htmlFor="id" className="text-xs text-[#1F2937] font-normal mb-3">
+        <Label
+          htmlFor="description"
+          className="text-xs text-[#1F2937] font-normal mb-3"
+        >
           + 간단한 그룹 설명을 해주세요! (선택)
         </Label>
         <div className="flex justify-between items-center">
           <Input
             type="text"
-            id="id"
+            id="description"
             placeholder="그룹목표, 소개 등"
             className="w-full h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB]"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={handleFormChange}
           />
         </div>
       </div>

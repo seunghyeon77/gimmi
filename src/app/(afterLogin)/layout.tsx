@@ -13,7 +13,7 @@ export default function Layout({ children }: Props) {
   return (
     <ReactQueryProvider>
       <LoadingScreen />
-      <CheckAuth />
+      {/* <CheckAuth /> */}
       <div>
         <div>{children}</div>
       </div>

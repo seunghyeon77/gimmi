@@ -7,6 +7,7 @@ import customAxios from '@/utils/cutstomAxios';
 import { AxiosError } from 'axios';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import useUser from '@/hooks/useUser';
 
 type FormProps = {
   id: string;
@@ -15,6 +16,7 @@ type FormProps = {
 
 export default function Page() {
   const router = useRouter();
+  const { addUser } = useUser();
 
   const {
     register,
@@ -30,6 +32,8 @@ export default function Page() {
         loginId: data.id,
         password: data.password,
       });
+      // addUser(res?.userId)
+      console.log(res);
       localStorage.clear();
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('refreshToken', res.data.refreshToken);

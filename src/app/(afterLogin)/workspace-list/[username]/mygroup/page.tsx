@@ -6,7 +6,7 @@ export default function Page() {
     <div>
       <div className="text-base font-normal mb-9">
         <span className="mr-9">my group</span>
-        <Link href={'/workspace/all-group'}>
+        <Link href={'/workspace-list/all-group'}>
           <span className="text-slate-200">all group</span>
         </Link>
       </div>

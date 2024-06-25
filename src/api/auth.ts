@@ -15,6 +15,7 @@ export const postSignup = async (data: TSignup) => {
 export const logout = async () => {
   const res = await customAxios.post('/auth/goodbye');
   console.log(res);
+
   localStorage.removeItem('accessToken');
   localStorage.removeItem('refreshToken');
   window.location.reload();
