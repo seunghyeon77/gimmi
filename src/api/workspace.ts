@@ -49,4 +49,15 @@ const joinWorkspace = async ({
   return res;
 };
 
-export { myWorkspaces, allWorkspaces, createWorkspace, joinWorkspace };
+const startWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.patch(`/workspaces/${workspaceId}/start`);
+  return res;
+};
+
+export {
+  myWorkspaces,
+  allWorkspaces,
+  createWorkspace,
+  joinWorkspace,
+  startWorkspace,
+};
