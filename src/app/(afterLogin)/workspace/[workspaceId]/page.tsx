@@ -113,7 +113,7 @@ export default function Page() {
           <div className="text-[10px] text-[#4B5563] text-right">{`${data.achievementScore}/${data.goalScore}점`}</div>
         </div>
 
-        {!workout && (
+        {!workout ? (
           <div>
             <div className="flex items-center ml-3.5 mb-2">
               <Image src={good} alt="good" className="mr-1" />
@@ -148,6 +148,10 @@ export default function Page() {
                   </div>
                 );
               })}
+          </div>
+        ) : (
+          <div>
+            <div className="bg-[#E5E7EB] h-[1px] w-full mb-5"></div>
           </div>
         )}
       </div>
