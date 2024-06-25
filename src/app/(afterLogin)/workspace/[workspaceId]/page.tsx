@@ -1,9 +1,11 @@
 'use client';
 
 import closedMail from '@/../public/svgs/closedMail.svg';
+import openMail from '@/../public/svgs/openMail.svg';
 import mainLogo from '@/../public/svgs/mainLogo.svg';
 import good from '@/../public/svgs/good.svg';
 import creator from '@/../public/svgs/creator.svg';
+
 import { Progress } from '@/components/ui/progress';
 import Image from 'next/image';
 import useUser from '@/hooks/useUser';
@@ -19,14 +21,17 @@ import { infoWorkspace, startWorkspace } from '@/api/workspace';
 import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { useParams } from 'next/navigation';
+import { useState } from 'react';
+// import { Divide } from 'lucide-react';
 
 const data = {
   name: '워크스페이스 방 제목',
   creator: 'zㅣ존가현',
   headCount: 2,
-  state: '진행전',
+  state: '진행중',
   goalScore: 1000,
-  description: '....',
+  description:
+    '지미는 운동에 대한 지루함을 줄이기 위해 친구 애인,지인과 함께하는 헬스 워크스페이스입니다.',
   achievementScore: 400,
   workers: [
     {
@@ -65,6 +70,8 @@ export default function Page() {
 
   const { workspaceId } = useParams();
 
+  const [workout, setWorkout] = useState(false);
+
   const {} = useQuery({
     queryKey: [workspace.info, workspaceId],
     queryFn: () => infoWorkspace(Number(workspaceId)),
@@ -80,9 +87,19 @@ export default function Page() {
       <div className="mb-14">
         <div className="flex items-end mb-11">
           <h1 className="font-galmuri text-3xl">{data.name}</h1>
-          <div>
-            <Image src={closedMail} alt="closedMail" />
-          </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <div>
+                <Image src={closedMail} alt="closedMail" />
+              </div>
+            </DialogTrigger>
+            <DialogContent className="w-4/6 rounded-lg h-[138px]">
+              <div className="-mt-2">
+                <Image src={openMail} alt="openMail" />
+              </div>
+              <p className="text-[10px] text-[#515151]">{data.description}</p>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className=" flex items-center justify-center mb-11">
           <Image src={mainLogo} alt="mainLogo" />
@@ -95,39 +112,44 @@ export default function Page() {
           />
           <div className="text-[10px] text-[#4B5563] text-right">{`${data.achievementScore}/${data.goalScore}점`}</div>
         </div>
-        <div className="flex items-center ml-3.5 mb-2">
-          <Image src={good} alt="good" className="mr-1" />
-          <span className="text-[10px] text-[#9CA3AF]">획득 점수</span>
-        </div>
-        {/* 여기에 유저들 매핑해주기 */}
-        {data?.workers
-          .sort((a, b) => (a.id === userId ? -1 : b.id === userId ? 1 : 0))
-          .map((user) => {
-            const isCurrentUser = user.id === userId;
-            return (
-              <div className="mb-4 text-[#4B5563]" key={user.id}>
-                <div
-                  className={`w-full h-16 ${
-                    isCurrentUser ? 'bg-[#C8F68B]' : 'bg-[#DBEAFE] '
-                  } rounded-xl flex items-center justify-between px-3.5`}
-                >
-                  <div className="h-8 w-8 rounded-full bg-white mr-3.5 flex items-center justify-center relative">
-                    {user.name === data.creator && (
-                      <Image
-                        src={creator}
-                        alt="creator"
-                        className="absolute top-0 left-0"
-                      />
-                    )}
 
-                    <Image src={closedMail} alt="icon" />
+        {!workout && (
+          <div>
+            <div className="flex items-center ml-3.5 mb-2">
+              <Image src={good} alt="good" className="mr-1" />
+              <span className="text-[10px] text-[#9CA3AF]">획득 점수</span>
+            </div>
+            {/* 여기에 유저들 매핑해주기 */}
+            {data?.workers
+              .sort((a, b) => (a.id === userId ? -1 : b.id === userId ? 1 : 0))
+              .map((user) => {
+                const isCurrentUser = user.id === userId;
+                return (
+                  <div className="mb-4 text-[#4B5563]" key={user.id}>
+                    <div
+                      className={`w-full h-16 ${
+                        isCurrentUser ? 'bg-[#C8F68B]' : 'bg-[#DBEAFE] '
+                      } rounded-xl flex items-center justify-between px-3.5`}
+                    >
+                      <div className="h-8 w-8 rounded-full bg-white mr-3.5 flex items-center justify-center relative">
+                        {user.name === data.creator && (
+                          <Image
+                            src={creator}
+                            alt="creator"
+                            className="absolute top-0 left-0"
+                          />
+                        )}
+
+                        <Image src={closedMail} alt="icon" />
+                      </div>
+                      <div className="flex-1">{user.name}</div>
+                      <div className="">{`${user.contributeScore} P`}</div>
+                    </div>
                   </div>
-                  <div className="flex-1">{user.name}</div>
-                  <div className="">{`${user.contributeScore} P`}</div>
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
+          </div>
+        )}
       </div>
       {/* 조건으로 유저 닉네임과 방장 같으면 뭐시기 넣어주기 */}
       {data.state === '진행전' && nickname === data.creator && (

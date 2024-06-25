@@ -21,7 +21,7 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { useEffect, useState } from 'react';
-import { allWorkspaces, joinWorkspace } from '@/api/workspace';
+import { allWorkspaces, joinWorkspace, matchPassword } from '@/api/workspace';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { IWorkspace } from '@/types/\bworkSpace';
@@ -51,7 +51,17 @@ export default function AllGroupTabs() {
   const handleChange = (e: any) => {
     setPassword(e);
   };
-  const nextDialog = () => {
+  const nextDialog = async () => {
+    // try {
+    //   const res = await matchPassword(Number(password))
+    //   if(res.sameness){
+    //     setIsFirstDialogOpen(false);
+    //     setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
+    //   }
+    // } catch (error) {
+    //   console.error(error)
+    // }
+
     setIsFirstDialogOpen(false);
     setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
   };
