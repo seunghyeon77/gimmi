@@ -54,10 +54,16 @@ const startWorkspace = async (workspaceId: number) => {
   return res;
 };
 
+const infoWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.get(`/workspaces/${workspaceId}`);
+  return res;
+};
+
 export {
   myWorkspaces,
   allWorkspaces,
   createWorkspace,
   joinWorkspace,
   startWorkspace,
+  infoWorkspace,
 };

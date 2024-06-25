@@ -15,7 +15,10 @@ import {
   DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { startWorkspace } from '@/api/workspace';
+import { infoWorkspace, startWorkspace } from '@/api/workspace';
+import { useQuery } from '@tanstack/react-query';
+import { workspace } from '@/constants/queryKey';
+import { useParams } from 'next/navigation';
 
 const data = {
   name: '워크스페이스 방 제목',
@@ -60,8 +63,15 @@ export default function Page() {
     user: { userId, nickname },
   } = useUser();
 
+  const { workspaceId } = useParams();
+
+  const {} = useQuery({
+    queryKey: [workspace.info, workspaceId],
+    queryFn: () => infoWorkspace(Number(workspaceId)),
+  });
+
   const handleStart = async () => {
-    const res = await startWorkspace(1);
+    const res = await startWorkspace(Number(workspaceId));
     console.log(res);
   };
 
