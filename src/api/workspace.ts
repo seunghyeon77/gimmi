@@ -42,7 +42,7 @@ const allWorkspaces = async ({ type, keyword }: SearchProps) => {
   return res;
 };
 
-const createWorkspace = async (data: IWorkspaceInputs) => {
+const createWorkspace = async (data: any) => {
   const res = await customAxios.post('/workspaces', data);
   return res;
 };

@@ -14,9 +14,22 @@ export default function Page() {
   const [description, setDescription] = useState(groupMaker.description);
 
   // console.log(groupMaker);
-  const submitData = { ...groupMaker, tag, task, description };
+  const submitData = { ...groupMaker };
 
-  console.log(groupMaker);
+  const data = {
+    name: submitData.name,
+    headCount: submitData.headCount,
+    goalScore: submitData.goalScore,
+    description: submitData.description,
+    tag: submitData.tag,
+    missionBoard: submitData.missionBoard.map((item) => ({
+      mission: item.mission,
+      score: item.score,
+    })),
+    task: submitData.task,
+  };
+  console.log(submitData);
+  console.log(data);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const id = e.target.id;
@@ -33,9 +46,10 @@ export default function Page() {
   };
 
   const handleSubmit = async () => {
+    console.log(data);
     if (task.length < 1) return;
     try {
-      const res = await createWorkspace(submitData);
+      const res = await createWorkspace(data);
       console.log(res);
     } catch (error) {
       console.log(error);
