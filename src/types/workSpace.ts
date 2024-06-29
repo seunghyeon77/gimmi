@@ -27,7 +27,7 @@ export interface IWorkspace {
 
 interface IMissionBoard {
   id: number;
-  title: string;
+  mission: string;
   score: number;
   placeholder?: string;
 }

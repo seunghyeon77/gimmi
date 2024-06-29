@@ -12,7 +12,7 @@ import { useWorkSpaceStore } from '@/hooks/useWorkSpaceStore';
 
 interface InputItem {
   id: number;
-  title: string;
+  mission: string;
   score: number;
   placeholder?: string;
 }
@@ -64,7 +64,7 @@ export default function Page() {
     if (inputItems.length > 16) return;
     const input = {
       id: nextID.current,
-      title: '',
+      mission: '',
       score: 0,
     };
 
@@ -80,7 +80,7 @@ export default function Page() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>, index: number) {
     if (index > inputItems.length) return;
     const inputItemsCopy: InputItem[] = JSON.parse(JSON.stringify(inputItems));
-    inputItemsCopy[index].title = e.target.value;
+    inputItemsCopy[index].mission = e.target.value;
     setInputItems(inputItemsCopy);
   }
 
@@ -150,7 +150,7 @@ export default function Page() {
               className="w-8/12 h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB] relative"
               placeholder={item.placeholder}
               onChange={(e) => handleChange(e, index)}
-              value={item.title}
+              value={item.mission}
             />
             <div
               className="flex justify-center items-center absolute right-36"
