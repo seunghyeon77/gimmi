@@ -3,22 +3,20 @@
 import { myWorkspaces } from '@/api/workspace';
 import { Progress } from '@/components/ui/progress';
 import { workspace } from '@/constants/queryKey';
-import { generateWorkspaces } from '@/utils/fakerData';
+
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-
-const workSpaceData = generateWorkspaces(4);
 
 export default function MyWorkspacelits() {
   const { data } = useQuery({
     queryKey: [workspace.mylists],
-    queryFn: myWorkspaces,
+    queryFn: () => myWorkspaces(),
   });
-  console.log(workSpaceData);
+  console.log(data);
+
   return (
     <div>
-      {workSpaceData.map((item) => {
-        //1자리에 워크스페이스 아이디 넣어주기
+      {data?.data.map((item: any) => {
         return (
           <Link href={`/workspace/${1}`} key={item.id}>
             <div
@@ -26,14 +24,10 @@ export default function MyWorkspacelits() {
                 item.state === '완료됨' ? 'opacity-50' : null
               }`}
             >
-              <h2 className="text-2xl mb-3.5 text-white">{item.title}</h2>
-              <div className="text-[10px] text-white">
-                {item.tags.map((tag, i) => (
-                  <span key={i}>{tag}</span>
-                ))}
-              </div>
+              <h2 className="text-2xl mb-3.5 text-white">{item.name}</h2>
+              <div className="text-[10px] text-white">{item.tag}</div>
               <div className="text-[10px] text-white mb-3.5">
-                <span>{`테스크 점수: ${item.taskScore}점`}</span>
+                <span>{`테스크 점수: ${item.goalScore}점`}</span>
                 <span>, </span>
                 <span>{item.name}</span>
               </div>

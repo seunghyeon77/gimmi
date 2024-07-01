@@ -2,16 +2,10 @@ import { workspace } from '@/constants/queryKey';
 import { IWorkspaceInputs } from '@/types/\bworkSpace';
 import customAxios from '@/utils/cutstomAxios';
 
-enum ListType {
-  'PREPARING',
-  'IN-PROGRESS',
-  'COMPLETED',
-  '',
-}
-
 type SearchProps = {
-  type?: ListType;
+  type?: string;
   keyword?: string;
+  page: any;
 };
 
 type JoinWorkspace = {
@@ -30,15 +24,16 @@ type Mission = {
   missions: IMissions[];
 };
 
-const myWorkspaces = async () => {
-  const res = await customAxios.get('/workspaces/my');
+const myWorkspaces = async (page: number = 0) => {
+  const res = await customAxios.get(`/workspaces/my?page=${page}`);
   return res;
 };
 
-const allWorkspaces = async ({ type, keyword }: SearchProps) => {
+const allWorkspaces = async ({ type, keyword = '', page = 0 }: SearchProps) => {
   const res = await customAxios.get(
-    `/workspaces?type=${type}keyword=${keyword}`,
+    `/workspaces?status=${type}keyword=${keyword}page=${page}`,
   );
+  console.log(res);
   return res;
 };
 

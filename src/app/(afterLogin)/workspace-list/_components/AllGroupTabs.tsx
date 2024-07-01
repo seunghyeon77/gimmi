@@ -37,16 +37,27 @@ export default function AllGroupTabs() {
   const [isFirstDialogOpen, setIsFirstDialogOpen] = useState(false);
   const [isSecondDialogOpen, setIsSecondDialogOpen] = useState(false);
 
-  // const { data, fetchNextPage, hasNextPage ,isFetching} = useInfiniteQuery<
-  //   IWorkspace[],
-  //   InfiniteData<IWorkspace[]>
-  // >({
-  //   queryKey: [workspace.all_lists],
-  //   queryFn: ({ pageParam = 0 }) =>
-  //     allWorkspaces({ type: tabValue, keyword: search }),
-  //   initialPageParam: 0,
-  //   getNextPageParam: (lastPage) => {},
-  // });
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<
+    any,
+    Error
+  >({
+    queryKey: [workspace.all_lists],
+    queryFn: async ({ pageParam = 0 }) => {
+      const data = await allWorkspaces({
+        type: tabValue,
+        keyword: search,
+        page: pageParam,
+      });
+      return data;
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.length === 0) return undefined;
+      return pages.length;
+    },
+  });
+
+  console.log(data);
 
   const handleChange = (e: any) => {
     setPassword(e);
@@ -87,13 +98,13 @@ export default function AllGroupTabs() {
     delay: 0,
   });
 
-  // useEffect(() => {
-  //   //처음엔 false 화면에 안보이면 false임, 보이면 true로 변함
-  //   if (inView) {
-  //     //데이터 가져오고 있는데 또 가져오지 않기 위해 isFetching까지
-  //     !isFetching && hasNextPage && fetchNextPage();
-  //   }
-  // }, [inView, hasNextPage, fetchNextPage, isFetching]);
+  useEffect(() => {
+    //처음엔 false 화면에 안보이면 false임, 보이면 true로 변함
+    if (inView) {
+      //데이터 가져오고 있는데 또 가져오지 않기 위해 isFetching까지
+      !isFetching && hasNextPage && fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage, isFetching]);
 
   console.log(ref);
 

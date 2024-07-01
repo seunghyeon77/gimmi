@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import MyWorkspacelits from '../../_components/MyWorkspacelists';
+import MyWorkspacelits from '../_components/MyWorkspacelists';
 
 export default function Page() {
   return (
