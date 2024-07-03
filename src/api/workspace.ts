@@ -31,7 +31,7 @@ const myWorkspaces = async (page: number = 0) => {
 
 const allWorkspaces = async ({ type, keyword = '', page = 0 }: SearchProps) => {
   const res = await customAxios.get(
-    `/workspaces?status=${type}keyword=${keyword}page=${page}`,
+    `/workspaces?status=${type}&keyword=${keyword}&page=${page}`,
   );
   console.log(res);
   return res;
