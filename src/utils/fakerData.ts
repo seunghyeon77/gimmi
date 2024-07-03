@@ -6,10 +6,10 @@ const workspaceList = (): IWorkspace => ({
   id: faker.number.int({ min: 1, max: 100 }),
   name: faker.commerce.product(),
   creator: faker.person.firstName(),
-  state: '진행중',
+  status: '진행중',
   createdAt: faker.date.anytime(),
   achievementRate: faker.number.int(100),
-  tags: ['헬스', '필라테스'],
+  tag: '헬스, 필라테스',
   taskScore: faker.number.int({ min: 10, max: 1000 }),
   title: faker.lorem.words().substring(2, 9),
 });

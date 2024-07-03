@@ -22,6 +22,7 @@ import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 // import { Divide } from 'lucide-react';
 
 const data = {
@@ -61,6 +62,33 @@ const data = {
   ],
 };
 
+const missionData = [
+  {
+    id: 1, // mission id
+    mission: '데드리프트 5회',
+    score: 7,
+  },
+  {
+    id: 2,
+    mission: '달리기 10분',
+    score: 8,
+  },
+  {
+    id: 3,
+    mission: '스쿼트 10회',
+    score: 8,
+  },
+  {
+    id: 4,
+    mission: '푸쉬업 10회',
+    score: 4,
+  },
+  {
+    id: 5,
+    mission: '런지 10분',
+    score: 3,
+  },
+];
 // 이 페이지 들어왔을때 useQuery로 방 정보 가져오기
 
 export default function Page() {
@@ -70,7 +98,7 @@ export default function Page() {
 
   const { workspaceId } = useParams();
 
-  const [workout, setWorkout] = useState(false);
+  const [workout, setWorkout] = useState(true);
 
   const {} = useQuery({
     queryKey: [workspace.info, workspaceId],
@@ -152,6 +180,24 @@ export default function Page() {
         ) : (
           <div>
             <div className="bg-[#E5E7EB] h-[1px] w-full mb-5"></div>
+            <Tabs defaultValue="account" className="w-[400px]">
+              <TabsList>
+                <TabsTrigger value="workout">운동하기</TabsTrigger>
+                <TabsTrigger value="myRecord">나의 운동 현황</TabsTrigger>
+              </TabsList>
+              <TabsContent value="workout">
+                <div className="flex flex-col justify-between items-center">
+                  <div>
+                    <h6></h6>
+                    <div></div>
+                  </div>
+                  <div></div>
+                </div>
+              </TabsContent>
+              <TabsContent value="myRecord">
+                Change your password here.
+              </TabsContent>
+            </Tabs>
           </div>
         )}
       </div>

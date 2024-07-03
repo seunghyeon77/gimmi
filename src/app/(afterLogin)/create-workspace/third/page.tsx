@@ -5,9 +5,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { useWorkSpaceStore } from '@/hooks/useWorkSpaceStore';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Page() {
+  const router = useRouter();
+
   const { groupMaker, add3Page } = useWorkSpaceStore();
   const [task, setTask] = useState(groupMaker.task);
   const [tag, setTag] = useState(groupMaker.tag);
@@ -51,6 +54,9 @@ export default function Page() {
     try {
       const res = await createWorkspace(data);
       console.log(res);
+      if (res.status === 200) {
+        router.push(`/workspace-list/mygroup`);
+      }
     } catch (error) {
       console.log(error);
     }
