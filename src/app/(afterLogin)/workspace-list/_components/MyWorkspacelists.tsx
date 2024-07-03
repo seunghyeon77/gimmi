@@ -18,7 +18,7 @@ export default function MyWorkspacelits() {
     <div>
       {data?.data.map((item: any) => {
         return (
-          <Link href={`/workspace/${1}`} key={item.id}>
+          <Link href={`/workspace/${item.id}`} key={item.id}>
             <div
               className={`bg-[#60A5FA] w-full h-[136px] rounded-lg p-4 mb-7 ${
                 item.state === '완료됨' ? 'opacity-50' : null

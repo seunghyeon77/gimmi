@@ -24,6 +24,11 @@ type Mission = {
   missions: IMissions[];
 };
 
+type PasswordCheck = {
+  workspaceId: number;
+  password: string;
+};
+
 const myWorkspaces = async (page: number = 0) => {
   const res = await customAxios.get(`/workspaces/my?page=${page}`);
   return res;
@@ -42,10 +47,12 @@ const createWorkspace = async (data: any) => {
   return res;
 };
 
-const matchPassword = async (workspaceId: number) => {
+const matchPassword = async ({ workspaceId, password }: PasswordCheck) => {
   const res = await customAxios.get(
     `/workspaces/${workspaceId}/match-password`,
+    // password,
   );
+  console.log(res);
   return res;
 };
 

@@ -62,19 +62,21 @@ export default function AllGroupTabs() {
   const handleChange = (e: any) => {
     setPassword(e);
   };
-  const nextDialog = async () => {
-    // try {
-    //   const res = await matchPassword(Number(password))
-    //   if(res.sameness){
-    //     setIsFirstDialogOpen(false);
-    //     setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
-    //   }
-    // } catch (error) {
-    //   console.error(error)
-    // }
+  const nextDialog = async (workspaceId: number) => {
+    console.log(workspaceId);
+    try {
+      const res = await matchPassword({ workspaceId, password });
+      console.log(res);
+      // if (res?.sameness) {
+      //   setIsFirstDialogOpen(false);
+      //   setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
+      // }
+    } catch (error) {
+      console.error(error);
+    }
 
-    setIsFirstDialogOpen(false);
-    setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
+    // setIsFirstDialogOpen(false);
+    // setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
   };
 
   const onSubmit = async () => {
@@ -193,7 +195,7 @@ export default function AllGroupTabs() {
 
                     <span
                       className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
-                      onClick={nextDialog}
+                      onClick={() => nextDialog(item.id)}
                     >
                       next
                     </span>
@@ -266,12 +268,58 @@ export default function AllGroupTabs() {
                   />
                 </div>
               ) : (
-                <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
-                  <h1 className="text-[22px]">{item.name}</h1>
-                  <div>
-                    <Image src={nextArrow} alt="next-arrow" />
-                  </div>
-                </div>
+                <Dialog
+                  key={item.id}
+                  open={isFirstDialogOpen}
+                  onOpenChange={setIsFirstDialogOpen}
+                >
+                  <DialogTrigger asChild>
+                    <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
+                      <h1 className="text-[22px]">{item.name}</h1>
+                      <div>
+                        <Image src={nextArrow} alt="next-arrow" />
+                      </div>
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="w-4/6 rounded-lg h-40">
+                    <DialogHeader>비밀번호를 입력해주세요</DialogHeader>
+                    <DialogDescription>
+                      <div className="flex justify-center items-center">
+                        <form>
+                          <InputOTP
+                            value={password}
+                            onChange={handleChange}
+                            maxLength={4}
+                            pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+                          >
+                            <InputOTPGroup>
+                              <InputOTPSlot index={0} />
+                              <InputOTPSlot index={1} />
+                              <InputOTPSlot index={2} />
+                              <InputOTPSlot index={3} />
+                            </InputOTPGroup>
+                          </InputOTP>
+                        </form>
+                      </div>
+                    </DialogDescription>
+                    <DialogFooter>
+                      <div className="w-full flex items-center justify-around text-[#676767]">
+                        <DialogClose asChild>
+                          <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
+                            cancel
+                          </span>
+                        </DialogClose>
+
+                        <span
+                          className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
+                          onClick={() => nextDialog(item.id)}
+                        >
+                          next
+                        </span>
+                      </div>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               )}
             </div>
           ))}
