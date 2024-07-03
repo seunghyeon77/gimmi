@@ -41,7 +41,7 @@ export default function AllGroupTabs() {
     any,
     Error
   >({
-    queryKey: [workspace.all_lists],
+    queryKey: [workspace.all_lists, tabValue, search],
     queryFn: async ({ pageParam = 0 }) => {
       const data = await allWorkspaces({
         type: tabValue,
@@ -51,13 +51,13 @@ export default function AllGroupTabs() {
       return data;
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage.length === 0) return undefined;
-      return pages.length;
+    getNextPageParam: (lastPage, allPages) => {
+      console.log('lastPage:', lastPage);
+      return lastPage?.nextPage || undefined;
     },
   });
 
-  console.log(data);
+  console.log('Fetched data:', data);
 
   const handleChange = (e: any) => {
     setPassword(e);
@@ -86,6 +86,7 @@ export default function AllGroupTabs() {
       console.error(error);
     }
   };
+  console.log(tabValue);
 
   const handleTabChange = (e: React.MouseEvent) => {
     console.log(e.currentTarget.id);
@@ -105,8 +106,6 @@ export default function AllGroupTabs() {
       !isFetching && hasNextPage && fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage, isFetching]);
-
-  console.log(ref);
 
   // console.log('search', search);
   // console.log('type', tabValue);
@@ -149,63 +148,61 @@ export default function AllGroupTabs() {
         </TabsList>
         <div className="border-b-2 mt-2 w-full mb-4"></div>
         <TabsContent value="before-p">
-          <div className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
-            <h2 className="text-[22px] -mb-3 text-white">인식이네그룹</h2>
-            <Progress className="h-1.5" value={22} />
-          </div>
-          <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5">
-            <h1 className="text-[22px]">Zㅣ존우리팀</h1>
-            <div>
-              <Image src={nextArrow} alt="next-arrow" />
-            </div>
-          </div>
-          <Dialog open={isFirstDialogOpen} onOpenChange={setIsFirstDialogOpen}>
-            {/* DialogTrigger로 덮여있는 친구들은 dialog가 가능하다 */}
-            <DialogTrigger asChild>
-              <div className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
-                <h2 className="text-[22px] -mb-3 text-white">인식이네그룹</h2>
-                <Progress className="h-1.5" value={22} />
-              </div>
-            </DialogTrigger>
-            <DialogContent className="w-4/6 rounded-lg h-40">
-              <DialogHeader>비밀번호를 입력해주세요</DialogHeader>
-              <DialogDescription>
-                <div className="flex justify-center items-center">
-                  <form>
-                    <InputOTP
-                      value={password}
-                      onChange={handleChange}
-                      maxLength={4}
-                      pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                    >
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                      </InputOTPGroup>
-                    </InputOTP>
-                  </form>
+          {data?.pages[0].data.map((item: any) => (
+            <Dialog
+              key={item.id}
+              open={isFirstDialogOpen}
+              onOpenChange={setIsFirstDialogOpen}
+            >
+              <DialogTrigger asChild>
+                <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
+                  <h1 className="text-[22px]">{item.name}</h1>
+                  <div>
+                    <Image src={nextArrow} alt="next-arrow" />
+                  </div>
                 </div>
-              </DialogDescription>
-              <DialogFooter>
-                <div className="w-full flex items-center justify-around text-[#676767]">
-                  <DialogClose asChild>
-                    <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
-                      cancel
-                    </span>
-                  </DialogClose>
+              </DialogTrigger>
+              <DialogContent className="w-4/6 rounded-lg h-40">
+                <DialogHeader>비밀번호를 입력해주세요</DialogHeader>
+                <DialogDescription>
+                  <div className="flex justify-center items-center">
+                    <form>
+                      <InputOTP
+                        value={password}
+                        onChange={handleChange}
+                        maxLength={4}
+                        pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+                      >
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSlot index={3} />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    </form>
+                  </div>
+                </DialogDescription>
+                <DialogFooter>
+                  <div className="w-full flex items-center justify-around text-[#676767]">
+                    <DialogClose asChild>
+                      <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
+                        cancel
+                      </span>
+                    </DialogClose>
 
-                  <span
-                    className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
-                    onClick={nextDialog}
-                  >
-                    next
-                  </span>
-                </div>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+                    <span
+                      className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
+                      onClick={nextDialog}
+                    >
+                      next
+                    </span>
+                  </div>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          ))}
+
           <Dialog
             open={isSecondDialogOpen}
             onOpenChange={setIsSecondDialogOpen}
@@ -243,8 +240,42 @@ export default function AllGroupTabs() {
             </DialogContent>
           </Dialog>
         </TabsContent>
-        <TabsContent value="ing-p">이건 진행중2222222</TabsContent>
-        <TabsContent value="all">이건 모두333333333</TabsContent>
+        <TabsContent value="ing-p">
+          {data?.pages[0].data.map((item: any) => (
+            <div
+              key={item.id}
+              className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6"
+            >
+              <h2 className="text-[22px] -mb-3 text-white">{item.name}</h2>
+              <Progress
+                className="h-1.5"
+                value={(item.achievementScore / item.goalScore) * 100}
+              />
+            </div>
+          ))}
+        </TabsContent>
+        <TabsContent value="all">
+          {data?.pages[0].data.map((item: any) => (
+            <div key={item.key}>
+              {item.status === workspaceList.inProgress ? (
+                <div className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
+                  <h2 className="text-[22px] -mb-3 text-white">{item.name}</h2>
+                  <Progress
+                    className="h-1.5"
+                    value={(item.achievementScore / item.goalScore) * 100}
+                  />
+                </div>
+              ) : (
+                <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
+                  <h1 className="text-[22px]">{item.name}</h1>
+                  <div>
+                    <Image src={nextArrow} alt="next-arrow" />
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </TabsContent>
       </Tabs>
       <div ref={ref} style={{ height: 10 }} />
     </>
