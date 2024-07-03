@@ -2,6 +2,9 @@
 
 import closedMail from '@/../public/svgs/closedMail.svg';
 import openMail from '@/../public/svgs/openMail.svg';
+import minus from '@/../public/svgs/workspace/minus.svg';
+import plus from '@/../public/svgs/workspace/plus.svg';
+import check from '@/../public/svgs/workspace/check.svg';
 
 import mainLogo0 from '@/../public/svgs/mainLogo0.svg';
 import mainLogo25 from '@/../public/svgs/mainLogo25.svg';
@@ -24,7 +27,11 @@ import {
   DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { infoWorkspace, startWorkspace } from '@/api/workspace';
+import {
+  infoWorkspace,
+  missionsWorkspace,
+  startWorkspace,
+} from '@/api/workspace';
 import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { useParams } from 'next/navigation';
@@ -62,6 +69,7 @@ const missionData = [
 // 이 페이지 들어왔을때 useQuery로 방 정보 가져오기
 
 export default function Page() {
+  // 아래 훅 삭제 예정
   const {
     user: { userId, nickname },
   } = useUser();
@@ -78,6 +86,13 @@ export default function Page() {
   const percent = (data?.data.achievementScore / data?.data.goalScore) * 100;
 
   console.log(data);
+
+  const handleWorkout = async () => {
+    // if (data?.data.status !== 'IN-PROGRESS') return;
+    setWorkout((v) => !v);
+    const res = await missionsWorkspace(Number(workspaceId));
+    console.log(res);
+  };
 
   const handleStart = async () => {
     const res = await startWorkspace(Number(workspaceId));
@@ -137,7 +152,11 @@ export default function Page() {
             {/* 여기에 유저들 매핑해주기 */}
             {data?.data.workers.map((user: any) => {
               return (
-                <div className="mb-4 text-[#4B5563]" key={user.id}>
+                <div
+                  className="mb-4 text-[#4B5563]"
+                  key={user.id}
+                  onClick={handleWorkout}
+                >
                   <div
                     className={`w-full h-16 ${
                       user.isMyself ? 'bg-[#C8F68B]' : 'bg-[#DBEAFE] '
@@ -164,18 +183,86 @@ export default function Page() {
         ) : (
           <div>
             <div className="bg-[#E5E7EB] h-[1px] w-full mb-5"></div>
-            <Tabs defaultValue="account" className="w-[400px]">
-              <TabsList>
+            <Tabs defaultValue="workout" className="w-full">
+              <TabsList className="px-1">
                 <TabsTrigger value="workout">운동하기</TabsTrigger>
                 <TabsTrigger value="myRecord">나의 운동 현황</TabsTrigger>
               </TabsList>
               <TabsContent value="workout">
                 <div className="flex flex-col justify-between items-center">
-                  <div>
-                    <h6></h6>
-                    <div></div>
+                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
+                    <span className="">풀업 10회</span>
+                    <div className="flex justify-center items-center">
+                      <button className="text-lg">
+                        <Image src={minus} alt="minus" />
+                      </button>
+                      <span className="mx-1">0</span>
+                      <button className="text-lg">
+                        <Image src={plus} alt="plus" />
+                      </button>
+                    </div>
                   </div>
-                  <div></div>
+                </div>
+                <div className="flex flex-col justify-between items-center">
+                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
+                    <span className="">풀업 10회</span>
+                    <div className="flex justify-center items-center">
+                      <button className="text-lg">
+                        <Image src={minus} alt="minus" />
+                      </button>
+                      <span className="mx-1">0</span>
+                      <button className="text-lg">
+                        <Image src={plus} alt="plus" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col justify-between items-center">
+                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
+                    <span className="">풀업 10회</span>
+                    <div className="flex justify-center items-center">
+                      <button className="text-lg">
+                        <Image src={minus} alt="minus" />
+                      </button>
+                      <span className="mx-1">0</span>
+                      <button className="text-lg">
+                        <Image src={plus} alt="plus" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col justify-between items-center">
+                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
+                    <span className="">풀업 10회</span>
+                    <div className="flex justify-center items-center">
+                      <button className="text-lg">
+                        <Image src={minus} alt="minus" />
+                      </button>
+                      <span className="mx-1">0</span>
+                      <button className="text-lg">
+                        <Image src={plus} alt="plus" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col justify-between items-center">
+                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
+                    <span className="">풀업 10회</span>
+                    <div className="flex justify-center items-center">
+                      <button className="text-lg">
+                        <Image src={minus} alt="minus" />
+                      </button>
+                      <span className="mx-1">0</span>
+                      <button className="text-lg">
+                        <Image src={plus} alt="plus" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full flex justify-center items-center rounded-md">
+                  <button className="w-16 h-6 bg-[#9CA3AF] flex items-center justify-center">
+                    <Image src={check} alt="check" />
+                  </button>
                 </div>
               </TabsContent>
               <TabsContent value="myRecord">
@@ -197,7 +284,7 @@ export default function Page() {
         </div>
       )}
 
-      <Dialog>
+      {/* <Dialog>
         <DialogTrigger asChild>
           {data?.data.status === 'PREPARING' &&
             nickname !== data?.data.creator && (
@@ -225,7 +312,7 @@ export default function Page() {
             </div>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }
