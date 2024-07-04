@@ -10,6 +10,7 @@ import mainLogo0 from '@/../public/svgs/mainLogo0.svg';
 import mainLogo25 from '@/../public/svgs/mainLogo25.svg';
 import mainLogo50 from '@/../public/svgs/mainLogo50.svg';
 import mainLogo75 from '@/../public/svgs/mainLogo75.svg';
+import settings from '@/../public/svgs/workspace/settings.svg';
 
 import noImage from '@/../public/svgs/noImage.svg';
 
@@ -29,43 +30,23 @@ import {
 } from '@/components/ui/dialog';
 import {
   infoWorkspace,
+  missionsRecord,
   missionsWorkspace,
   startWorkspace,
 } from '@/api/workspace';
 import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Link from 'next/link';
 // import { Divide } from 'lucide-react';
 
-const missionData = [
-  {
-    id: 1, // mission id
-    mission: '데드리프트 5회',
-    score: 7,
-  },
-  {
-    id: 2,
-    mission: '달리기 10분',
-    score: 8,
-  },
-  {
-    id: 3,
-    mission: '스쿼트 10회',
-    score: 8,
-  },
-  {
-    id: 4,
-    mission: '푸쉬업 10회',
-    score: 4,
-  },
-  {
-    id: 5,
-    mission: '런지 10분',
-    score: 3,
-  },
-];
+type MissonData = {
+  id: number;
+  mission: string;
+  score: number;
+};
 // 이 페이지 들어왔을때 useQuery로 방 정보 가져오기
 
 export default function Page() {
@@ -77,6 +58,9 @@ export default function Page() {
   const { workspaceId } = useParams();
 
   const [workout, setWorkout] = useState(false);
+  const [missionData, setMissionData] = useState<MissonData[]>();
+
+  const [count, setCount] = useState<number[]>([]);
 
   const { data } = useQuery({
     queryKey: [workspace.info, workspaceId],
@@ -85,13 +69,13 @@ export default function Page() {
 
   const percent = (data?.data.achievementScore / data?.data.goalScore) * 100;
 
-  console.log(data);
-
   const handleWorkout = async () => {
     // if (data?.data.status !== 'IN-PROGRESS') return;
     setWorkout((v) => !v);
     const res = await missionsWorkspace(Number(workspaceId));
-    console.log(res);
+    setMissionData(res.data);
+    //여기에 유저의 워크스페이스 count기록 볼 수있게 로직 짤 예정 데이터 불러오고 userId값 백에서 추가로 달라고하기
+    // const res2 = await missionsRecord({workspaceId,userId})
   };
 
   const handleStart = async () => {
@@ -99,39 +83,53 @@ export default function Page() {
     console.log(res);
   };
 
+  useEffect(() => {
+    if (missionData) {
+      setCount(Array(missionData.length).fill(0));
+    }
+  }, [missionData]);
+
+  const addCount = (index: number) => {
+    setCount((prevCount) => {
+      const newCount = [...prevCount];
+      newCount[index] += 1;
+      return newCount;
+    });
+  };
+  const minusCount = (index: number) => {
+    setCount((prevCount) => {
+      const newCount = [...prevCount];
+      newCount[index] = Math.max(newCount[index] - 1, 0);
+      return newCount;
+    });
+  };
+
+  console.log(missionData);
+
   return (
     <div>
+      <Link href={`/workspace/workspaceDetail/${workspaceId}`}>
+        <div className="absolute right-5 top-14">
+          <Image src={settings} alt="settings" />
+        </div>
+      </Link>
+
       <div className="mb-14">
         <div className="flex items-end mb-11">
           <h1 className="font-galmuri text-3xl">{data?.data.name}</h1>
-          <Dialog>
-            <DialogTrigger asChild>
-              <div>
-                <Image src={closedMail} alt="closedMail" />
-              </div>
-            </DialogTrigger>
-            <DialogContent className="w-4/6 rounded-lg h-[138px]">
-              <div className="-mt-2">
-                <Image src={openMail} alt="openMail" />
-              </div>
-              <p className="text-[10px] text-[#515151]">
-                {data?.data.description}
-              </p>
-            </DialogContent>
-          </Dialog>
         </div>
         <div className=" flex items-center justify-center mb-11">
           {percent < 25 && percent >= 0 ? (
-            <Image src={mainLogo0} alt="mainLogo" />
+            <Image src={mainLogo0} alt="mainLogo0" />
           ) : null}
           {percent < 50 && percent >= 25 ? (
-            <Image src={mainLogo0} alt="mainLogo" />
+            <Image src={mainLogo25} alt="mainLogo25" />
           ) : null}
           {percent < 75 && percent >= 50 ? (
-            <Image src={mainLogo0} alt="mainLogo" />
+            <Image src={mainLogo50} alt="mainLogo50" />
           ) : null}
           {percent <= 100 && percent >= 75 ? (
-            <Image src={mainLogo0} alt="mainLogo" />
+            <Image src={mainLogo75} alt="mainLogo75" />
           ) : null}
         </div>
         <div className="flex flex-col mb-5">
@@ -189,76 +187,32 @@ export default function Page() {
                 <TabsTrigger value="myRecord">나의 운동 현황</TabsTrigger>
               </TabsList>
               <TabsContent value="workout">
-                <div className="flex flex-col justify-between items-center">
-                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
-                    <span className="">풀업 10회</span>
-                    <div className="flex justify-center items-center">
-                      <button className="text-lg">
-                        <Image src={minus} alt="minus" />
-                      </button>
-                      <span className="mx-1">0</span>
-                      <button className="text-lg">
-                        <Image src={plus} alt="plus" />
-                      </button>
+                {missionData?.map((mission: MissonData, i) => (
+                  <div
+                    className="flex flex-col justify-between items-center"
+                    key={mission.id}
+                  >
+                    <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
+                      <span className="">{mission.mission}</span>
+                      <div className="flex justify-center items-center">
+                        <button
+                          className="text-lg "
+                          onClick={() => minusCount(i)}
+                        >
+                          <Image src={minus} alt="minus" />
+                        </button>
+                        <span className="mx-1">{count[i]}</span>
+                        <button
+                          className="text-lg mx-1"
+                          onClick={() => addCount(i)}
+                        >
+                          <Image src={plus} alt="plus" />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex flex-col justify-between items-center">
-                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
-                    <span className="">풀업 10회</span>
-                    <div className="flex justify-center items-center">
-                      <button className="text-lg">
-                        <Image src={minus} alt="minus" />
-                      </button>
-                      <span className="mx-1">0</span>
-                      <button className="text-lg">
-                        <Image src={plus} alt="plus" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col justify-between items-center">
-                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
-                    <span className="">풀업 10회</span>
-                    <div className="flex justify-center items-center">
-                      <button className="text-lg">
-                        <Image src={minus} alt="minus" />
-                      </button>
-                      <span className="mx-1">0</span>
-                      <button className="text-lg">
-                        <Image src={plus} alt="plus" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col justify-between items-center">
-                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
-                    <span className="">풀업 10회</span>
-                    <div className="flex justify-center items-center">
-                      <button className="text-lg">
-                        <Image src={minus} alt="minus" />
-                      </button>
-                      <span className="mx-1">0</span>
-                      <button className="text-lg">
-                        <Image src={plus} alt="plus" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col justify-between items-center">
-                  <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
-                    <span className="">풀업 10회</span>
-                    <div className="flex justify-center items-center">
-                      <button className="text-lg">
-                        <Image src={minus} alt="minus" />
-                      </button>
-                      <span className="mx-1">0</span>
-                      <button className="text-lg">
-                        <Image src={plus} alt="plus" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                ))}
+
                 <div className="w-full flex justify-center items-center rounded-md">
                   <button className="w-16 h-6 bg-[#9CA3AF] flex items-center justify-center">
                     <Image src={check} alt="check" />
@@ -266,7 +220,7 @@ export default function Page() {
                 </div>
               </TabsContent>
               <TabsContent value="myRecord">
-                Change your password here.
+                <div></div>
               </TabsContent>
             </Tabs>
           </div>

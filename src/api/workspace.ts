@@ -23,6 +23,10 @@ type Mission = {
   workspaceId: number;
   missions: IMissions[];
 };
+type MissionRecord = {
+  workspaceId: number;
+  userId: number;
+};
 
 type PasswordCheck = {
   workspaceId: number;
@@ -84,6 +88,13 @@ const missionsWorkspace = async (workspaceId: number) => {
   return res;
 };
 
+const missionsRecord = async ({ workspaceId, userId }: MissionRecord) => {
+  const res = await customAxios.get(
+    `/workspaces/${workspaceId}/workings/${userId}`,
+  );
+  return res;
+};
+
 const postMissions = async ({ workspaceId, missions }: Mission) => {
   const res = await customAxios.post(
     `/workspaces/${workspaceId}/missions`,
@@ -102,4 +113,5 @@ export {
   matchPassword,
   missionsWorkspace,
   postMissions,
+  missionsRecord,
 };
