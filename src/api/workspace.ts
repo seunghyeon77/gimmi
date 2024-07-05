@@ -23,6 +23,15 @@ type Mission = {
   workspaceId: number;
   missions: IMissions[];
 };
+type MissionRecord = {
+  workspaceId: number;
+  userId: number;
+};
+
+type PasswordCheck = {
+  workspaceId: number;
+  password: string;
+};
 
 const myWorkspaces = async (page: number = 0) => {
   const res = await customAxios.get(`/workspaces/my?page=${page}`);
@@ -42,10 +51,12 @@ const createWorkspace = async (data: any) => {
   return res;
 };
 
-const matchPassword = async (workspaceId: number) => {
-  const res = await customAxios.get(
+const matchPassword = async ({ workspaceId, password }: PasswordCheck) => {
+  const res = await customAxios.post(
     `/workspaces/${workspaceId}/match-password`,
+    { password },
   );
+
   return res;
 };
 
@@ -59,6 +70,10 @@ const joinWorkspace = async ({
     `/workspaces/${workspaceId}/join`,
     formData,
   );
+  return res;
+};
+const leaveWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.post(`/workspaces/${workspaceId}/leave`);
   return res;
 };
 
@@ -77,6 +92,13 @@ const missionsWorkspace = async (workspaceId: number) => {
   return res;
 };
 
+const missionsRecord = async ({ workspaceId, userId }: MissionRecord) => {
+  const res = await customAxios.get(
+    `/workspaces/${workspaceId}/workings/${userId}`,
+  );
+  return res;
+};
+
 const postMissions = async ({ workspaceId, missions }: Mission) => {
   const res = await customAxios.post(
     `/workspaces/${workspaceId}/missions`,
@@ -91,8 +113,10 @@ export {
   createWorkspace,
   joinWorkspace,
   startWorkspace,
+  leaveWorkspace,
   infoWorkspace,
   matchPassword,
   missionsWorkspace,
   postMissions,
+  missionsRecord,
 };

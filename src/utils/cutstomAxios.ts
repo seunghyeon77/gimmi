@@ -10,6 +10,7 @@ const refreshAccessToken = async () => {
   const res = await customAxios.post(`/auth/reissue`, {
     refreshToken: localStorage.getItem('refreshToken'),
   });
+
   localStorage.clear();
   if (res) {
     localStorage.setItem('accessToken', res.data.accessToken);
@@ -27,7 +28,7 @@ customAxios.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    console.log(originalRequest);
+
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       await refreshAccessToken();

@@ -27,12 +27,15 @@ import { workspace } from '@/constants/queryKey';
 import { IWorkspace } from '@/types/\bworkSpace';
 import { workspaceList } from '@/constants/workSpace';
 import { useInView } from 'react-intersection-observer';
+import { useRouter } from 'next/navigation';
 
 export default function AllGroupTabs() {
   const [search, setSearch] = useState('');
   const [tabValue, setTabValue] = useState(workspaceList.complete);
   const [password, setPassword] = useState('');
   const [task, setTask] = useState('');
+
+  const router = useRouter();
 
   const [isFirstDialogOpen, setIsFirstDialogOpen] = useState(false);
   const [isSecondDialogOpen, setIsSecondDialogOpen] = useState(false);
@@ -57,36 +60,38 @@ export default function AllGroupTabs() {
     },
   });
 
-  console.log('Fetched data:', data);
-
   const handleChange = (e: any) => {
     setPassword(e);
   };
-  const nextDialog = async () => {
-    // try {
-    //   const res = await matchPassword(Number(password))
-    //   if(res.sameness){
-    //     setIsFirstDialogOpen(false);
-    //     setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
-    //   }
-    // } catch (error) {
-    //   console.error(error)
-    // }
+  const nextDialog = async (workspaceId: number) => {
+    try {
+      const res = await matchPassword({ workspaceId, password });
 
-    setIsFirstDialogOpen(false);
-    setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
+      if (res?.data.sameness === true) {
+        setIsFirstDialogOpen(false);
+        setIsSecondDialogOpen(true);
+      } else {
+        alert('일단 알람 창으로 에러 줄게요? 이거 보면 나중에 고쳐요?!');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    // 두 번째 다이얼로그 열기
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (id: number) => {
     try {
       //워크스페이스 아이디 받아서 전해주기
-      const res = await joinWorkspace({ password, task, workspaceId: 1 });
+      const res = await joinWorkspace({ password, task, workspaceId: id });
       console.log(res);
+      if (res.status === 200) {
+        router.push('/workspace-list/mygroup');
+      }
     } catch (error) {
       console.error(error);
     }
   };
-  console.log(tabValue);
 
   const handleTabChange = (e: React.MouseEvent) => {
     console.log(e.currentTarget.id);
@@ -193,52 +198,51 @@ export default function AllGroupTabs() {
 
                     <span
                       className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
-                      onClick={nextDialog}
+                      onClick={() => nextDialog(item.id)}
                     >
                       next
                     </span>
                   </div>
                 </DialogFooter>
               </DialogContent>
+              <Dialog
+                open={isSecondDialogOpen}
+                onOpenChange={setIsSecondDialogOpen}
+              >
+                <DialogContent className="w-4/6 rounded-lg h-40">
+                  <DialogHeader>테스크를 입력해주세요</DialogHeader>
+                  <DialogDescription>
+                    <div className="flex justify-center items-center">
+                      <form>
+                        <input
+                          placeholder="일등에게 맛있는 밥 사주기"
+                          className="bg-[#F3F4F6] w-full h-[48px] px-5 rounded-lg"
+                          value={task}
+                          onChange={(e) => setTask(e.target.value)}
+                        />
+                      </form>
+                    </div>
+                  </DialogDescription>
+                  <DialogFooter>
+                    <div className="w-full flex items-center justify-around text-[#676767]">
+                      <DialogClose asChild>
+                        <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
+                          cancel
+                        </span>
+                      </DialogClose>
+
+                      <span
+                        className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
+                        onClick={() => onSubmit(item.id)}
+                      >
+                        next
+                      </span>
+                    </div>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </Dialog>
           ))}
-
-          <Dialog
-            open={isSecondDialogOpen}
-            onOpenChange={setIsSecondDialogOpen}
-          >
-            <DialogContent className="w-4/6 rounded-lg h-40">
-              <DialogHeader>테스크를 입력해주세요</DialogHeader>
-              <DialogDescription>
-                <div className="flex justify-center items-center">
-                  <form>
-                    <input
-                      placeholder="일등에게 맛있는 밥 사주기"
-                      className="bg-[#F3F4F6] w-full h-[48px] px-5 rounded-lg"
-                      value={task}
-                      onChange={(e) => setTask(e.target.value)}
-                    />
-                  </form>
-                </div>
-              </DialogDescription>
-              <DialogFooter>
-                <div className="w-full flex items-center justify-around text-[#676767]">
-                  <DialogClose asChild>
-                    <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
-                      cancel
-                    </span>
-                  </DialogClose>
-
-                  <span
-                    className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
-                    onClick={onSubmit}
-                  >
-                    next
-                  </span>
-                </div>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </TabsContent>
         <TabsContent value="ing-p">
           {data?.pages[0].data.map((item: any) => (
@@ -266,12 +270,94 @@ export default function AllGroupTabs() {
                   />
                 </div>
               ) : (
-                <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
-                  <h1 className="text-[22px]">{item.name}</h1>
-                  <div>
-                    <Image src={nextArrow} alt="next-arrow" />
-                  </div>
-                </div>
+                <Dialog
+                  key={item.id}
+                  open={isFirstDialogOpen}
+                  onOpenChange={setIsFirstDialogOpen}
+                >
+                  <DialogTrigger asChild>
+                    <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
+                      <h1 className="text-[22px]">{item.name}</h1>
+                      <div>
+                        <Image src={nextArrow} alt="next-arrow" />
+                      </div>
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="w-4/6 rounded-lg h-40">
+                    <DialogHeader>비밀번호를 입력해주세요</DialogHeader>
+                    <DialogDescription>
+                      <div className="flex justify-center items-center">
+                        <form>
+                          <InputOTP
+                            value={password}
+                            onChange={handleChange}
+                            maxLength={4}
+                            pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+                          >
+                            <InputOTPGroup>
+                              <InputOTPSlot index={0} />
+                              <InputOTPSlot index={1} />
+                              <InputOTPSlot index={2} />
+                              <InputOTPSlot index={3} />
+                            </InputOTPGroup>
+                          </InputOTP>
+                        </form>
+                      </div>
+                    </DialogDescription>
+                    <DialogFooter>
+                      <div className="w-full flex items-center justify-around text-[#676767]">
+                        <DialogClose asChild>
+                          <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
+                            cancel
+                          </span>
+                        </DialogClose>
+
+                        <span
+                          className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
+                          onClick={() => nextDialog(item.id)}
+                        >
+                          next
+                        </span>
+                      </div>
+                    </DialogFooter>
+                  </DialogContent>
+                  <Dialog
+                    open={isSecondDialogOpen}
+                    onOpenChange={setIsSecondDialogOpen}
+                  >
+                    <DialogContent className="w-4/6 rounded-lg h-40">
+                      <DialogHeader>테스크를 입력해주세요</DialogHeader>
+                      <DialogDescription>
+                        <div className="flex justify-center items-center">
+                          <form>
+                            <input
+                              placeholder="일등에게 맛있는 밥 사주기"
+                              className="bg-[#F3F4F6] w-full h-[48px] px-5 rounded-lg"
+                              value={task}
+                              onChange={(e) => setTask(e.target.value)}
+                            />
+                          </form>
+                        </div>
+                      </DialogDescription>
+                      <DialogFooter>
+                        <div className="w-full flex items-center justify-around text-[#676767]">
+                          <DialogClose asChild>
+                            <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
+                              cancel
+                            </span>
+                          </DialogClose>
+
+                          <span
+                            className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
+                            onClick={() => onSubmit(item.id)}
+                          >
+                            next
+                          </span>
+                        </div>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </Dialog>
               )}
             </div>
           ))}
