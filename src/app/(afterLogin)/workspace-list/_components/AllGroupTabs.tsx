@@ -67,10 +67,12 @@ export default function AllGroupTabs() {
     try {
       const res = await matchPassword({ workspaceId, password });
       console.log(res);
-      // if (res?.sameness) {
-      //   setIsFirstDialogOpen(false);
-      //   setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
-      // }
+      if (res?.data.sameness === true) {
+        setIsFirstDialogOpen(false);
+        setIsSecondDialogOpen(true); // 두 번째 다이얼로그 열기
+      } else {
+        alert('일단 알람 창으로 에러 줄게요? 이거 보면 나중에 고쳐요?!');
+      }
     } catch (error) {
       console.error(error);
     }
