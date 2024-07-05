@@ -72,6 +72,10 @@ const joinWorkspace = async ({
   );
   return res;
 };
+const leaveWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.post(`/workspaces/${workspaceId}/leave`);
+  return res;
+};
 
 const startWorkspace = async (workspaceId: number) => {
   const res = await customAxios.patch(`/workspaces/${workspaceId}/start`);
@@ -109,6 +113,7 @@ export {
   createWorkspace,
   joinWorkspace,
   startWorkspace,
+  leaveWorkspace,
   infoWorkspace,
   matchPassword,
   missionsWorkspace,

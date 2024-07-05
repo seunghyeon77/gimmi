@@ -19,7 +19,7 @@ import creator from '@/../public/svgs/creator.svg';
 
 import { Progress } from '@/components/ui/progress';
 import Image from 'next/image';
-import useUser from '@/hooks/useUser';
+
 import {
   Dialog,
   DialogClose,
@@ -30,16 +30,18 @@ import {
 } from '@/components/ui/dialog';
 import {
   infoWorkspace,
+  leaveWorkspace,
   missionsRecord,
   missionsWorkspace,
   startWorkspace,
 } from '@/api/workspace';
 import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
+import customAxios from '@/utils/cutstomAxios';
 // import { Divide } from 'lucide-react';
 
 type MissonData = {
@@ -50,15 +52,12 @@ type MissonData = {
 // 이 페이지 들어왔을때 useQuery로 방 정보 가져오기
 
 export default function Page() {
-  // 아래 훅 삭제 예정
-  const {
-    user: { userId, nickname },
-  } = useUser();
-
   const { workspaceId } = useParams();
 
   const [workout, setWorkout] = useState(false);
   const [missionData, setMissionData] = useState<MissonData[]>();
+
+  const router = useRouter();
 
   const [count, setCount] = useState<number[]>([]);
 
@@ -68,6 +67,12 @@ export default function Page() {
   });
 
   const percent = (data?.data.achievementScore / data?.data.goalScore) * 100;
+
+  //아래 비밀번호 확인하는 것은 아마 수정될 예정 예비 api
+  // const confirmPassword = async () => {
+  //   const res = await customAxios.get(`/workspaces/${workspaceId}/password`);
+  //   console.log(res);
+  // };
 
   const handleWorkout = async () => {
     // if (data?.data.status !== 'IN-PROGRESS') return;
@@ -79,12 +84,24 @@ export default function Page() {
   };
 
   const handleStart = async () => {
+    // await confirmPassword();
     try {
       const res = await startWorkspace(Number(workspaceId));
       console.log(res);
     } catch (error: any) {
       console.log(error.response.data.message);
       alert(error.response.data.message);
+    }
+  };
+  const handleLeave = async () => {
+    try {
+      const res = await leaveWorkspace(Number(workspaceId));
+      console.log(res);
+      if (res.status === 200) {
+        router.push('/workspace-list/mygroup');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -265,7 +282,10 @@ export default function Page() {
                   cancel
                 </span>
               </DialogClose>
-              <span className="text-sm bg-[#EFF6FF] py-1 px-10 rounded-lg text-main">
+              <span
+                className="text-sm bg-[#EFF6FF] py-1 px-10 rounded-lg text-main"
+                onClick={handleLeave}
+              >
                 yes
               </span>
             </div>
