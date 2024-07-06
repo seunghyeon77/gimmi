@@ -239,7 +239,7 @@ export default function Page() {
         ) : null}
       </div>
 
-      <div className="grid w-full max-w-sm items-center gap-1.5 mb-48">
+      <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="email" className="text-xs">
           이메일
         </Label>
@@ -260,7 +260,10 @@ export default function Page() {
         )}
       </div>
 
-      <div onClick={handleSubmit(onsubmit)}>
+      <div
+        className="fixed w-full left-0 bottom-8 px-6"
+        onClick={handleSubmit(onsubmit)}
+      >
         <AuthButton
           title="회원가입"
           type="submit"
