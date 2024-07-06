@@ -77,7 +77,9 @@ export default function Page() {
         </form>
       </div>
 
-      {errors.id && <p>{errors?.id?.message}</p>}
+      {errors.id && (
+        <p className="text-[8px] text-[#EF4444] mt-1">{errors?.id?.message}</p>
+      )}
 
       <div onClick={handleSubmit(onsubmit)}>
         <AuthButton
