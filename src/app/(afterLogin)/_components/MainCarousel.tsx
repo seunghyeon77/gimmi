@@ -4,8 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import { Progress } from '@/components/ui/progress';
 
-import { faker } from '@faker-js/faker';
-
 import 'swiper/css';
 import 'swiper/css/pagination';
 

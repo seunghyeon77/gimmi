@@ -1,4 +1,7 @@
+import Image from 'next/image';
 import MainCarousel from '../_components/MainCarousel';
+import rightArrow from '@/../public/svgs/nextArrow.svg';
+import Link from 'next/link';
 
 export default function Page() {
   return (
@@ -8,8 +11,15 @@ export default function Page() {
         지미와 함께 운동의욕을 채워보세요!
       </h5>
       <div className="w-full h-96 bg-white rounded-2xl mb-5">
-        <div className="ml-5 pt-4 mb-8">
-          <span className="text-base">my group</span>
+        <div className="ml-5 pt-4 mb-8 flex items-center justify-between">
+          <Link href={'/workspace-list/mygroup'}>
+            <span className="text-base">my group</span>
+          </Link>
+          <Link href={'/workspace-list/mygroup'}>
+            <div className="h-5 w-5 mr-4 mt-2">
+              <Image src={rightArrow} alt="arrow" />
+            </div>
+          </Link>
         </div>
         <MainCarousel />
       </div>
