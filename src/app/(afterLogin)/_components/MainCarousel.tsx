@@ -39,7 +39,7 @@ export default function MainCarousel() {
           return (
             <SwiperSlide
               key={item.id}
-              onClick={() => router.push('/workspace-list/mygroup')}
+              onClick={() => router.push(`/workspace/${item.id}`)}
             >
               <div className="pt-5 px-6">
                 <h2 className="font-galmuri text-2xl font-medium mb-3.5">

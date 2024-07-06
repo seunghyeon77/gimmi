@@ -33,6 +33,7 @@ import {
   leaveWorkspace,
   missionsRecord,
   missionsWorkspace,
+  postMissions,
   startWorkspace,
 } from '@/api/workspace';
 import { useQuery } from '@tanstack/react-query';
@@ -59,7 +60,7 @@ export default function Page() {
 
   const router = useRouter();
 
-  const [count, setCount] = useState<number[]>([]);
+  const [count, setCount] = useState<{ id: number; count: number }[]>([]);
 
   const { data } = useQuery({
     queryKey: [workspace.info, workspaceId],
@@ -75,7 +76,7 @@ export default function Page() {
   // };
 
   const handleWorkout = async () => {
-    // if (data?.data.status !== 'IN-PROGRESS') return;
+    if (data?.data.status !== 'IN_PROGRESS') return;
     setWorkout((v) => !v);
     const res = await missionsWorkspace(Number(workspaceId));
     setMissionData(res.data);
@@ -104,29 +105,41 @@ export default function Page() {
       console.log(error);
     }
   };
+  const handleMissions = async () => {
+    try {
+      const res = await postMissions({ workspaceId, missions: count });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (missionData) {
-      setCount(Array(missionData.length).fill(0));
+      const initialCounts = missionData.map((mission) => ({
+        id: mission.id,
+        count: 0,
+      }));
+      setCount(initialCounts);
     }
   }, [missionData]);
 
-  const addCount = (index: number) => {
-    setCount((prevCount) => {
-      const newCount = [...prevCount];
-      newCount[index] += 1;
-      return newCount;
-    });
+  const addCount = (id: number) => {
+    setCount((prevCount) =>
+      prevCount.map((item) =>
+        item.id === id ? { ...item, count: item.count + 1 } : item,
+      ),
+    );
   };
-  const minusCount = (index: number) => {
-    setCount((prevCount) => {
-      const newCount = [...prevCount];
-      newCount[index] = Math.max(newCount[index] - 1, 0);
-      return newCount;
-    });
+  const minusCount = (id: number) => {
+    setCount((prevCount) =>
+      prevCount.map((item) =>
+        item.id === id ? { ...item, count: Math.max(item.count - 1, 0) } : item,
+      ),
+    );
   };
 
-  console.log(missionData);
+  console.log(count);
 
   return (
     <div>
@@ -219,14 +232,17 @@ export default function Page() {
                       <div className="flex justify-center items-center">
                         <button
                           className="text-lg "
-                          onClick={() => minusCount(i)}
+                          onClick={() => minusCount(mission.id)}
                         >
                           <Image src={minus} alt="minus" />
                         </button>
-                        <span className="mx-1">{count[i]}</span>
+                        <span className="mx-1">
+                          {count.find((item) => item.id === mission.id)
+                            ?.count || 0}
+                        </span>
                         <button
                           className="text-lg mx-1"
-                          onClick={() => addCount(i)}
+                          onClick={() => addCount(mission.id)}
                         >
                           <Image src={plus} alt="plus" />
                         </button>
@@ -236,7 +252,10 @@ export default function Page() {
                 ))}
 
                 <div className="w-full flex justify-center items-center rounded-md">
-                  <button className="w-16 h-6 bg-[#9CA3AF] flex items-center justify-center">
+                  <button
+                    className="w-16 h-6 bg-[#9CA3AF] flex items-center justify-center"
+                    onClick={handleMissions}
+                  >
                     <Image src={check} alt="check" />
                   </button>
                 </div>
