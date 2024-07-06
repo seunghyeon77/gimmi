@@ -4,8 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import { Progress } from '@/components/ui/progress';
 
-import { faker } from '@faker-js/faker';
-
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -23,7 +21,6 @@ export default function MainCarousel() {
     queryFn: () => myWorkspaces(),
   });
 
-  console.log(data);
   return (
     <div className="w-full h-full overflow-hidden">
       <Swiper
@@ -41,7 +38,7 @@ export default function MainCarousel() {
           return (
             <SwiperSlide
               key={item.id}
-              onClick={() => router.push('/workspace-list/mygroup')}
+              onClick={() => router.push(`/workspace/${item.id}`)}
             >
               <div className="pt-5 px-6">
                 <h2 className="font-galmuri text-2xl font-medium mb-3.5">

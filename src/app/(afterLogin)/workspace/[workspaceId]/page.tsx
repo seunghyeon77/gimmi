@@ -33,6 +33,7 @@ import {
   leaveWorkspace,
   missionsRecord,
   missionsWorkspace,
+  postMissions,
   startWorkspace,
 } from '@/api/workspace';
 import { useQuery } from '@tanstack/react-query';
@@ -57,16 +58,19 @@ export default function Page() {
   const [workout, setWorkout] = useState(false);
   const [missionData, setMissionData] = useState<MissonData[]>();
 
+  const [worksoutRecord, setWorkoutRecord] = useState([]);
+
   const router = useRouter();
 
-  const [count, setCount] = useState<number[]>([]);
+  const [count, setCount] = useState<{ id: number; count: number }[]>([]);
 
   const { data } = useQuery({
-    queryKey: [workspace.info, workspaceId],
+    queryKey: [workspace.info, workspaceId, workout],
     queryFn: () => infoWorkspace(Number(workspaceId)),
   });
 
   const percent = (data?.data.achievementScore / data?.data.goalScore) * 100;
+  const user = data?.data.workers.filter((user: any) => user.isMyself === true);
 
   //아래 비밀번호 확인하는 것은 아마 수정될 예정 예비 api
   // const confirmPassword = async () => {
@@ -74,13 +78,26 @@ export default function Page() {
   //   console.log(res);
   // };
 
-  const handleWorkout = async () => {
-    // if (data?.data.status !== 'IN-PROGRESS') return;
+  const handleWorkout = async (userId: number) => {
+    if (data?.data.status !== 'IN_PROGRESS') return;
     setWorkout((v) => !v);
     const res = await missionsWorkspace(Number(workspaceId));
+    const recordData = await workoutRecord(userId);
+    console.log(recordData);
     setMissionData(res.data);
     //여기에 유저의 워크스페이스 count기록 볼 수있게 로직 짤 예정 데이터 불러오고 userId값 백에서 추가로 달라고하기
     // const res2 = await missionsRecord({workspaceId,userId})
+  };
+  const workoutRecord = async (userId: number) => {
+    const id = Number(workspaceId);
+    console.log(user);
+    try {
+      const res = await missionsRecord({ workspaceId: id, userId });
+      setWorkoutRecord(res.data);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleStart = async () => {
@@ -104,29 +121,43 @@ export default function Page() {
       console.log(error);
     }
   };
+  const handleMissions = async () => {
+    try {
+      const res = await postMissions({ workspaceId, missions: count });
+      console.log(res);
+      if (res.data.workingScore > 0) {
+        setWorkout(false);
+        router.push(`/workspace/${workspaceId}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (missionData) {
-      setCount(Array(missionData.length).fill(0));
+      const initialCounts = missionData.map((mission) => ({
+        id: mission.id,
+        count: 0,
+      }));
+      setCount(initialCounts);
     }
   }, [missionData]);
 
-  const addCount = (index: number) => {
-    setCount((prevCount) => {
-      const newCount = [...prevCount];
-      newCount[index] += 1;
-      return newCount;
-    });
+  const addCount = (id: number) => {
+    setCount((prevCount) =>
+      prevCount.map((item) =>
+        item.id === id ? { ...item, count: item.count + 1 } : item,
+      ),
+    );
   };
-  const minusCount = (index: number) => {
-    setCount((prevCount) => {
-      const newCount = [...prevCount];
-      newCount[index] = Math.max(newCount[index] - 1, 0);
-      return newCount;
-    });
+  const minusCount = (id: number) => {
+    setCount((prevCount) =>
+      prevCount.map((item) =>
+        item.id === id ? { ...item, count: Math.max(item.count - 1, 0) } : item,
+      ),
+    );
   };
-
-  console.log(missionData);
 
   return (
     <div>
@@ -175,7 +206,7 @@ export default function Page() {
                 <div
                   className="mb-4 text-[#4B5563]"
                   key={user.id}
-                  onClick={handleWorkout}
+                  onClick={() => handleWorkout(user.id)}
                 >
                   <div
                     className={`w-full h-16 ${
@@ -219,14 +250,17 @@ export default function Page() {
                       <div className="flex justify-center items-center">
                         <button
                           className="text-lg "
-                          onClick={() => minusCount(i)}
+                          onClick={() => minusCount(mission.id)}
                         >
                           <Image src={minus} alt="minus" />
                         </button>
-                        <span className="mx-1">{count[i]}</span>
+                        <span className="mx-1">
+                          {count.find((item) => item.id === mission.id)
+                            ?.count || 0}
+                        </span>
                         <button
                           className="text-lg mx-1"
-                          onClick={() => addCount(i)}
+                          onClick={() => addCount(mission.id)}
                         >
                           <Image src={plus} alt="plus" />
                         </button>
@@ -236,13 +270,26 @@ export default function Page() {
                 ))}
 
                 <div className="w-full flex justify-center items-center rounded-md">
-                  <button className="w-16 h-6 bg-[#9CA3AF] flex items-center justify-center">
+                  <button
+                    className="w-16 h-6 bg-[#9CA3AF] flex items-center justify-center"
+                    onClick={handleMissions}
+                  >
                     <Image src={check} alt="check" />
                   </button>
                 </div>
               </TabsContent>
               <TabsContent value="myRecord">
-                <div></div>
+                {worksoutRecord.map((record: any) => (
+                  <div
+                    className="flex flex-col justify-between items-center"
+                    key={record.id}
+                  >
+                    <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
+                      <span className="">{record.mission}</span>
+                      <div className="flex justify-center items-center pr-2.5">{`${record.totalCount}회`}</div>
+                    </div>
+                  </div>
+                ))}
               </TabsContent>
             </Tabs>
           </div>

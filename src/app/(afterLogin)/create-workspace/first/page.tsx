@@ -27,12 +27,12 @@ export default function Page() {
 
   useEffect(() => {
     // api 검사 마치면 && nameCheck 넣어주기
-    if (name.length > 1 && (headCount as number) > 1) {
+    if (name.length > 1 && (headCount as number) > 1 && nameCheck) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [name, headCount]);
+  }, [name, headCount, nameCheck]);
 
   const duplicateGroupName = async (type: string) => {
     try {
@@ -40,18 +40,19 @@ export default function Page() {
         type,
         value: name,
       });
-      setError('');
-      setNameCheck(true);
       console.log(res);
+      if (!res.data.duplication) {
+        setError('');
+        setNameCheck(true);
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
-        setError('error');
+        setError(error.response?.data.message);
       }
       console.error(error);
     }
   };
 
-  console.log(groupMaker);
   return (
     <>
       <Progress value={33} className="h-[1px] mb-9" />
@@ -82,7 +83,9 @@ export default function Page() {
             중복확인
           </Button>
         </div>
-        {error !== '' ? <span className="text-red-500">{error}</span> : null}
+        {error !== '' ? (
+          <span className="text-red-500 text-xs mt-1">{error}</span>
+        ) : null}
       </div>
 
       <div className="grid w-full max-w-sm items-center">
