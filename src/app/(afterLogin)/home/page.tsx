@@ -13,7 +13,7 @@ export default function Page() {
       <div className="w-full h-96 bg-white rounded-2xl mb-5">
         <div className="ml-5 pt-4 mb-8 flex items-center justify-between">
           <Link href={'/workspace-list/mygroup'}>
-            <span className="text-base">my group</span>
+            <span className="text-base">Group pages</span>
           </Link>
           <Link href={'/workspace-list/mygroup'}>
             <div className="h-5 w-5 mr-4 mt-2">

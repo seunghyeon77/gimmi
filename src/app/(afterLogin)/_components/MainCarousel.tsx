@@ -21,7 +21,6 @@ export default function MainCarousel() {
     queryFn: () => myWorkspaces(),
   });
 
-  console.log(data);
   return (
     <div className="w-full h-full overflow-hidden">
       <Swiper
