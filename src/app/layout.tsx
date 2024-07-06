@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Head from 'next/head';
 import './globals.css';
 import localFont from 'next/font/local';
 
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     },
     description: APP_DESCRIPTION,
   },
-  themeColor: 'white',
+  themeColor: '#071642',
   icons: {
     other: [
       {
@@ -60,8 +61,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#FFFFFF',
+  width: 'device-width',
+  themeColor: '#071642',
   viewportFit: 'cover',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
@@ -71,6 +76,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kor" className={`${yungothic.variable} ${galmuri.variable}`}>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+        />
+      </Head>
       <body>{children}</body>
     </html>
   );
