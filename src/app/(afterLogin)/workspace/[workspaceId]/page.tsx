@@ -1,7 +1,5 @@
 'use client';
 
-import closedMail from '@/../public/svgs/closedMail.svg';
-import openMail from '@/../public/svgs/openMail.svg';
 import minus from '@/../public/svgs/workspace/minus.svg';
 import plus from '@/../public/svgs/workspace/plus.svg';
 import check from '@/../public/svgs/workspace/check.svg';

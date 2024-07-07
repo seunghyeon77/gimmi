@@ -52,7 +52,6 @@ const createWorkspace = async (data: any) => {
 };
 
 const matchPassword = async ({ workspaceId, password }: PasswordCheck) => {
-  console.log(workspaceId);
   const res = await customAxios.post(
     `/workspaces/${workspaceId}/match-password`,
     { password },
@@ -85,6 +84,11 @@ const startWorkspace = async (workspaceId: number) => {
 
 const infoWorkspace = async (workspaceId: number) => {
   const res = await customAxios.get(`/workspaces/${workspaceId}`);
+  return res;
+};
+
+const detailWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.get(`/workspaces/${workspaceId}/introduction`);
   return res;
 };
 
@@ -127,4 +131,5 @@ export {
   postMissions,
   missionsRecord,
   userMissions,
+  detailWorkspace,
 };
