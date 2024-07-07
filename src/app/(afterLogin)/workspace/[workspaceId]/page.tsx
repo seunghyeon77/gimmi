@@ -1,7 +1,5 @@
 'use client';
 
-import closedMail from '@/../public/svgs/closedMail.svg';
-import openMail from '@/../public/svgs/openMail.svg';
 import minus from '@/../public/svgs/workspace/minus.svg';
 import plus from '@/../public/svgs/workspace/plus.svg';
 import check from '@/../public/svgs/workspace/check.svg';
@@ -73,10 +71,10 @@ export default function Page() {
   const user = data?.data.workers.filter((user: any) => user.isMyself === true);
 
   //아래 비밀번호 확인하는 것은 아마 수정될 예정 예비 api
-  // const confirmPassword = async () => {
-  //   const res = await customAxios.get(`/workspaces/${workspaceId}/password`);
-  //   console.log(res);
-  // };
+  const confirmPassword = async () => {
+    const res = await customAxios.get(`/workspaces/${workspaceId}/password`);
+    console.log(res);
+  };
 
   const handleWorkout = async (userId: number) => {
     if (data?.data.status !== 'IN_PROGRESS') return;
@@ -101,7 +99,7 @@ export default function Page() {
   };
 
   const handleStart = async () => {
-    // await confirmPassword();
+    await confirmPassword();
     try {
       const res = await startWorkspace(Number(workspaceId));
       console.log(res);

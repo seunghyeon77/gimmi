@@ -87,6 +87,15 @@ const infoWorkspace = async (workspaceId: number) => {
   return res;
 };
 
+const detailWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.get(`/workspaces/${workspaceId}/introduction`);
+  return res;
+};
+const detailUpdate = async (workspaceId: number) => {
+  const res = await customAxios.put(`/workspaces/${workspaceId}/edit`);
+  return res;
+};
+
 const missionsWorkspace = async (workspaceId: number) => {
   const res = await customAxios.get(`/workspaces/${workspaceId}/missions`);
   return res;
@@ -126,4 +135,6 @@ export {
   postMissions,
   missionsRecord,
   userMissions,
+  detailWorkspace,
+  detailUpdate,
 };
