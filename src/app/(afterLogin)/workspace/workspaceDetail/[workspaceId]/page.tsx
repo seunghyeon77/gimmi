@@ -50,7 +50,7 @@ export default function Page() {
             그룹 설명
           </label>
           <textarea
-            disabled={isCreator}
+            disabled={!isCreator}
             id="description"
             placeholder="그룹 설명을 추가해주세요!"
             className="w-full bg-[#F9FAFB] rounded-lg p-3 mt-5 h-12"
@@ -63,7 +63,7 @@ export default function Page() {
             그룹 태그
           </label>
           <textarea
-            disabled={isCreator}
+            disabled={!isCreator}
             id="tag"
             placeholder="그룹 태그를 추가해주세요!"
             className="w-full h-12 bg-[#F9FAFB] rounded-lg p-3 mt-5"

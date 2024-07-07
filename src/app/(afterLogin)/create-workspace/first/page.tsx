@@ -27,7 +27,7 @@ export default function Page() {
 
   useEffect(() => {
     // api 검사 마치면 && nameCheck 넣어주기
-    if (name.length > 1 && (headCount as number) > 1 && nameCheck) {
+    if (name.length >= 1 && (headCount as number) > 1 && nameCheck) {
       setDisabled(false);
     } else {
       setDisabled(true);
