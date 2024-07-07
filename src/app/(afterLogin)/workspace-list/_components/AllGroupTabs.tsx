@@ -40,6 +40,8 @@ export default function AllGroupTabs() {
   const [isFirstDialogOpen, setIsFirstDialogOpen] = useState(false);
   const [isSecondDialogOpen, setIsSecondDialogOpen] = useState(false);
 
+  const [currentWorkspaceId, setCurrentWorkspaceId] = useState(0);
+
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<
     any,
     Error
@@ -55,7 +57,7 @@ export default function AllGroupTabs() {
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      console.log('lastPage:', lastPage);
+      // console.log('lastPage:', lastPage);
       return lastPage?.nextPage || undefined;
     },
   });
@@ -63,9 +65,13 @@ export default function AllGroupTabs() {
   const handleChange = (e: any) => {
     setPassword(e);
   };
-  const nextDialog = async (workspaceId: number) => {
+  const nextDialog = async () => {
     try {
-      const res = await matchPassword({ workspaceId, password });
+      const res = await matchPassword({
+        workspaceId: currentWorkspaceId,
+        password,
+      });
+      console.log(res);
 
       if (res?.data.sameness === true) {
         setIsFirstDialogOpen(false);
@@ -82,10 +88,14 @@ export default function AllGroupTabs() {
     // 두 번째 다이얼로그 열기
   };
 
-  const onSubmit = async (id: number) => {
+  const onSubmit = async () => {
     try {
       //워크스페이스 아이디 받아서 전해주기
-      const res = await joinWorkspace({ password, task, workspaceId: id });
+      const res = await joinWorkspace({
+        password,
+        task,
+        workspaceId: currentWorkspaceId,
+      });
       console.log(res);
       if (res.status === 200) {
         router.push('/workspace-list/mygroup');
@@ -96,7 +106,6 @@ export default function AllGroupTabs() {
   };
 
   const handleTabChange = (e: React.MouseEvent) => {
-    console.log(e.currentTarget.id);
     setTabValue(e.currentTarget.id);
   };
   const { ref, inView } = useInView({
@@ -113,6 +122,8 @@ export default function AllGroupTabs() {
       !isFetching && hasNextPage && fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage, isFetching]);
+
+  console.log(data);
 
   // console.log('search', search);
   // console.log('type', tabValue);
@@ -159,7 +170,10 @@ export default function AllGroupTabs() {
             <Dialog
               key={item.id}
               open={isFirstDialogOpen}
-              onOpenChange={setIsFirstDialogOpen}
+              onOpenChange={(open) => {
+                setIsFirstDialogOpen(open);
+                setCurrentWorkspaceId(item.id); // workspaceId 저장
+              }}
             >
               <DialogTrigger asChild>
                 <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
@@ -200,7 +214,7 @@ export default function AllGroupTabs() {
 
                     <span
                       className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
-                      onClick={() => nextDialog(item.id)}
+                      onClick={nextDialog}
                     >
                       next
                     </span>
@@ -235,7 +249,7 @@ export default function AllGroupTabs() {
 
                       <span
                         className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
-                        onClick={() => onSubmit(item.id)}
+                        onClick={nextDialog}
                       >
                         next
                       </span>
@@ -275,7 +289,10 @@ export default function AllGroupTabs() {
                 <Dialog
                   key={item.id}
                   open={isFirstDialogOpen}
-                  onOpenChange={setIsFirstDialogOpen}
+                  onOpenChange={(open) => {
+                    setIsFirstDialogOpen(open);
+                    setCurrentWorkspaceId(item.id); // workspaceId 저장
+                  }}
                 >
                   <DialogTrigger asChild>
                     <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
@@ -316,7 +333,7 @@ export default function AllGroupTabs() {
 
                         <span
                           className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
-                          onClick={() => nextDialog(item.id)}
+                          onClick={nextDialog}
                         >
                           next
                         </span>
@@ -351,7 +368,7 @@ export default function AllGroupTabs() {
 
                           <span
                             className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
-                            onClick={() => onSubmit(item.id)}
+                            onClick={onSubmit}
                           >
                             next
                           </span>

@@ -52,6 +52,7 @@ const createWorkspace = async (data: any) => {
 };
 
 const matchPassword = async ({ workspaceId, password }: PasswordCheck) => {
+  console.log(workspaceId);
   const res = await customAxios.post(
     `/workspaces/${workspaceId}/match-password`,
     { password },
