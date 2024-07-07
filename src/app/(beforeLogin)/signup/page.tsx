@@ -19,6 +19,7 @@ import { postSignup } from '@/api/auth';
 import { verlifyDuplication } from '@/api/duplication';
 import { duplicationType } from '@/constants/duplication';
 import { useState } from 'react';
+import { AxiosError } from 'axios';
 
 type FormProps = {
   id: string;
@@ -62,8 +63,13 @@ export default function Page() {
       });
       //중복 검사 되었을때 상태 바꿔주기
       if (type === duplicationType.loginId) {
+        if (id.length < 6 || id.length > 12) {
+          setError('id', { message: '6자이상 12자이하입니다.' });
+          return;
+        }
         clearErrors('id');
         setIdCheck(false);
+
         if (res.data.duplication === true) {
           setError('id', { message: '중복된 아이디입니다.' });
         } else {
@@ -71,6 +77,10 @@ export default function Page() {
         }
       }
       if (type === duplicationType.nickname) {
+        if (nickname.length < 2 || nickname.length > 5) {
+          setError('nickname', { message: '2자이상 5자이하입니다.' });
+          return;
+        }
         clearErrors('nickname');
         setNicknameCheck(false);
         if (res.data.duplication === true) {
@@ -81,9 +91,19 @@ export default function Page() {
       }
       console.log(res);
     } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.response?.data.errorCode === 'INVALID_PATTERN') {
+          setError('id', {
+            message: '아이디는 영문+숫자 조합으로 구성해주세요.',
+          });
+        }
+      }
+
       console.error(error);
     }
   };
+
+  console.log(watch('id'));
 
   const onsubmit: SubmitHandler<FormProps> = async (data) => {
     if (!idCheck) {
@@ -130,22 +150,21 @@ export default function Page() {
             <Input
               type="text"
               id="id"
-              placeholder="영어+숫자 8자~12자"
+              placeholder="영어+숫자 6자~12자"
               className="w-56 bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
               {...register('id', {
                 required: '필수 입력 사항입니다.',
-                pattern: {
-                  value: idRegex,
-                  message: '영어 + 숫자 8자~12자입니다',
-                },
               })}
             />
-            <Button
-              className="w-24 bg-[#E5E7EB] text-[#6B7280]"
+            <button
+              className="w-24 bg-[#E5E7EB] text-[#6B7280] rounded-lg py-3 text-sm"
+              // onClick={handleSubmit(() =>
+              //   verliffyDuplicate(duplicationType.loginId, id),
+              // )}
               onClick={() => verliffyDuplicate(duplicationType.loginId, id)}
             >
               중복확인
-            </Button>
+            </button>
           </div>
         </div>
         {errors?.id ? (
@@ -177,7 +196,7 @@ export default function Page() {
             />
           </div>
           {errors?.password && (
-            <p className="text-[8px] text-[#EF4444] mt-1">
+            <p className="text-[8px] text-[#EF4444] mt-2">
               {errors?.password?.message}
             </p>
           )}
@@ -221,14 +240,14 @@ export default function Page() {
               pattern: { value: nicknameRegex, message: '2자~5자 이하입니다.' },
             })}
           />
-          <Button
-            className="w-24 bg-[#E5E7EB] text-[#6B7280]"
+          <button
+            className="w-24 bg-[#E5E7EB] text-[#6B7280] rounded-lg py-3 text-sm"
             onClick={() =>
               verliffyDuplicate(duplicationType.nickname, nickname)
             }
           >
             중복확인
-          </Button>
+          </button>
         </div>
         {errors?.nickname ? (
           <p className="text-[8px] text-[#EF4444]">
@@ -250,7 +269,6 @@ export default function Page() {
             placeholder="이메일 형식 @naver.com"
             className="w-full bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
             {...register('email', {
-              required: '필수 입력 사항입니다.',
               pattern: { value: emailRegex, message: '형식에 맞지 않습니다.' },
             })}
           />

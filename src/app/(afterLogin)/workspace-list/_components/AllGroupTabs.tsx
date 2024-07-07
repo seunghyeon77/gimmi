@@ -71,7 +71,9 @@ export default function AllGroupTabs() {
         setIsFirstDialogOpen(false);
         setIsSecondDialogOpen(true);
       } else {
-        alert('일단 알람 창으로 에러 줄게요? 이거 보면 나중에 고쳐요?!');
+        alert(
+          '일단 알람 창으로 에러 줄게요? 이거 보면 나중에 고쳐요?! 비밀번호틀림',
+        );
       }
     } catch (error) {
       console.error(error);

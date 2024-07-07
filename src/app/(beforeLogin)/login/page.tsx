@@ -59,7 +59,7 @@ export default function Page() {
       <div className="mb-20">
         <form>
           <input
-            className="w-full h-11 border-b-2 placeholder:p-3 mb-4"
+            className="w-full h-11 border-b-2 pl-3 mb-4"
             type="email"
             placeholder="아이디"
             {...register('id', {
@@ -67,7 +67,7 @@ export default function Page() {
             })}
           />
           <input
-            className="w-full h-11 border-b-2 placeholder:p-3"
+            className="w-full h-11 border-b-2 pl-3"
             type="password"
             placeholder="비밀번호"
             {...register('password', {

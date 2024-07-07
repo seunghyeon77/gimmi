@@ -10,9 +10,9 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   return (
-    <div className="bg-[#071642] w-full h-screen">
+    <div className="bg-[#071642] w-full">
       <UpperLayout />
-      <div className="w-full bg-white h-full rounded-t-2xl px-[26px] py-3.5">
+      <div className="w-full bg-white h-full rounded-t-2xl px-[26px] py-3.5 mb-10">
         {children}
       </div>
       <NavBar />

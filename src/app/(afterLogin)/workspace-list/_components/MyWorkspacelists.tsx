@@ -12,6 +12,7 @@ export default function MyWorkspacelits() {
     queryKey: [workspace.mylists],
     queryFn: () => myWorkspaces(),
   });
+  console.log(data);
 
   return (
     <div>
@@ -19,7 +20,7 @@ export default function MyWorkspacelits() {
         return (
           <Link href={`/workspace/${item.id}`} key={item.id}>
             <div
-              className={`bg-[#60A5FA] w-full h-[136px] rounded-lg p-4 mb-7 ${
+              className={`bg-[#60A5FA] w-full rounded-lg p-4 mb-7 ${
                 item.state === '완료됨' ? 'opacity-50' : null
               }`}
             >
@@ -30,7 +31,10 @@ export default function MyWorkspacelits() {
                 <span>, </span>
                 <span>{item.name}</span>
               </div>
-              <Progress className="h-1.5" value={item.achievementRate} />
+              <Progress
+                className="h-1.5"
+                value={(item.achievementScore / item.goalScore) * 100}
+              />
             </div>
           </Link>
         );

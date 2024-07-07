@@ -39,6 +39,7 @@ export interface IWorkspaceInputs {
   tag: string;
   missionBoard: IMissionBoard[];
   task: string;
+  checked: boolean;
 }
 export interface IW {
   groupMaker: IWorkspaceInputs;

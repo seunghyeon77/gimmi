@@ -18,10 +18,10 @@ export default function Page() {
   const [headCount, setHeadCount] = useState(groupMaker.headCount);
 
   const [error, setError] = useState('');
-  const [nameCheck, setNameCheck] = useState(false);
+  const [nameCheck, setNameCheck] = useState(groupMaker.checked);
 
   const handleNext = () => {
-    add1Page({ name, headCount });
+    add1Page({ name, headCount, checked: nameCheck });
   };
   const [disabled, setDisabled] = useState(true);
 
@@ -40,10 +40,14 @@ export default function Page() {
         type,
         value: name,
       });
+
       console.log(res);
       if (!res.data.duplication) {
         setError('');
         setNameCheck(true);
+        alert('체크 완료');
+      } else {
+        setError('중복 된 이름입니다.');
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -76,12 +80,12 @@ export default function Page() {
             onChange={(e) => setName(e.target.value)}
           />
           <span className="text-xs text-[#D1D5DB]">{`${name.length}/9`}</span>
-          <Button
-            className="w-[93px] h-[52px] bg-[#D1D5DB] text-[#6B7280] text-xs"
+          <button
+            className="w-[93px] h-[52px] bg-[#D1D5DB] text-[#6B7280] text-xs rounded-lg"
             onClick={() => duplicateGroupName(duplicationType.workspaceName)}
           >
             중복확인
-          </Button>
+          </button>
         </div>
         {error !== '' ? (
           <span className="text-red-500 text-xs mt-1">{error}</span>
