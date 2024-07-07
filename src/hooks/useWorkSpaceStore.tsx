@@ -16,10 +16,11 @@ export const useWorkSpaceStore = create<IW>((set) => ({
       { id: 4, mission: '', placeholder: '런지 10회', score: 0 },
     ],
     task: '',
+    checked: false,
   },
-  add1Page: ({ name, headCount }: IWorkspaceInputs) =>
+  add1Page: ({ name, headCount, checked }: IWorkspaceInputs) =>
     set((state) => ({
-      groupMaker: { ...state.groupMaker, name, headCount },
+      groupMaker: { ...state.groupMaker, name, headCount, checked },
     })),
   add2Page: ({ missionBoard, goalScore }: IWorkspaceInputs) =>
     set((state) => ({
