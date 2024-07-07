@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     },
     description: APP_DESCRIPTION,
   },
-  themeColor: '#071642',
+  themeColor: '#fffff',
   icons: {
     other: [
       {
