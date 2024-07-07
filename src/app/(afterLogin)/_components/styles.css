@@ -24,8 +24,8 @@
 
 .swiper .swiper-pagination {
   position: absolute;
-  bottom: 15px;
+  bottom: -30px;
 }
 .swiper .swiper-pagination-bullet {
-  background-color: #1e40af;
+  background-color: #111827;
 }

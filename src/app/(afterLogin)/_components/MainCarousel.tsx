@@ -9,7 +9,6 @@ import 'swiper/css/pagination';
 
 import './styles.css';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { myWorkspaces } from '@/api/workspace';
