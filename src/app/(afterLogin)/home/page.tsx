@@ -24,9 +24,17 @@ export default function Page() {
         <MainCarousel />
       </div>
       <div className="flex justify-between items-center">
-        <div className="bg-[#EFF6FF] rounded-2xl w-screen h-52"></div>
+        <div className="bg-[#EFF6FF] rounded-2xl w-screen h-52">
+          <div className="flex justify-center items-center h-10">
+            <h2 className="text-sm">GTO</h2>
+          </div>
+        </div>
         <div className="w-5 bg-[#071642] h-52"></div>
-        <div className="bg-[#EFF6FF] rounded-2xl w-screen h-52"></div>
+        <div className="bg-[#EFF6FF] rounded-2xl w-screen h-52">
+          <div className="flex justify-center items-center h-10">
+            <h2 className="text-sm">MY PAGE</h2>
+          </div>
+        </div>
       </div>
     </div>
   );

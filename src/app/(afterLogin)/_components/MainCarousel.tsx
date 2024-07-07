@@ -13,6 +13,8 @@ import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { myWorkspaces } from '@/api/workspace';
+import Image from 'next/image';
+import mainLogo from '@/../public/images/mainLogo.png';
 
 export default function MainCarousel() {
   const router = useRouter();
@@ -48,6 +50,9 @@ export default function MainCarousel() {
                   value={(item.achievementScore / item.goalScore) * 100}
                   className="h-1.5 "
                 />
+                <div className="flex justify-center items-center w-full">
+                  <Image src={mainLogo} alt="mainLogo" />
+                </div>
               </div>
             </SwiperSlide>
           );

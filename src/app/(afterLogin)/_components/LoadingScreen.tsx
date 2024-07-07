@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react';
 
 export default function LoadingScreen() {
   const isFetching = useIsFetching();
-  const display = isFetching ? 'flex' : 'none';
+  const display = isFetching ? 'inherit' : 'none';
 
   // 로딩중 스핀바 띄우기
   return (
