@@ -12,7 +12,7 @@ export default function UpperLayout() {
       <Image
         src={backArrow}
         alt="backArrow"
-        className="w-6 mb-1.5"
+        className="w-6 mb-3"
         onClick={() => router.back()}
       />
       <h1 className="font-galmuri text-3xl text-white pl-1 pb-1">MY</h1>
