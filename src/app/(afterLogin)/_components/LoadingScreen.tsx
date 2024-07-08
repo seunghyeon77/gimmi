@@ -11,11 +11,11 @@ export default function LoadingScreen() {
   return (
     <div
       style={{
-        position: 'fixed',
+        position: 'absolute',
         display,
-        zIndex: 4,
-        top: '50%',
-        left: '50%',
+        zIndex: 999,
+        top: '45%',
+        left: '45%',
       }}
     >
       <Loader2 className="h-10 w-10 animate-spin" />
