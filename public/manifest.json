@@ -32,5 +32,6 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "splash_pages": "../images/splash.png"
 }

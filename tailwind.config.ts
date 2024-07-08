@@ -18,7 +18,11 @@ const config = {
       },
     },
     extend: {
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(180deg, #DDECFF 0%, #7DB7FF 100%)',
+      },
       colors: {
+        customBlue: '#071642',
         main: '#1180FC',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

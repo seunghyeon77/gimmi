@@ -211,7 +211,6 @@ export default function AllGroupTabs() {
                         cancel
                       </span>
                     </DialogClose>
-
                     <span
                       className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
                       onClick={nextDialog}

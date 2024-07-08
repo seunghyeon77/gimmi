@@ -42,7 +42,7 @@ export default function MainCarousel() {
               onClick={() => router.push(`/workspace/${item.id}`)}
             >
               <div className="pt-5 px-6">
-                <h2 className="font-galmuri text-2xl font-medium mb-3.5">
+                <h2 className="font-galmuri text-2xl font-medium mb-3.5 whitespace-nowrap">
                   {item.name}
                 </h2>
                 <Progress

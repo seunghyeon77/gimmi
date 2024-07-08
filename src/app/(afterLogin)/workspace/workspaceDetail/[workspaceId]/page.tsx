@@ -4,6 +4,8 @@ import { detailUpdate, detailWorkspace } from '@/api/workspace';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import editPencil from '@/../public/svgs/workspace/editPencil.svg';
 
 export default function Page() {
   const { workspaceId } = useParams();
@@ -11,7 +13,7 @@ export default function Page() {
   const [description, setDescription] = useState('');
   const [tag, setTag] = useState('');
 
-  const [isCreator, setIsCreator] = useState(false);
+  const [isCreator, setIsCreator] = useState(true);
 
   const { data } = useQuery({
     queryKey: ['workspaceDetail', workspaceId],
@@ -22,7 +24,7 @@ export default function Page() {
     if (data) {
       setDescription(data.data.description || '');
       setTag(data.data.tag || '');
-      setIsCreator(data.data.isCreator || false);
+      // setIsCreator(data.data.isCreator);
     }
   }, [data]);
 
@@ -45,7 +47,7 @@ export default function Page() {
             <span>{data?.data.password}</span>
           </div>
         </div>
-        <div className="mb-9">
+        <div className="mb-9 relative">
           <label htmlFor="description" className="text-xl">
             그룹 설명
           </label>
@@ -57,8 +59,11 @@ export default function Page() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
+          <div className="absolute right-3 top-16">
+            <Image src={editPencil} alt="edit" />
+          </div>
         </div>
-        <div>
+        <div className="relative">
           <label htmlFor="description" className="text-xl">
             그룹 태그
           </label>
@@ -70,12 +75,15 @@ export default function Page() {
             value={tag}
             onChange={(e) => setTag(e.target.value)}
           ></textarea>
+          <div className="absolute right-3 top-16">
+            <Image src={editPencil} alt="edit" />
+          </div>
         </div>
       </div>
       {isCreator && (
-        <div className="w-full flex justify-center items-center bg-[#EFF6FF] rounded-lg py-4 absolute -bottom-80">
-          <button className="text-[#6B7280] text-base" onClick={handleUpdate}>
-            그룹설명, 그룹태그 수정하기
+        <div className="w-full flex justify-center items-center bg-main rounded-lg py-3 absolute -bottom-80">
+          <button className="text-white text-base" onClick={handleUpdate}>
+            수정 완료하기
           </button>
         </div>
       )}
