@@ -3,6 +3,8 @@ import Head from 'next/head';
 import './globals.css';
 import localFont from 'next/font/local';
 
+import splashImage from '@/../public/images/splash.png';
+
 const APP_NAME = 'PWA App';
 const APP_DEFAULT_TITLE = 'My Awesome PWA App';
 const APP_TITLE_TEMPLATE = '%s - PWA App';
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: 'default',
     title: APP_DEFAULT_TITLE,
-    // startUpImage: [],
+    startupImage: { url: '../../public/images/splash.png', media: '?' },
   },
   formatDetection: {
     telephone: false,
