@@ -1,11 +1,26 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
+// import { notFound } from 'next/navigation';
+import notFound from '@/../public/svgs/notFound.svg';
 
 const NotFound: NextPage = () => {
   return (
-    <div>
-      <div>이 페이지는 존재하지 않습니다. 다른 페이지를 검색해 보세요.</div>
-      <Link href="/">검색</Link>
+    <div className="flex flex-col items-center justify-center h-screen py-11">
+      <div className="flex flex-col justify-around items-center">
+        <div className="mb-8">
+          <Image src={notFound} alt="not-found" />
+        </div>
+        <h3 className="text-[#EF4444] ">존재하지 않는 페이지입니다.</h3>
+        <h3 className="text-[#9CA3AF] ">홈으로 돌아가세용.</h3>
+      </div>
+
+      <Link href="/" className="fixed bottom-10">
+        <button className="bg-main text-white rounded-sm py-2.5 px-28">
+          홈으로 돌아가기
+        </button>
+      </Link>
+      <div className="h-10"></div>
     </div>
   );
 };
