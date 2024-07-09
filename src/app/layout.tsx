@@ -3,8 +3,6 @@ import Head from 'next/head';
 import './globals.css';
 import localFont from 'next/font/local';
 
-import splashImage from '@/../public/images/splash.png';
-
 const APP_NAME = 'PWA App';
 const APP_DEFAULT_TITLE = 'My Awesome PWA App';
 const APP_TITLE_TEMPLATE = '%s - PWA App';
@@ -35,7 +33,7 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: 'default',
     title: APP_DEFAULT_TITLE,
-    startupImage: { url: '../../public/images/splash.png', media: '?' },
+    startupImage: { url: 'public/images/splash.png', media: '?' },
   },
   formatDetection: {
     telephone: false,
@@ -53,7 +51,7 @@ export const metadata: Metadata = {
   icons: {
     other: [
       {
-        url: 'public/images/splash_screens/iPhone_13_mini__iPhone_12_mini__iPhone_11_Pro__iPhone_XS__iPhone_X_landscape.png',
+        url: 'public/images/splash.png',
         media:
           '(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)',
         rel: 'apple-touch-startup-image',
