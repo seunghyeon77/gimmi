@@ -96,6 +96,9 @@ export default function Page() {
     try {
       const res = await startWorkspace(Number(workspaceId));
       console.log(res);
+      if (res.status === 200) {
+        router.push('/workspace-list/mygroup');
+      }
     } catch (error: any) {
       console.log(error.response.data.message);
       alert(error.response.data.message);
