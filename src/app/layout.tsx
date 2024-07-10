@@ -3,10 +3,10 @@ import Head from 'next/head';
 import './globals.css';
 import localFont from 'next/font/local';
 
-const APP_NAME = 'PWA App';
-const APP_DEFAULT_TITLE = 'My Awesome PWA App';
-const APP_TITLE_TEMPLATE = '%s - PWA App';
-const APP_DESCRIPTION = 'Best PWA app in the world!';
+const APP_NAME = 'GYMMI';
+const APP_DEFAULT_TITLE = 'GYMMI';
+const APP_TITLE_TEMPLATE = 'GYMMI - PWA App';
+const APP_DESCRIPTION = 'GYMMI is the BEST!';
 
 // const inter = Inter({ subsets: ['latin'] });
 
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: 'default',
     title: APP_DEFAULT_TITLE,
-    startupImage: { url: 'public/images/splash.png', media: '?' },
+    startupImage: { url: '../../public/images/splash.png', media: '?' },
   },
   formatDetection: {
     telephone: false,
@@ -51,10 +51,46 @@ export const metadata: Metadata = {
   icons: {
     other: [
       {
-        url: 'public/images/splash.png',
-        media:
-          '(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)',
         rel: 'apple-touch-startup-image',
+        url: '../../public/images/splash.png',
+        media:
+          '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)',
+      },
+      {
+        rel: 'apple-touch-startup-image',
+        url: '../../public/images/splash.png',
+        media:
+          '(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)',
+      },
+      {
+        rel: 'apple-touch-startup-image',
+        url: '../../public/images/splash.png',
+        media:
+          '(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)',
+      },
+      {
+        rel: 'apple-touch-startup-image',
+        url: '../../public/images/splash.png',
+        media:
+          '(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)',
+      },
+      {
+        rel: 'apple-touch-startup-image',
+        url: '../../public/images/splash.png',
+        media:
+          '(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)',
+      },
+      {
+        rel: 'apple-touch-startup-image',
+        url: '../../public/images/splash.png',
+        media:
+          '(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)',
+      },
+      {
+        rel: 'apple-touch-startup-image',
+        url: '../../public/images/splash.png',
+        media:
+          '(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)',
       },
     ],
   },

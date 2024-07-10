@@ -1,5 +1,5 @@
 export const workspaceList = {
   prepare: 'PREPARING',
-  inProgress: 'IN-PROGRESS',
+  inProgress: 'IN_PROGRESS',
   complete: 'COMPLETED',
 };
