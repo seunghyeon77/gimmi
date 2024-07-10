@@ -17,7 +17,7 @@ export default function CategorySwiper() {
   return (
     <div className="mt-4">
       <Swiper
-        slidesPerView={2}
+        // slidesPerView={2}
         spaceBetween={12}
         loop={true}
         pagination={{
@@ -30,7 +30,7 @@ export default function CategorySwiper() {
         {data.map((item) => (
           <SwiperSlide key={item.id} className="custom-slide1">
             <div className="">
-              <div className="mb-3.5">
+              <div className="mb-2.5">
                 <Image src={item.img} alt={item.title} />
               </div>
               <span className="text-[10px] text-[#6B7280]">{item.title}</span>
