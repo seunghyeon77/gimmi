@@ -13,7 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { myWorkspaces } from '@/api/workspace';
 import Image from 'next/image';
-import mainLogo from '@/../public/images/mainLogo.png';
+import mainLogo from '@/../public/svgs/mainLogo.svg';
 import NoGroup from './NoGroup';
 
 export default function MainCarousel() {
@@ -49,7 +49,7 @@ export default function MainCarousel() {
                   </h2>
                   <Progress
                     value={(item.achievementScore / item.goalScore) * 100}
-                    className="h-1.5 "
+                    className="h-1.5 mb-4"
                   />
                   <div className="flex justify-center items-center w-full">
                     <Image src={mainLogo} alt="mainLogo" />
