@@ -13,7 +13,8 @@ import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { myWorkspaces } from '@/api/workspace';
 import Image from 'next/image';
-import mainLogo from '@/../public/images/mainLogo.png';
+import mainLogo from '@/../public/svgs/mainLogo.svg';
+import NoGroup from './NoGroup';
 
 export default function MainCarousel() {
   const router = useRouter();
@@ -24,39 +25,43 @@ export default function MainCarousel() {
 
   return (
     <div className="w-full h-full overflow-hidden">
-      <Swiper
-        slidesPerView={1}
-        spaceBetween={18}
-        loop={true}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Pagination]}
-        centeredSlides={true}
-        className="mySwiper"
-      >
-        {data?.data.map((item: any) => {
-          return (
-            <SwiperSlide
-              key={item.id}
-              onClick={() => router.push(`/workspace/${item.id}`)}
-            >
-              <div className="pt-5 px-6">
-                <h2 className="font-galmuri text-2xl font-medium mb-3.5 whitespace-nowrap">
-                  {item.name}
-                </h2>
-                <Progress
-                  value={(item.achievementScore / item.goalScore) * 100}
-                  className="h-1.5 "
-                />
-                <div className="flex justify-center items-center w-full">
-                  <Image src={mainLogo} alt="mainLogo" />
+      {data?.data.length >= 1 ? (
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={18}
+          loop={true}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Pagination]}
+          centeredSlides={true}
+          className="mySwiper"
+        >
+          {data?.data.map((item: any) => {
+            return (
+              <SwiperSlide
+                key={item.id}
+                onClick={() => router.push(`/workspace/${item.id}`)}
+              >
+                <div className="pt-5 px-6">
+                  <h2 className="font-galmuri text-2xl font-medium mb-3.5 whitespace-nowrap">
+                    {item.name}
+                  </h2>
+                  <Progress
+                    value={(item.achievementScore / item.goalScore) * 100}
+                    className="h-1.5 mb-4"
+                  />
+                  <div className="flex justify-center items-center w-full">
+                    <Image src={mainLogo} alt="mainLogo" />
+                  </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      ) : (
+        <NoGroup />
+      )}
     </div>
   );
 }

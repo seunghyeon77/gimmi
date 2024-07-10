@@ -9,6 +9,7 @@ import myPage from '@/../public/svgs/myPage.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { logout } from '@/api/auth';
+import Link from 'next/link';
 
 export default function NavBar() {
   const onClick = async () => {
@@ -24,17 +25,19 @@ export default function NavBar() {
         <Image src={createGroup} alt="createGroupIcon" className="my-0.5" />
         <span className="text-[6px] ">그룹만들기</span>
       </div>
-      <div className="flex flex-col items-center">
-        <Image src={group} alt="groupIcon" className="my-0.5" />
-        <span className="text-[6px] ">그룹홈</span>
-      </div>
-      <div
-        onClick={() => router.push('/home')}
-        className="flex flex-col items-center"
-      >
-        <Image src={home} alt="homeIcon" className="my-0.5" />
-        <span className="text-[6px] ">홈</span>
-      </div>
+      <Link href={'/workspace-list/mygroup'}>
+        <div className="flex flex-col items-center">
+          <Image src={group} alt="groupIcon" className="my-0.5" />
+          <span className="text-[6px] mt-0.5">그룹페이지</span>
+        </div>
+      </Link>
+      <Link href={'/'}>
+        <div className="flex flex-col items-center">
+          <Image src={home} alt="homeIcon" className="my-0.5" />
+          <span className="text-[6px] ">홈</span>
+        </div>
+      </Link>
+
       <div className="flex flex-col items-center">
         <Image
           src={photoCommunity}

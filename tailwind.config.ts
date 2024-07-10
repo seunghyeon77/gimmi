@@ -18,8 +18,12 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        'box-shadow': ' 8px 6px 4px 0px rgba(79, 79, 79, 0.25)',
+      },
       backgroundImage: {
         'custom-gradient': 'linear-gradient(180deg, #DDECFF 0%, #7DB7FF 100%)',
+        'custom-gradient2': 'linear-gradient(180deg, #FFF 0%, #9DC9FF 100%)',
       },
       colors: {
         customBlue: '#071642',
@@ -77,8 +81,18 @@ const config = {
           '0%,70%,100%': { opacity: '1' },
           '20%,50%': { opacity: '0' },
         },
+        bounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        flipRight: {
+          '0%, 100%': { transform: 'rotateY(0deg)' },
+          '50%': { transform: 'rotateY(180deg)' },
+        },
       },
       animation: {
+        'flip-right': 'flipRight 1s 1 linear',
+        bounce: 'bounce 1s infinite linear',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'caret-blink': 'caret-blink 1.25s ease-out infinite',

@@ -122,6 +122,11 @@ const userMissions = async ({ workspaceId, userId }: MissionRecord) => {
   return res;
 };
 
+const completeWorkspace = async (workspaceId: number) => {
+  const res = await customAxios.get(`/workspaces/${workspaceId}/tasks`);
+  return res;
+};
+
 export {
   myWorkspaces,
   allWorkspaces,
@@ -137,4 +142,5 @@ export {
   userMissions,
   detailWorkspace,
   detailUpdate,
+  completeWorkspace,
 };

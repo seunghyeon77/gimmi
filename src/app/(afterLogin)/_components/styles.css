@@ -12,8 +12,8 @@
 
 .swiper-slide img {
   display: block;
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
   object-fit: cover;
 }
 
@@ -29,3 +29,34 @@
 .swiper .swiper-pagination-bullet {
   background-color: #111827;
 }
+
+/* custom-swiper1 클래스에 대한 스타일 */
+
+.custom-swiper1 {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.custom-swiper1 .swiper-pagination {
+  position: absolute;
+  bottom: -30px;
+}
+
+.custom-swiper1 .swiper-pagination-bullet {
+  display: none;
+}
+
+/* custom-slide1 클래스에 대한 스타일 */
+.custom-slide1 {
+  width: 130px;
+  height: 139px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .custom-slide1 img {
+  display: block;
+  object-fit: cover;
+} */
