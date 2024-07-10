@@ -180,7 +180,7 @@ export default function Page() {
           ) : null}
         </div>
         <div className="flex flex-col mb-5">
-          <div className="text-[8px] text-[#D1D5DB] mb-3.5">목표 달성률</div>
+          <div className="text-[8px] text-[#4B5563] mb-3.5">목표 달성률</div>
           <Progress
             className="h-1.5 bg-[#DBEAFE] mb-1"
             value={(data?.data.achievementScore / data?.data.goalScore) * 100}
@@ -192,7 +192,7 @@ export default function Page() {
           <div>
             <div className="flex items-center ml-3.5 mb-2">
               <Image src={good} alt="good" className="mr-1" />
-              <span className="text-[10px] text-[#9CA3AF]">획득 점수</span>
+              <span className="text-[10px] text-[#4B5563]">획득 점수</span>
             </div>
             {/* 여기에 유저들 매핑해주기 */}
             {data?.data.workers.map((user: any) => {
@@ -292,7 +292,7 @@ export default function Page() {
       {/* 조건으로 유저 닉네임과 방장 같으면 뭐시기 넣어주기 */}
       {data?.data.status === 'PREPARING' && data?.data.isCreator === true && (
         <div
-          className="px-10 fixed bottom-11 left-0 w-full"
+          className="px-7 fixed bottom-11 left-0 w-full"
           onClick={handleStart}
         >
           <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
@@ -305,7 +305,7 @@ export default function Page() {
         <DialogTrigger asChild>
           {data?.data.status === 'PREPARING' &&
             data?.data.isCreator === false && (
-              <div className="px-10 fixed bottom-11 left-0 w-full">
+              <div className="px-7 fixed bottom-11 left-0 w-full">
                 <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
                   그룹 나가기
                 </button>

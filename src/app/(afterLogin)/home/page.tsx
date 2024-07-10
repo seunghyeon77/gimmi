@@ -28,8 +28,8 @@ export default function Page() {
         <MainCarousel />
       </div>
       <div>
-        <span className="text-2xl text-white mb-4">category</span>
-        {/* <CategorySwiper /> */}
+        <span className="text-2xl text-white">category</span>
+        <CategorySwiper />
       </div>
     </div>
   );

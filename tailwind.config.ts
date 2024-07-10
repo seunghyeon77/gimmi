@@ -23,6 +23,7 @@ const config = {
       },
       backgroundImage: {
         'custom-gradient': 'linear-gradient(180deg, #DDECFF 0%, #7DB7FF 100%)',
+        'custom-gradient2': 'linear-gradient(180deg, #FFF 0%, #9DC9FF 100%)',
       },
       colors: {
         customBlue: '#071642',
