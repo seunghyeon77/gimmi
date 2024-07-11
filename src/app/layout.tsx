@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Head from 'next/head';
 import './globals.css';
 import localFont from 'next/font/local';
+import AppInstallButton from '@/components/AppInstallButton';
 
 const APP_NAME = 'GYMMI';
 const APP_DEFAULT_TITLE = 'GYMMI';
@@ -117,7 +118,10 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </Head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <AppInstallButton />
+      </body>
     </html>
   );
 }
