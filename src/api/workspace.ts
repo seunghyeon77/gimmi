@@ -24,7 +24,7 @@ type Mission = {
   missions: IMissions[];
 };
 type MissionRecord = {
-  workspaceId: number;
+  workspaceId: any;
   userId: number;
 };
 

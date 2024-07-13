@@ -9,6 +9,8 @@ import mainLogo25 from '@/../public/svgs/mainLogo25.svg';
 import mainLogo50 from '@/../public/svgs/mainLogo50.svg';
 import mainLogo75 from '@/../public/svgs/mainLogo75.svg';
 import settings from '@/../public/svgs/workspace/settings.svg';
+import fire from '@/../public/svgs/fire.svg';
+import chart from '@/../public/svgs/chart.svg';
 
 import noImage from '@/../public/svgs/noImage.svg';
 
@@ -40,7 +42,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
-import customAxios from '@/utils/cutstomAxios';
+
 // import { Divide } from 'lucide-react';
 
 type MissonData = {
@@ -48,7 +50,13 @@ type MissonData = {
   mission: string;
   score: number;
 };
-// 이 페이지 들어왔을때 useQuery로 방 정보 가져오기
+
+type Records = {
+  id: number;
+  mission: string;
+  totalContributedScore: number;
+  totalCount: number;
+};
 
 export default function Page() {
   const { workspaceId } = useParams();
@@ -56,7 +64,8 @@ export default function Page() {
   const [workout, setWorkout] = useState(false);
   const [missionData, setMissionData] = useState<MissonData[]>();
 
-  const [worksoutRecord, setWorkoutRecord] = useState([]);
+  const [worksoutRecord, setWorkoutRecord] = useState<Records[]>([]);
+  const [isMyself, setIsMyself] = useState(false);
 
   const router = useRouter();
 
@@ -70,16 +79,15 @@ export default function Page() {
   const percent = (data?.data.achievementScore / data?.data.goalScore) * 100;
   const user = data?.data.workers.filter((user: any) => user.isMyself === true);
 
-  const handleWorkout = async (userId: number) => {
+  const handleWorkout = async ({ userId, isMyself }: any) => {
     if (data?.data.status !== 'IN_PROGRESS') return;
     setWorkout((v) => !v);
+    setIsMyself(isMyself);
     const res = await missionsWorkspace(Number(workspaceId));
     const recordData = await workoutRecord(userId);
-    console.log(recordData);
     setMissionData(res.data);
-    //여기에 유저의 워크스페이스 count기록 볼 수있게 로직 짤 예정 데이터 불러오고 userId값 백에서 추가로 달라고하기
-    // const res2 = await missionsRecord({workspaceId,userId})
   };
+
   const workoutRecord = async (userId: number) => {
     const id = Number(workspaceId);
     console.log(user);
@@ -91,7 +99,7 @@ export default function Page() {
       console.log(error);
     }
   };
-
+  console.log(isMyself);
   const handleStart = async () => {
     try {
       const res = await startWorkspace(Number(workspaceId));
@@ -151,7 +159,6 @@ export default function Page() {
       ),
     );
   };
-  console.log(data);
 
   return (
     <div>
@@ -195,92 +202,116 @@ export default function Page() {
               <span className="text-[10px] text-[#4B5563]">획득 점수</span>
             </div>
             {/* 여기에 유저들 매핑해주기 */}
-            {data?.data.workers.map((user: any) => {
-              return (
-                <div
-                  className="mb-4 text-[#4B5563]"
-                  key={user.id}
-                  onClick={() => handleWorkout(user.id)}
-                >
+            {data?.data.workers
+              .sort((a: any, b: any) => (b.isMyself ? 1 : -1))
+              .map((user: any) => {
+                return (
                   <div
-                    className={`w-full h-16 ${
-                      user.isMyself ? 'bg-[#C8F68B]' : 'bg-[#DBEAFE] '
-                    } rounded-xl flex items-center justify-between px-3.5`}
+                    className="mb-4 text-[#4B5563]"
+                    key={user.id}
+                    onClick={() =>
+                      handleWorkout({
+                        userId: user.id,
+                        isMyself: user.isMyself,
+                      })
+                    }
                   >
-                    <div className="h-8 w-8 rounded-full bg-white mr-3.5 flex items-center justify-center relative">
-                      {user.isCreator && (
-                        <Image
-                          src={creator}
-                          alt="creator"
-                          className="absolute top-0 left-0"
-                        />
-                      )}
+                    <div
+                      className={`w-full h-16 ${
+                        user.isMyself ? 'bg-[#C8F68B]' : 'bg-[#DBEAFE] '
+                      } rounded-xl flex items-center justify-between px-3.5`}
+                    >
+                      <div className="h-8 w-8 rounded-full bg-white mr-3.5 flex items-center justify-center relative">
+                        {user.isCreator && (
+                          <Image
+                            src={creator}
+                            alt="creator"
+                            className="absolute top-0 left-0"
+                          />
+                        )}
 
-                      <Image src={noImage} alt="icon" />
+                        <Image src={noImage} alt="icon" />
+                      </div>
+                      <div className="flex-1">{user.name}</div>
+                      <div className="">{`${user.contributeScore} P`}</div>
                     </div>
-                    <div className="flex-1">{user.name}</div>
-                    <div className="">{`${user.contributeScore} P`}</div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         ) : (
-          <div>
-            <div className="bg-[#E5E7EB] h-[1px] w-full mb-5"></div>
-            <Tabs defaultValue="workout" className="w-full">
-              <TabsList className="px-1">
-                <TabsTrigger value="workout">운동하기</TabsTrigger>
-                <TabsTrigger value="myRecord">나의 운동 현황</TabsTrigger>
-              </TabsList>
-              <TabsContent value="workout">
-                {missionData?.map((mission: MissonData, i) => (
-                  <div
-                    className="flex flex-col justify-between items-center"
-                    key={mission.id}
+          <div className="bg-white h-80 rounded-2xl relative">
+            <Tabs
+              className="w-full"
+              defaultValue={isMyself ? 'workout' : 'myRecord'}
+            >
+              <TabsList className="px-1 pt-2 pb-1">
+                {isMyself && (
+                  <TabsTrigger
+                    value="workout"
+                    className="flex justify-center items-center"
                   >
-                    <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
-                      <span className="">{mission.mission}</span>
-                      <div className="flex justify-center items-center">
-                        <button
-                          className="text-lg "
-                          onClick={() => minusCount(mission.id)}
-                        >
-                          <Image src={minus} alt="minus" />
-                        </button>
-                        <span className="mx-1">
-                          {count.find((item) => item.id === mission.id)
-                            ?.count || 0}
-                        </span>
-                        <button
-                          className="text-lg mx-1"
-                          onClick={() => addCount(mission.id)}
-                        >
-                          <Image src={plus} alt="plus" />
-                        </button>
+                    <Image src={fire} alt="fire" />
+                    <span>운동하기</span>
+                  </TabsTrigger>
+                )}
+                <TabsTrigger
+                  value="myRecord"
+                  className="flex justify-center items-center"
+                >
+                  <Image src={chart} alt="chart" className="mr-1" />
+                  <span>운동현황</span>
+                </TabsTrigger>
+              </TabsList>
+              {isMyself && (
+                <TabsContent value="workout">
+                  {missionData?.map((mission: MissonData, i) => (
+                    <div
+                      className="flex flex-col py-5 px-5 border-b-[0.5px] text-[#4B5563]"
+                      key={mission.id}
+                    >
+                      <div className="w-full flex justify-between text-xs">
+                        <span>{`${mission.mission} / ${mission.score}점`}</span>
+
+                        <div className="flex justify-center items-center">
+                          <button
+                            className="text-lg "
+                            onClick={() => minusCount(mission.id)}
+                          >
+                            <Image src={minus} alt="minus" />
+                          </button>
+                          <span className="mx-1">
+                            {count.find((item) => item.id === mission.id)
+                              ?.count || 0}
+                          </span>
+
+                          <button onClick={() => addCount(mission.id)}>
+                            <Image src={plus} alt="plus" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
 
-                <div className="w-full flex justify-center items-center rounded-md">
-                  <button
-                    className="w-16 h-6 bg-[#9CA3AF] flex items-center justify-center"
-                    onClick={handleMissions}
-                  >
-                    <Image src={check} alt="check" />
-                  </button>
-                </div>
-              </TabsContent>
+                  <div className="flex justify-center items-center absolute bottom-2 right-2">
+                    <button
+                      className="w-14 h-6 bg-[#60A5FA] flex items-center justify-center rounded-md"
+                      onClick={handleMissions}
+                    >
+                      <Image src={check} alt="check" />
+                    </button>
+                  </div>
+                </TabsContent>
+              )}
               <TabsContent value="myRecord">
                 {worksoutRecord.map((record: any) => (
                   <div
-                    className="flex flex-col justify-between items-center"
+                    className="flex flex-col py-5 px-5 border-b-[0.5px] text-[#4B5563]"
                     key={record.id}
                   >
-                    <div className="w-full flex justify-between text-xs border-b-2 py-5 pl-2">
+                    <div className="w-full flex justify-between text-xs">
                       <span className="">{record.mission}</span>
-                      <div className="flex justify-center items-center pr-2.5">{`${record.totalCount}회`}</div>
+                      <div className="flex justify-center items-center pr-1">{`${record.totalCount}회/${record.totalContributedScore}점`}</div>
                     </div>
                   </div>
                 ))}
