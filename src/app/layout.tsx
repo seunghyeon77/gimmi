@@ -120,7 +120,7 @@ export default function RootLayout({
       </Head>
       <body>
         {children}
-        <AppInstallButton />
+        {/* <AppInstallButton /> */}
       </body>
     </html>
   );

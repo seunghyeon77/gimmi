@@ -1,6 +1,5 @@
 'use client';
 
-import { userAgent } from 'next/server';
 import { useEffect, useState } from 'react';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -24,6 +23,8 @@ export default function AppInstallButton() {
   const [deferredPrompt, setDeferredPrompt] = useState<
     BeforeInstallPromptEvent | undefined
   >(undefined);
+
+  console.log(deferredPrompt);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
@@ -49,6 +50,7 @@ export default function AppInstallButton() {
 
   const checkUnsupportedBrowser = () => {
     const userAgent = window.navigator.userAgent.toLowerCase();
+    console.log(userAgent);
 
     return (
       (userAgent.indexOf('safari') > -1 &&

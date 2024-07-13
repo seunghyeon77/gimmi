@@ -39,6 +39,9 @@ const myWorkspaces = async (page: number = 0) => {
 };
 
 const allWorkspaces = async ({ type, keyword = '', page = 0 }: SearchProps) => {
+  if (type === 'COMPLETED') {
+    type = '';
+  }
   const res = await customAxios.get(
     `/workspaces?status=${type}&keyword=${keyword}&page=${page}`,
   );
