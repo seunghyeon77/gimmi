@@ -10,9 +10,9 @@ const initialValue = {
   missionBoard: [
     { id: 0, mission: '', placeholder: 'ex 풀업 10회', score: 0 },
     { id: 1, mission: '', placeholder: 'ex 벤치프레스 10회', score: 0 },
-    { id: 2, mission: '', placeholder: '스쿼트 10회', score: 0 },
-    { id: 3, mission: '', placeholder: '러닝 20분', score: 0 },
-    { id: 4, mission: '', placeholder: '런지 10회', score: 0 },
+    { id: 2, mission: '', placeholder: 'ex 스쿼트 10회', score: 0 },
+    { id: 3, mission: '', placeholder: 'ex 러닝 20분', score: 0 },
+    { id: 4, mission: '', placeholder: 'ex 런지 10회', score: 0 },
   ],
   task: '',
   checked: false,

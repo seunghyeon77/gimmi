@@ -25,21 +25,23 @@ export default function Page() {
     if (Number(headCount) < 2 || Number(headCount) > 9) {
       setError('인원수를 확인해주세요.');
       return;
-    } else {
+    }
+    if (nameCheck) {
       add1Page({ name, headCount, checked: nameCheck });
       router.push(`/create-workspace/second`);
+    } else {
+      setError('중복확인을 해주세요.');
     }
   };
-  const [disabled, setDisabled] = useState(true);
 
-  useEffect(() => {
-    // api 검사 마치면 && nameCheck 넣어주기
-    if (name.length >= 1 && (headCount as number) > 1 && nameCheck) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  }, [name, headCount, nameCheck]);
+  // useEffect(() => {
+  //   // api 검사 마치면 && nameCheck 넣어주기
+  //   if (name.length >= 1 && (headCount as number) > 1 && nameCheck) {
+  //     setDisabled(false);
+  //   } else {
+  //     setDisabled(true);
+  //   }
+  // }, [name, headCount, nameCheck]);
 
   const duplicateGroupName = async (type: string) => {
     try {
@@ -48,7 +50,6 @@ export default function Page() {
         value: name,
       });
 
-      console.log(res);
       if (!res.data.duplication) {
         setError('');
         setNameCheck(true);
@@ -124,10 +125,7 @@ export default function Page() {
         onClick={handleNext}
         className="w-full flex justify-center items-center"
       >
-        <button
-          disabled={disabled}
-          className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]"
-        >
+        <button className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]">
           계속하기
         </button>
       </div>

@@ -28,33 +28,35 @@ export default function Page() {
     groupMaker.missionBoard,
   );
   const [error, setError] = useState('');
-  const [disabled, setDisabled] = useState(true);
-
-  useEffect(() => {
-    if (inputItems.length === 0) {
-      setDisabled(true);
-      setError('미션을 1개이상 등록해주세요.');
-    }
-
-    if (error === '' && inputItems.length !== 0) {
-      setDisabled(false);
-    }
-  }, [error, inputItems]);
+  const [disabled, setDisabled] = useState(false);
 
   const handleNext = () => {
+    const passingItems = inputItems.filter((item) => item.mission !== '');
+    const scoreCheck = passingItems.filter(
+      (item) => item.score === 0 || item.score > 10,
+    );
     if (
       Number(goalScore) < 100 ||
       Number(goalScore) > 1000 ||
       Number(goalScore) % 10 !== 0
     ) {
-      setDisabled(true);
       setError('그룹의 목표점수를 올바르게 설정해주세요.');
+      return;
     }
-    if (inputItems) {
-    } else {
-      add2Page({ missionBoard: inputItems, goalScore });
-      router.push('/create-workspace/third');
+
+    if (passingItems.length < 1) {
+      setError('미션을 1개 이상 등록해 주세요.');
+      return;
     }
+    if (scoreCheck.length > 0) {
+      setError('미션 점수를 확인해 해주세요(1~10)');
+      return;
+    }
+
+    setError('');
+    setDisabled(true);
+    add2Page({ missionBoard: passingItems, goalScore });
+    router.push('/create-workspace/third');
   };
 
   // 추가
@@ -65,7 +67,6 @@ export default function Page() {
       mission: '',
       score: 0,
     };
-
     setInputItems([...inputItems, input]);
     nextID.current += 1;
   }
@@ -151,12 +152,14 @@ export default function Page() {
               onChange={(e) => handleChange(e, index)}
               value={item.mission}
             />
+
             <div
-              className="flex justify-center items-center absolute right-36"
+              className="flex justify-center items-center absolute right-40"
               onClick={() => deleteInput(item.id)}
             >
               <Image src={delIcon} alt="delete-icon" />
             </div>
+
             <div className="flex justify-center items-center w-24 h-[52px] text-[#6B7280] rounded-lg text-[12px] relative">
               <Input
                 id="mission"
