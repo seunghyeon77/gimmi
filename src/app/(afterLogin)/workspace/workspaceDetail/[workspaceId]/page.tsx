@@ -2,18 +2,22 @@
 
 import { detailUpdate, detailWorkspace } from '@/api/workspace';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import editPencil from '@/../public/svgs/workspace/editPencil.svg';
+import { AxiosError } from 'axios';
 
 export default function Page() {
   const { workspaceId } = useParams();
+  const router = useRouter();
 
   const [description, setDescription] = useState('');
   const [tag, setTag] = useState('');
 
   const [isCreator, setIsCreator] = useState(true);
+
+  const [error, setError] = useState('');
 
   const { data } = useQuery({
     queryKey: ['workspaceDetail', workspaceId],
@@ -24,17 +28,24 @@ export default function Page() {
     if (data) {
       setDescription(data.data.description || '');
       setTag(data.data.tag || '');
-      // setIsCreator(data.data.isCreator);
+      setIsCreator(data.data.isCreator);
     }
   }, [data]);
 
   const handleUpdate = async () => {
-    //아직 백엔드에서 안만들어짐
+    const data = { tag, description };
     try {
-      const res = await detailUpdate(Number(workspaceId));
-      console.log(res);
+      const res = await detailUpdate({ workspaceId, data });
+
+      setError('');
+      if (res.status === 200) {
+        router.replace(`/workspace/${workspaceId}`);
+      }
     } catch (error) {
       console.log(error);
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.message);
+      }
     }
   };
 
@@ -59,9 +70,11 @@ export default function Page() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
-          <div className="absolute right-3 top-16">
-            <Image src={editPencil} alt="edit" />
-          </div>
+          {isCreator && (
+            <div className="absolute right-3 top-16">
+              <Image src={editPencil} alt="edit" />
+            </div>
+          )}
         </div>
         <div className="relative">
           <label htmlFor="description" className="text-xl">
@@ -75,11 +88,16 @@ export default function Page() {
             value={tag}
             onChange={(e) => setTag(e.target.value)}
           ></textarea>
-          <div className="absolute right-3 top-16">
-            <Image src={editPencil} alt="edit" />
-          </div>
+          {isCreator && (
+            <div className="absolute right-3 top-16">
+              <Image src={editPencil} alt="edit" />
+            </div>
+          )}
         </div>
       </div>
+      {error !== '' ? (
+        <span className="text-red-500 text-xs">{error}</span>
+      ) : null}
       {isCreator && (
         <div className="w-full flex justify-center items-center bg-main rounded-lg py-3 absolute -bottom-80">
           <button className="text-white text-base" onClick={handleUpdate}>

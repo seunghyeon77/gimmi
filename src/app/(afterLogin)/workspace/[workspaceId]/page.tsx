@@ -100,7 +100,6 @@ export default function Page() {
         router.push('/workspace-list/mygroup');
       }
     } catch (error: any) {
-      console.log(error.response.data.message);
       alert(error.response.data.message);
     }
   };
@@ -152,6 +151,7 @@ export default function Page() {
       ),
     );
   };
+  console.log(data);
 
   return (
     <div>
@@ -182,7 +182,7 @@ export default function Page() {
         <div className="flex flex-col mb-5">
           <div className="text-[8px] text-[#4B5563] mb-3.5">목표 달성률</div>
           <Progress
-            className="h-1.5 bg-[#DBEAFE] mb-1"
+            className="h-1.5 bg-[#ffff] mb-1"
             value={(data?.data.achievementScore / data?.data.goalScore) * 100}
           />
           <div className="text-[10px] text-[#4B5563] text-right">{`${data?.data.achievementScore}/${data?.data.goalScore}점`}</div>
@@ -303,14 +303,16 @@ export default function Page() {
 
       <Dialog>
         <DialogTrigger asChild>
-          {data?.data.status === 'PREPARING' &&
-            data?.data.isCreator === false && (
-              <div className="px-7 fixed bottom-11 left-0 w-full">
-                <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
-                  그룹 나가기
-                </button>
-              </div>
-            )}
+          {(data?.data.status === 'PREPARING' &&
+            data?.data.isCreator === false) ||
+            (data?.data.status === 'PREPARING' &&
+              data?.data.workers.length === 1 && (
+                <div className="px-7 fixed bottom-11 left-0 w-full">
+                  <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
+                    그룹 나가기
+                  </button>
+                </div>
+              ))}
         </DialogTrigger>
         <DialogContent className="w-4/6 rounded-lg h-[138px]">
           <DialogDescription className="flex items-center justify-center -mb-6">

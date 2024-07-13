@@ -94,8 +94,8 @@ const detailWorkspace = async (workspaceId: number) => {
   const res = await customAxios.get(`/workspaces/${workspaceId}/introduction`);
   return res;
 };
-const detailUpdate = async (workspaceId: number) => {
-  const res = await customAxios.put(`/workspaces/${workspaceId}/edit`);
+const detailUpdate = async ({ workspaceId, data }: any) => {
+  const res = await customAxios.put(`/workspaces/${workspaceId}/edit`, data);
   return res;
 };
 

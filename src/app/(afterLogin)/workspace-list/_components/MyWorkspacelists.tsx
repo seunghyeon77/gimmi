@@ -12,7 +12,6 @@ export default function MyWorkspacelits() {
     queryKey: [workspace.mylists],
     queryFn: () => myWorkspaces(),
   });
-  console.log(data);
 
   return (
     <div>
