@@ -360,23 +360,25 @@ export default function Page() {
         )}
       </div>
       {/* 조건으로 유저 닉네임과 방장 같으면 뭐시기 넣어주기 */}
-      {data?.data.status === 'PREPARING' && data?.data.isCreator === true && (
-        <div
-          className="px-7 fixed bottom-11 left-0 w-full"
-          onClick={handleStart}
-        >
-          <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
-            그룹 시작하기
-          </button>
-        </div>
-      )}
+      {data?.data.status === 'PREPARING' &&
+        data?.data.isCreator === true &&
+        data?.data.workers.length === 1 && (
+          <div
+            className="px-7 fixed bottom-11 left-0 w-full"
+            onClick={handleStart}
+          >
+            <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
+              그룹 시작하기
+            </button>
+          </div>
+        )}
 
       <Dialog>
         <DialogTrigger asChild>
           {(data?.data.status === 'PREPARING' &&
             data?.data.isCreator === false) ||
             (data?.data.status === 'PREPARING' &&
-              data?.data.workers.length === 1 && (
+              data?.data.workers.length >= 1 && (
                 <div className="px-7 fixed bottom-11 left-0 w-full">
                   <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
                     그룹 나가기
