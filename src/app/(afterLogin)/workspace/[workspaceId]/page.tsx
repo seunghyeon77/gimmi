@@ -26,7 +26,6 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
@@ -39,7 +38,7 @@ import {
 } from '@/api/workspace';
 import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
@@ -77,13 +76,23 @@ export default function Page() {
     queryFn: () => infoWorkspace(Number(workspaceId)),
   });
 
-  const [isOpen, setIsOpen] = useState(data?.data.status === 'COMPLETED');
+  const [isOpen, setIsOpen] = useState(false);
 
   let percent = (data?.data.achievementScore / data?.data.goalScore) * 100;
 
   if (percent > 100) {
     percent = 100;
   }
+
+  useEffect(() => {
+    if (data?.data.status === 'COMPLETED') {
+      setIsOpen(true);
+    }
+  }, [data]);
+
+  const handleModalChange = (open: any) => {
+    setIsOpen(open);
+  };
 
   const user = data?.data.workers.filter((user: any) => user.isMyself === true);
 
@@ -107,7 +116,7 @@ export default function Page() {
       console.log(error);
     }
   };
-  console.log(isMyself);
+
   const handleStart = async () => {
     try {
       const res = await startWorkspace(Number(workspaceId));
@@ -175,32 +184,31 @@ export default function Page() {
           <Image src={settings} alt="settings" />
         </div>
       </Link>
-      {data?.data.status === 'COMPLETED' && (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="w-4/6 rounded-lg">
-            <DialogDescription>
-              <div className="mb-4 text-center text-black">
-                워크스페이스 목표를 모두 달성했어요! <br /> 테스크를 확인하러
-                갈까요?
-              </div>
-            </DialogDescription>
-            <DialogFooter className="border-t-[1px]">
-              <div className="pt-4 flex justify-between text-gray-600">
-                <DialogClose asChild>
-                  <div className="text-sm rounded-lg text-[#D1D5DB] px-4 ">
-                    cancel
-                  </div>
-                </DialogClose>
-                <Link href={`/workspace-complete/${workspaceId}`}>
-                  <div className="text-sm rounded-lg text-blue-500 px-4 ">
-                    yes
-                  </div>
-                </Link>
-              </div>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      )}
+
+      <Dialog open={isOpen} onOpenChange={handleModalChange}>
+        <DialogContent className="w-4/6 rounded-lg">
+          <DialogDescription>
+            <div className="mb-4 text-center text-black">
+              워크스페이스 목표를 모두 달성했어요! <br /> 테스크를 확인하러
+              갈까요?
+            </div>
+          </DialogDescription>
+          <DialogFooter className="border-t-[1px]">
+            <div className="pt-4 flex justify-between text-gray-600">
+              <DialogClose asChild>
+                <div className="text-sm rounded-lg text-[#D1D5DB] px-4 ">
+                  cancel
+                </div>
+              </DialogClose>
+              <Link href={`/workspace-complete/${workspaceId}`}>
+                <div className="text-sm rounded-lg text-blue-500 px-4 ">
+                  yes
+                </div>
+              </Link>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <div className="mb-14">
         <div className="flex items-end mb-11">

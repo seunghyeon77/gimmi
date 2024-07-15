@@ -61,7 +61,7 @@ export default function Page() {
       const res = await createWorkspace(data);
       console.log(res);
       if (res.status === 200) {
-        // clearData();
+        clearData();
         router.push(`/workspace-list/mygroup`);
       }
     } catch (error) {
