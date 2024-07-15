@@ -17,14 +17,16 @@ export default function Page() {
     queryKey: ['complete', workspaceId],
     queryFn: () => completeWorkspace(Number(workspaceId)),
   });
-  console.log(data);
+
   const handleOpen = () => {
     setOpen((v) => !v);
   };
 
   return (
     <div
-      className={` w-full px-5 py-11 ${open ? 'bg-[#EFF6FF]' : 'bg-[#60A5FA]'}`}
+      className={`w-full h-screen px-5 py-11 ${
+        open ? 'bg-[#EFF6FF]' : 'bg-[#60A5FA]'
+      }`}
     >
       <div className="mb-16" onClick={() => router.back()}>
         <Image src={x} alt="x" />

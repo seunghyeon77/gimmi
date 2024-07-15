@@ -27,7 +27,7 @@ export default function Page() {
         </div>
         <MainCarousel />
       </div>
-      <div>
+      <div className="overflow-hidden">
         <span className="text-2xl text-white">category</span>
         <CategorySwiper />
       </div>
