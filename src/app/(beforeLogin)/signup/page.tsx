@@ -124,6 +124,7 @@ export default function Page() {
       console.log(res);
       if (res.status === 200) {
         router.push('/login');
+        alert('회원가입 완료');
       }
     } catch (error) {
       console.error(error);

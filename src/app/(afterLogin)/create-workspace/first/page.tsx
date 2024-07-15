@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
@@ -10,8 +9,10 @@ import { useEffect, useState } from 'react';
 import { verlifyDuplication } from '@/api/duplication';
 import { duplicationType } from '@/constants/duplication';
 import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
+  const router = useRouter();
   const { groupMaker, add1Page } = useWorkSpaceStore();
 
   const [name, setName] = useState(groupMaker.name);
@@ -21,18 +22,26 @@ export default function Page() {
   const [nameCheck, setNameCheck] = useState(groupMaker.checked);
 
   const handleNext = () => {
-    add1Page({ name, headCount, checked: nameCheck });
-  };
-  const [disabled, setDisabled] = useState(true);
-
-  useEffect(() => {
-    // api 검사 마치면 && nameCheck 넣어주기
-    if (name.length >= 1 && (headCount as number) > 1 && nameCheck) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
+    if (Number(headCount) < 2 || Number(headCount) > 9) {
+      setError('인원수를 확인해주세요.');
+      return;
     }
-  }, [name, headCount, nameCheck]);
+    if (nameCheck) {
+      add1Page({ name, headCount, checked: nameCheck });
+      router.push(`/create-workspace/second`);
+    } else {
+      setError('중복확인을 해주세요.');
+    }
+  };
+
+  // useEffect(() => {
+  //   // api 검사 마치면 && nameCheck 넣어주기
+  //   if (name.length >= 1 && (headCount as number) > 1 && nameCheck) {
+  //     setDisabled(false);
+  //   } else {
+  //     setDisabled(true);
+  //   }
+  // }, [name, headCount, nameCheck]);
 
   const duplicateGroupName = async (type: string) => {
     try {
@@ -41,7 +50,6 @@ export default function Page() {
         value: name,
       });
 
-      console.log(res);
       if (!res.data.duplication) {
         setError('');
         setNameCheck(true);
@@ -79,7 +87,7 @@ export default function Page() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <span className="text-xs text-[#D1D5DB]">{`${name.length}/9`}</span>
+
           <button
             className="w-[93px] h-[52px] bg-[#D1D5DB] text-[#6B7280] text-xs rounded-lg"
             onClick={() => duplicateGroupName(duplicationType.workspaceName)}
@@ -87,9 +95,7 @@ export default function Page() {
             중복확인
           </button>
         </div>
-        {error !== '' ? (
-          <span className="text-red-500 text-xs mt-1">{error}</span>
-        ) : null}
+        <span className="text-xs text-[#D1D5DB] text-center ml-20 mt-1">{`${name.length}/9`}</span>
       </div>
 
       <div className="grid w-full max-w-sm items-center">
@@ -101,7 +107,6 @@ export default function Page() {
         </Label>
         <div className="flex items-center">
           <Input
-            autoFocus
             required
             type="number"
             id="groupNum"
@@ -112,19 +117,18 @@ export default function Page() {
           />
         </div>
       </div>
-      <Link href={'/create-workspace/second'}>
-        <div
-          onClick={handleNext}
-          className="w-full flex justify-center items-center"
-        >
-          <button
-            disabled={disabled}
-            className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]"
-          >
-            계속하기
-          </button>
-        </div>
-      </Link>
+      {error !== '' ? (
+        <span className="text-red-500 text-xs">{error}</span>
+      ) : null}
+
+      <div
+        onClick={handleNext}
+        className="w-full flex justify-center items-center"
+      >
+        <button className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]">
+          계속하기
+        </button>
+      </div>
     </>
   );
 }

@@ -10,7 +10,10 @@ export default function TopBar() {
   const router = useRouter();
   return (
     <div className="flex justify-between items-center pb-11">
-      <Image src={backArrow} alt="backArrow" onClick={() => router.back()} />
+      <div onClick={() => router.back()}>
+        <Image src={backArrow} alt="backArrow" />
+      </div>
+
       <Link href={'/'}>
         <Image src={home} alt="home" className="w-[22px]" />
       </Link>

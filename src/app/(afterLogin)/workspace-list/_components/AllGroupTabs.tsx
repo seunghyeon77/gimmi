@@ -21,19 +21,27 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { useEffect, useState } from 'react';
-import { allWorkspaces, joinWorkspace, matchPassword } from '@/api/workspace';
+import {
+  allWorkspaces,
+  alreadyIn,
+  joinWorkspace,
+  matchPassword,
+} from '@/api/workspace';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { IWorkspace } from '@/types/\bworkSpace';
 import { workspaceList } from '@/constants/workSpace';
 import { useInView } from 'react-intersection-observer';
 import { useRouter } from 'next/navigation';
+import { AxiosError } from 'axios';
 
 export default function AllGroupTabs() {
   const [search, setSearch] = useState('');
   const [tabValue, setTabValue] = useState(workspaceList.complete);
   const [password, setPassword] = useState('');
   const [task, setTask] = useState('');
+
+  const [error, setError] = useState('');
 
   const router = useRouter();
 
@@ -62,9 +70,6 @@ export default function AllGroupTabs() {
     },
   });
 
-  const handleChange = (e: any) => {
-    setPassword(e);
-  };
   const nextDialog = async () => {
     try {
       const res = await matchPassword({
@@ -77,15 +82,11 @@ export default function AllGroupTabs() {
         setIsFirstDialogOpen(false);
         setIsSecondDialogOpen(true);
       } else {
-        alert(
-          '일단 알람 창으로 에러 줄게요? 이거 보면 나중에 고쳐요?! 비밀번호틀림',
-        );
+        setError('잘못된 비밀번호입니다.');
       }
     } catch (error) {
       console.error(error);
     }
-
-    // 두 번째 다이얼로그 열기
   };
 
   const onSubmit = async () => {
@@ -101,13 +102,29 @@ export default function AllGroupTabs() {
         router.push('/workspace-list/mygroup');
       }
     } catch (error) {
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.message);
+      }
       console.error(error);
     }
+  };
+
+  const handlePassword = (e: any) => {
+    setPassword(e.target.value);
   };
 
   const handleTabChange = (e: React.MouseEvent) => {
     setTabValue(e.currentTarget.id);
   };
+
+  const handleAlreadyIn = async (workspaceId: number) => {
+    const res = await alreadyIn(workspaceId);
+    if (res.data.isWorker === true) {
+      alert('이미 참여중인 워크스페이스입니다.');
+    }
+    console.log(res);
+  };
+
   const { ref, inView } = useInView({
     //아래 ref div가 보이고 나서 몇픽셀정도가 호출될건가? -> 보이자마자 호출하기에 0으로 설정
     threshold: 0,
@@ -122,11 +139,6 @@ export default function AllGroupTabs() {
       !isFetching && hasNextPage && fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage, isFetching]);
-
-  console.log(data);
-
-  // console.log('search', search);
-  // console.log('type', tabValue);
 
   //전체적으로 client component 더 분리해보기 (일단 로직 작성 하고 나서 )
   return (
@@ -171,11 +183,13 @@ export default function AllGroupTabs() {
               key={item.id}
               open={isFirstDialogOpen}
               onOpenChange={(open) => {
+                setError('');
                 setIsFirstDialogOpen(open);
                 setCurrentWorkspaceId(item.id); // workspaceId 저장
               }}
             >
-              <DialogTrigger asChild>
+              {/* 여기에 온클릭으로 api 확인해보기 */}
+              <DialogTrigger asChild onClick={() => handleAlreadyIn(item.id)}>
                 <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
                   <h1 className="text-[22px]">{item.name}</h1>
                   <div>
@@ -183,36 +197,35 @@ export default function AllGroupTabs() {
                   </div>
                 </div>
               </DialogTrigger>
-              <DialogContent className="w-4/6 rounded-lg h-40">
-                <DialogHeader>비밀번호를 입력해주세요</DialogHeader>
-                <DialogDescription>
+              <DialogContent className="w-9/12 rounded-lg h-40 ">
+                <DialogHeader className="text-xs">
+                  비밀번호를 입력해주세요
+                </DialogHeader>
+                <DialogDescription className="-mb-4">
                   <div className="flex justify-center items-center">
                     <form>
-                      <InputOTP
+                      <input
+                        type="number"
+                        placeholder="숫자 4자리를 입력해주세요."
+                        className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
                         value={password}
-                        onChange={handleChange}
-                        maxLength={4}
-                        pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                      >
-                        <InputOTPGroup>
-                          <InputOTPSlot index={0} />
-                          <InputOTPSlot index={1} />
-                          <InputOTPSlot index={2} />
-                          <InputOTPSlot index={3} />
-                        </InputOTPGroup>
-                      </InputOTP>
+                        onChange={(e) => handlePassword(e)}
+                      />
                     </form>
                   </div>
+                  {error !== '' ? (
+                    <span className="text-[8px] text-[#EF4444] pl-4">
+                      {error}
+                    </span>
+                  ) : null}
                 </DialogDescription>
                 <DialogFooter>
-                  <div className="w-full flex items-center justify-around text-[#676767]">
+                  <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
                     <DialogClose asChild>
-                      <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
-                        cancel
-                      </span>
+                      <span className="text-sm text-[#D1D5DB]">cancel</span>
                     </DialogClose>
                     <span
-                      className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
+                      className="text-sm text-[#3B82F6]"
                       onClick={nextDialog}
                     >
                       next
@@ -222,35 +235,43 @@ export default function AllGroupTabs() {
               </DialogContent>
               <Dialog
                 open={isSecondDialogOpen}
-                onOpenChange={setIsSecondDialogOpen}
+                onOpenChange={() => {
+                  setError('');
+                  setIsSecondDialogOpen;
+                }}
               >
-                <DialogContent className="w-4/6 rounded-lg h-40">
-                  <DialogHeader>테스크를 입력해주세요</DialogHeader>
-                  <DialogDescription>
+                <DialogContent className="w-9/12 rounded-lg h-40 ">
+                  <DialogHeader className="text-xs">
+                    테스크를 입력해주세요
+                  </DialogHeader>
+                  <DialogDescription className="-mb-4">
                     <div className="flex justify-center items-center">
                       <form>
                         <input
-                          placeholder="일등에게 맛있는 밥 사주기"
-                          className="bg-[#F3F4F6] w-full h-[48px] px-5 rounded-lg"
+                          type="text"
+                          placeholder="ex) 1등에게 맛있는 밥 사주기!"
+                          className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
                           value={task}
                           onChange={(e) => setTask(e.target.value)}
                         />
                       </form>
                     </div>
+                    {error !== '' ? (
+                      <span className="text-[8px] text-[#EF4444] pl-4">
+                        {error}
+                      </span>
+                    ) : null}
                   </DialogDescription>
                   <DialogFooter>
-                    <div className="w-full flex items-center justify-around text-[#676767]">
+                    <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
                       <DialogClose asChild>
-                        <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
-                          cancel
-                        </span>
+                        <span className="text-sm text-[#D1D5DB]">cancel</span>
                       </DialogClose>
-
                       <span
-                        className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
-                        onClick={nextDialog}
+                        className="text-sm text-[#3B82F6]"
+                        onClick={onSubmit}
                       >
-                        next
+                        join
                       </span>
                     </div>
                   </DialogFooter>
@@ -293,7 +314,10 @@ export default function AllGroupTabs() {
                     setCurrentWorkspaceId(item.id); // workspaceId 저장
                   }}
                 >
-                  <DialogTrigger asChild>
+                  <DialogTrigger
+                    asChild
+                    onClick={() => handleAlreadyIn(item.id)}
+                  >
                     <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
                       <h1 className="text-[22px]">{item.name}</h1>
                       <div>
@@ -301,37 +325,35 @@ export default function AllGroupTabs() {
                       </div>
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="w-4/6 rounded-lg h-40">
-                    <DialogHeader>비밀번호를 입력해주세요</DialogHeader>
-                    <DialogDescription>
+                  <DialogContent className="w-9/12 rounded-lg h-40 ">
+                    <DialogHeader className="text-xs">
+                      비밀번호를 입력해주세요
+                    </DialogHeader>
+                    <DialogDescription className="-mb-4">
                       <div className="flex justify-center items-center">
                         <form>
-                          <InputOTP
+                          <input
+                            type="number"
+                            placeholder="숫자 4자리를 입력해주세요."
+                            className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
                             value={password}
-                            onChange={handleChange}
-                            maxLength={4}
-                            pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                          >
-                            <InputOTPGroup>
-                              <InputOTPSlot index={0} />
-                              <InputOTPSlot index={1} />
-                              <InputOTPSlot index={2} />
-                              <InputOTPSlot index={3} />
-                            </InputOTPGroup>
-                          </InputOTP>
+                            onChange={(e) => handlePassword(e)}
+                          />
                         </form>
                       </div>
+                      {error !== '' ? (
+                        <span className="text-[8px] text-[#EF4444] pl-4">
+                          {error}
+                        </span>
+                      ) : null}
                     </DialogDescription>
                     <DialogFooter>
-                      <div className="w-full flex items-center justify-around text-[#676767]">
+                      <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
                         <DialogClose asChild>
-                          <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
-                            cancel
-                          </span>
+                          <span className="text-sm text-[#D1D5DB]">cancel</span>
                         </DialogClose>
-
                         <span
-                          className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
+                          className="text-sm text-[#3B82F6]"
                           onClick={nextDialog}
                         >
                           next
@@ -341,35 +363,45 @@ export default function AllGroupTabs() {
                   </DialogContent>
                   <Dialog
                     open={isSecondDialogOpen}
-                    onOpenChange={setIsSecondDialogOpen}
+                    onOpenChange={() => {
+                      setError('');
+                      setIsSecondDialogOpen;
+                    }}
                   >
-                    <DialogContent className="w-4/6 rounded-lg h-40">
-                      <DialogHeader>테스크를 입력해주세요</DialogHeader>
-                      <DialogDescription>
+                    <DialogContent className="w-9/12 rounded-lg h-40 ">
+                      <DialogHeader className="text-xs">
+                        테스크를 입력해주세요
+                      </DialogHeader>
+                      <DialogDescription className="-mb-4">
                         <div className="flex justify-center items-center">
                           <form>
                             <input
-                              placeholder="일등에게 맛있는 밥 사주기"
-                              className="bg-[#F3F4F6] w-full h-[48px] px-5 rounded-lg"
+                              type="text"
+                              placeholder="ex) 1등에게 맛있는 밥 사주기!"
+                              className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
                               value={task}
                               onChange={(e) => setTask(e.target.value)}
                             />
                           </form>
                         </div>
+                        {error !== '' ? (
+                          <span className="text-[8px] text-[#EF4444] pl-4">
+                            {error}
+                          </span>
+                        ) : null}
                       </DialogDescription>
                       <DialogFooter>
-                        <div className="w-full flex items-center justify-around text-[#676767]">
+                        <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
                           <DialogClose asChild>
-                            <span className="text-sm bg-[#F3F4F6] py-1 px-6 rounded-lg">
+                            <span className="text-sm text-[#D1D5DB]">
                               cancel
                             </span>
                           </DialogClose>
-
                           <span
-                            className="text-sm bg-[#F3F4F6] py-1 px-8 rounded-lg"
+                            className="text-sm text-[#3B82F6]"
                             onClick={onSubmit}
                           >
-                            next
+                            join
                           </span>
                         </div>
                       </DialogFooter>

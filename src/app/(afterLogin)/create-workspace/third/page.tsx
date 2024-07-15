@@ -5,16 +5,19 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { useWorkSpaceStore } from '@/hooks/useWorkSpaceStore';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Page() {
   const router = useRouter();
 
-  const { groupMaker, add3Page } = useWorkSpaceStore();
+  const { groupMaker, add3Page, clearData } = useWorkSpaceStore();
   const [task, setTask] = useState(groupMaker.task);
   const [tag, setTag] = useState(groupMaker.tag);
   const [description, setDescription] = useState(groupMaker.description);
+
+  const [error, setError] = useState('');
 
   // console.log(groupMaker);
   const submitData = { ...groupMaker };
@@ -31,7 +34,7 @@ export default function Page() {
     })),
     task: submitData.task,
   };
-  console.log(submitData);
+
   console.log(data);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,15 +53,22 @@ export default function Page() {
 
   const handleSubmit = async () => {
     console.log(data);
-    if (task.length < 1) return;
+    if (task.length < 1) {
+      setError('테스크를 1자 이상 작성해주세요.');
+      return;
+    }
     try {
       const res = await createWorkspace(data);
       console.log(res);
       if (res.status === 200) {
+        clearData();
         router.push(`/workspace-list/mygroup`);
       }
     } catch (error) {
       console.log(error);
+      if (error instanceof AxiosError) {
+        setError(error?.response?.data.message);
+      }
     }
   };
 
@@ -89,7 +99,7 @@ export default function Page() {
           htmlFor="tag"
           className="text-xs text-[#1F2937] font-normal mb-3"
         >
-          + 그룹을 나타내는 태그를 적어주세요! (선택)
+          선택) 그룹을 나타내는 태그를 적어주세요!
         </Label>
         <div className="flex items-center">
           <Input
@@ -101,7 +111,9 @@ export default function Page() {
             onChange={handleFormChange}
             value={tag}
           />
-          <span className="text-xs text-[#D1D5DB]">{`${tag.length}/10`}</span>
+          <div className="w-full">
+            <span className="text-xs text-[#D1D5DB] text-right">{`${tag.length}/10`}</span>
+          </div>
         </div>
       </div>
       <div className="grid w-full max-w-sm items-center mb-11">
@@ -109,7 +121,7 @@ export default function Page() {
           htmlFor="description"
           className="text-xs text-[#1F2937] font-normal mb-3"
         >
-          + 간단한 그룹 설명을 해주세요! (선택)
+          선택) 간단한 그룹 설명을 해주세요!
         </Label>
         <div className="flex justify-between items-center">
           <Input
@@ -122,6 +134,12 @@ export default function Page() {
           />
         </div>
       </div>
+      <div className="text-center">
+        {error !== '' ? (
+          <span className="text-red-500 text-xs">{error}</span>
+        ) : null}
+      </div>
+
       <div
         onClick={handleSubmit}
         className="w-full flex justify-center items-center"

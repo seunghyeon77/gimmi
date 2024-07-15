@@ -9,6 +9,7 @@ import delIcon from '@/../public/svgs/delete.svg';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useWorkSpaceStore } from '@/hooks/useWorkSpaceStore';
+import { useRouter } from 'next/navigation';
 
 interface InputItem {
   id: number;
@@ -18,6 +19,7 @@ interface InputItem {
 }
 
 export default function Page() {
+  const router = useRouter();
   const { groupMaker, add2Page } = useWorkSpaceStore();
 
   const [goalScore, setGoalScore] = useState(groupMaker.goalScore);
@@ -26,37 +28,35 @@ export default function Page() {
     groupMaker.missionBoard,
   );
   const [error, setError] = useState('');
-  const [disabled, setDisabled] = useState(true);
-
-  console.log(groupMaker);
-  console.log(inputItems);
-
-  useEffect(() => {
-    if (inputItems.length === 0) {
-      setDisabled(true);
-    }
-    if (
-      goalScore === 0 ||
-      (goalScore as number) < 100 ||
-      (goalScore as number) > 1000 ||
-      (goalScore as number) % 10 !== 0
-    ) {
-      setError('형식에 맞게 작성해주세요.');
-      setDisabled(true);
-    } else {
-      setError('');
-    }
-
-    if (error === '' && inputItems.length !== 0) {
-      setDisabled(false);
-    }
-  }, [goalScore, error, inputItems]);
-
-  console.log('disabled', disabled);
-  console.log('error', error);
+  const [disabled, setDisabled] = useState(false);
 
   const handleNext = () => {
-    add2Page({ missionBoard: inputItems, goalScore });
+    const passingItems = inputItems.filter((item) => item.mission !== '');
+    const scoreCheck = passingItems.filter(
+      (item) => item.score === 0 || item.score > 10,
+    );
+    if (
+      Number(goalScore) < 100 ||
+      Number(goalScore) > 1000 ||
+      Number(goalScore) % 10 !== 0
+    ) {
+      setError('그룹의 목표점수를 올바르게 설정해주세요.');
+      return;
+    }
+
+    if (passingItems.length < 1) {
+      setError('미션을 1개 이상 등록해 주세요.');
+      return;
+    }
+    if (scoreCheck.length > 0) {
+      setError('미션 점수를 확인해 해주세요(1~10)');
+      return;
+    }
+
+    setError('');
+    setDisabled(true);
+    add2Page({ missionBoard: passingItems, goalScore });
+    router.push('/create-workspace/third');
   };
 
   // 추가
@@ -67,7 +67,6 @@ export default function Page() {
       mission: '',
       score: 0,
     };
-
     setInputItems([...inputItems, input]);
     nextID.current += 1;
   }
@@ -92,6 +91,7 @@ export default function Page() {
     inputItemsCopy[index].score = e.currentTarget.valueAsNumber;
     setInputItems(inputItemsCopy);
   }
+  console.log(inputItems);
 
   return (
     <>
@@ -152,13 +152,15 @@ export default function Page() {
               onChange={(e) => handleChange(e, index)}
               value={item.mission}
             />
+
             <div
-              className="flex justify-center items-center absolute right-36"
+              className="flex justify-center items-center absolute right-40"
               onClick={() => deleteInput(item.id)}
             >
               <Image src={delIcon} alt="delete-icon" />
             </div>
-            <div className="flex justify-center items-center w-24 h-[52px] text-[#6B7280] rounded-lg text-[12px]">
+
+            <div className="flex justify-center items-center w-24 h-[52px] text-[#6B7280] rounded-lg text-[12px] relative">
               <Input
                 id="mission"
                 type="number"
@@ -166,23 +168,26 @@ export default function Page() {
                 value={`${item.score}`}
                 onChange={(e) => scoreHandleChange(e, index)}
               />
+              <span className="absolute right-5 top-5 text-[10px]">점</span>
             </div>
           </div>
         ))}
       </div>
-      <Link href={'/create-workspace/third'}>
-        <div
-          className="w-full flex justify-center items-center"
-          onClick={handleNext}
+      {error !== '' ? (
+        <span className="text-red-500 text-xs">{error}</span>
+      ) : null}
+
+      <div
+        className="w-full flex justify-center items-center"
+        onClick={handleNext}
+      >
+        <button
+          disabled={disabled}
+          className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]"
         >
-          <button
-            disabled={disabled}
-            className="fixed bottom-10 w-11/12 h-11 bg-[#DBEAFE] rounded-lg text-base text-[#6B7280]"
-          >
-            계속하기
-          </button>
-        </div>
-      </Link>
+          계속하기
+        </button>
+      </div>
     </>
   );
 }

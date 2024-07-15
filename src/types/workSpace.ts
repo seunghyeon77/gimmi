@@ -46,4 +46,5 @@ export interface IW {
   add1Page: ({ name, headCount }: any) => void;
   add2Page: ({ missionBoard, goalScore }: any) => void;
   add3Page: ({ task, description }: any) => void;
+  clearData: () => void;
 }

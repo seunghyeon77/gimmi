@@ -24,7 +24,7 @@ type Mission = {
   missions: IMissions[];
 };
 type MissionRecord = {
-  workspaceId: number;
+  workspaceId: any;
   userId: number;
 };
 
@@ -39,6 +39,9 @@ const myWorkspaces = async (page: number = 0) => {
 };
 
 const allWorkspaces = async ({ type, keyword = '', page = 0 }: SearchProps) => {
+  if (type === 'COMPLETED') {
+    type = '';
+  }
   const res = await customAxios.get(
     `/workspaces?status=${type}&keyword=${keyword}&page=${page}`,
   );
@@ -91,8 +94,8 @@ const detailWorkspace = async (workspaceId: number) => {
   const res = await customAxios.get(`/workspaces/${workspaceId}/introduction`);
   return res;
 };
-const detailUpdate = async (workspaceId: number) => {
-  const res = await customAxios.put(`/workspaces/${workspaceId}/edit`);
+const detailUpdate = async ({ workspaceId, data }: any) => {
+  const res = await customAxios.put(`/workspaces/${workspaceId}/edit`, data);
   return res;
 };
 
@@ -127,6 +130,11 @@ const completeWorkspace = async (workspaceId: number) => {
   return res;
 };
 
+const alreadyIn = async (workspaceId: number) => {
+  const res = customAxios.get(`/workspaces/${workspaceId}/match-worker`);
+  return res;
+};
+
 export {
   myWorkspaces,
   allWorkspaces,
@@ -143,4 +151,5 @@ export {
   detailWorkspace,
   detailUpdate,
   completeWorkspace,
+  alreadyIn,
 };
