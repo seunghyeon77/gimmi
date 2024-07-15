@@ -24,7 +24,7 @@ export default function CategorySwiper() {
         centeredSlides={true}
         className="custom-swiper1"
       >
-        <SwiperSlide className="custom-slide1">
+        <SwiperSlide className="custom-slide1 -ml-28">
           <Link href={'/workspace-list/mygroup'}>
             <div className="flex flex-col items-center justify-center h-full">
               <div className="mb-2.5">

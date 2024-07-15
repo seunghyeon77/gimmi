@@ -19,11 +19,11 @@ export default function Page() {
           <Link href={'/workspace-list/mygroup'}>
             <span className="text-base">my group</span>
           </Link>
-          <Link href={'/workspace-list/mygroup'}>
+          {/* <Link href={'/workspace-list/mygroup'}>
             <div className="h-5 w-5 mr-4 mt-2">
               <Image src={rightArrow} alt="arrow" />
             </div>
-          </Link>
+          </Link> */}
         </div>
         <MainCarousel />
       </div>
