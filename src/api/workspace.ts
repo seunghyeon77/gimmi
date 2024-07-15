@@ -130,6 +130,11 @@ const completeWorkspace = async (workspaceId: number) => {
   return res;
 };
 
+const alreadyIn = async (workspaceId: number) => {
+  const res = customAxios.get(`/workspaces/${workspaceId}/match-worker`);
+  return res;
+};
+
 export {
   myWorkspaces,
   allWorkspaces,
@@ -146,4 +151,5 @@ export {
   detailWorkspace,
   detailUpdate,
   completeWorkspace,
+  alreadyIn,
 };

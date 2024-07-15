@@ -21,7 +21,12 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { useEffect, useState } from 'react';
-import { allWorkspaces, joinWorkspace, matchPassword } from '@/api/workspace';
+import {
+  allWorkspaces,
+  alreadyIn,
+  joinWorkspace,
+  matchPassword,
+} from '@/api/workspace';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { IWorkspace } from '@/types/\bworkSpace';
@@ -111,6 +116,15 @@ export default function AllGroupTabs() {
   const handleTabChange = (e: React.MouseEvent) => {
     setTabValue(e.currentTarget.id);
   };
+
+  const handleAlreadyIn = async (workspaceId: number) => {
+    const res = await alreadyIn(workspaceId);
+    if (res.data.isWorker === true) {
+      alert('이미 참여중인 워크스페이스입니다.');
+    }
+    console.log(res);
+  };
+
   const { ref, inView } = useInView({
     //아래 ref div가 보이고 나서 몇픽셀정도가 호출될건가? -> 보이자마자 호출하기에 0으로 설정
     threshold: 0,
@@ -175,7 +189,7 @@ export default function AllGroupTabs() {
               }}
             >
               {/* 여기에 온클릭으로 api 확인해보기 */}
-              <DialogTrigger asChild>
+              <DialogTrigger asChild onClick={() => handleAlreadyIn(item.id)}>
                 <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
                   <h1 className="text-[22px]">{item.name}</h1>
                   <div>
@@ -300,7 +314,10 @@ export default function AllGroupTabs() {
                     setCurrentWorkspaceId(item.id); // workspaceId 저장
                   }}
                 >
-                  <DialogTrigger asChild>
+                  <DialogTrigger
+                    asChild
+                    onClick={() => handleAlreadyIn(item.id)}
+                  >
                     <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
                       <h1 className="text-[22px]">{item.name}</h1>
                       <div>
