@@ -20,7 +20,7 @@ export default function MyWorkspacelits() {
           <Link href={`/workspace/${item.id}`} key={item.id}>
             <div
               className={`bg-[#60A5FA] w-full rounded-lg p-4 mb-7 ${
-                item.state === '완료됨' ? 'opacity-50' : null
+                item.status === 'COMPLETED' ? 'opacity-50' : null
               }`}
             >
               <h2 className="text-2xl mb-3.5 text-white">{item.name}</h2>

@@ -13,10 +13,11 @@ export default function Page() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { workspaceId } = useParams();
-  // const { data } = useQuery({
-  //   queryKey: ['complete', workspaceId],
-  //   queryFn: () => completeWorkspace(Number(workspaceId)),
-  // });
+  const { data } = useQuery({
+    queryKey: ['complete', workspaceId],
+    queryFn: () => completeWorkspace(Number(workspaceId)),
+  });
+  console.log(data);
   const handleOpen = () => {
     setOpen((v) => !v);
   };
@@ -49,7 +50,7 @@ export default function Page() {
         >
           {open ? (
             <div className="text-white w-24 h-24 text-base text-center overflow-y-scroll">
-              ㅁ나ㅣㅇ러미;ㅏ넏리ㅏ;ㄴ어리ㅏㄴ멍;라ㅣㅁ넝
+              {data?.data.pickedTask.task}
             </div>
           ) : (
             <Image src={completeImage} alt="complete-card" />
@@ -66,18 +67,13 @@ export default function Page() {
       <div className={`px-9 ${!open && 'invisible'}`}>
         <span className="text-[10px] text-[#9CA3AF]">미당첨된 테스크</span>
         <div className="text-xs mt-5">
-          <h6 className="mb-2.5">
-            당첨되지 않은 테스크들 기여도 순서대로 표시
-          </h6>
-          <h6 className="mb-2.5">
-            당첨되지 않은 테스크들 기여도 순서대로 표시
-          </h6>
-          <h6 className="mb-2.5">
-            당첨되지 않은 테스크들 기여도 순서대로 표시
-          </h6>
-          <h6 className="mb-2.5">
-            당첨되지 않은 테스크들 기여도 순서대로 표시
-          </h6>
+          {data?.data.tasks.map((item: any) => {
+            return (
+              <h6 className="mb-2.5" key={item.id}>
+                {item.task}
+              </h6>
+            );
+          })}
         </div>
       </div>
       {open && <ConfettiButton3 />}

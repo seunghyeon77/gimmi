@@ -26,6 +26,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
@@ -76,7 +77,14 @@ export default function Page() {
     queryFn: () => infoWorkspace(Number(workspaceId)),
   });
 
-  const percent = (data?.data.achievementScore / data?.data.goalScore) * 100;
+  const [isOpen, setIsOpen] = useState(data?.data.status === 'COMPLETED');
+
+  let percent = (data?.data.achievementScore / data?.data.goalScore) * 100;
+
+  if (percent > 100) {
+    percent = 100;
+  }
+
   const user = data?.data.workers.filter((user: any) => user.isMyself === true);
 
   const handleWorkout = async ({ userId, isMyself }: any) => {
@@ -167,6 +175,32 @@ export default function Page() {
           <Image src={settings} alt="settings" />
         </div>
       </Link>
+      {data?.data.status === 'COMPLETED' && (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogContent className="w-4/6 rounded-lg">
+            <DialogDescription>
+              <div className="mb-4 text-center text-black">
+                워크스페이스 목표를 모두 달성했어요! <br /> 테스크를 확인하러
+                갈까요?
+              </div>
+            </DialogDescription>
+            <DialogFooter className="border-t-[1px]">
+              <div className="pt-4 flex justify-between text-gray-600">
+                <DialogClose asChild>
+                  <div className="text-sm rounded-lg text-[#D1D5DB] px-4 ">
+                    cancel
+                  </div>
+                </DialogClose>
+                <Link href={`/workspace-complete/${workspaceId}`}>
+                  <div className="text-sm rounded-lg text-blue-500 px-4 ">
+                    yes
+                  </div>
+                </Link>
+              </div>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
 
       <div className="mb-14">
         <div className="flex items-end mb-11">
@@ -188,10 +222,7 @@ export default function Page() {
         </div>
         <div className="flex flex-col mb-5">
           <div className="text-[8px] text-[#4B5563] mb-3.5">목표 달성률</div>
-          <Progress
-            className="h-1.5 bg-[#ffff] mb-1"
-            value={(data?.data.achievementScore / data?.data.goalScore) * 100}
-          />
+          <Progress className="h-1.5 bg-[#ffff] mb-1" value={percent} />
           <div className="text-[10px] text-[#4B5563] text-right">{`${data?.data.achievementScore}/${data?.data.goalScore}점`}</div>
         </div>
 
