@@ -7,19 +7,16 @@ import photoCommunity from '@/../public/svgs/home/photoCommunity.svg';
 import myPage from '@/../public/svgs/home/myPage.svg';
 import groupPage from '@/../public/svgs/home/groupPage.svg';
 
-const data = [
-  { id: 1, title: '그룹페이지', img: groupPage },
-  { id: 2, title: '사진커뮤니티', img: photoCommunity },
-  { id: 3, title: '마이페이지', img: myPage },
-];
+import './styles.css';
+import Link from 'next/link';
 
 export default function CategorySwiper() {
   return (
-    <div className="mt-4">
+    <div className="mt-4 w-full">
       <Swiper
-        // slidesPerView={2}
+        slidesPerView={2}
         spaceBetween={12}
-        loop={true}
+        // loop={true}
         pagination={{
           clickable: true,
         }}
@@ -27,16 +24,38 @@ export default function CategorySwiper() {
         centeredSlides={true}
         className="custom-swiper1"
       >
-        {data.map((item) => (
-          <SwiperSlide key={item.id} className="custom-slide1">
-            <div className="">
+        <SwiperSlide className="custom-slide1">
+          <Link href={'/workspace-list/mygroup'}>
+            <div className="flex flex-col items-center justify-center h-full">
               <div className="mb-2.5">
-                <Image src={item.img} alt={item.title} />
+                <Image src={groupPage} alt="그룹페이지" />
               </div>
-              <span className="text-[10px] text-[#6B7280]">{item.title}</span>
-            </div>
-          </SwiperSlide>
-        ))}
+              <span className="text-[10px] text-[#6B7280]">그룹페이지</span>
+            </div>{' '}
+          </Link>
+        </SwiperSlide>
+
+        <SwiperSlide className="custom-slide1">
+          <Link href={'/photoCommunity'}>
+            <div className="flex flex-col items-center justify-center h-full">
+              <div className="mb-2.5">
+                <Image src={photoCommunity} alt="사진커뮤니티" />
+              </div>
+              <span className="text-[10px] text-[#6B7280]">사진커뮤니티</span>
+            </div>{' '}
+          </Link>
+        </SwiperSlide>
+
+        <SwiperSlide className="custom-slide1">
+          <Link href={'/mypage'}>
+            <div className="flex flex-col items-center justify-center h-full">
+              <div className="mb-2.5">
+                <Image src={myPage} alt="마이페이지" />
+              </div>
+              <span className="text-[10px] text-[#6B7280]">마이페이지</span>
+            </div>{' '}
+          </Link>
+        </SwiperSlide>
       </Swiper>
     </div>
   );
