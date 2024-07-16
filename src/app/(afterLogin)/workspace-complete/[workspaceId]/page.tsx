@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import completeImage from '@/../public/svgs/completeImage.svg';
 import x from '@/../public/svgs/x.svg';
+import blackX from '@/../public/svgs/blackX.svg';
 import { useQuery } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { completeWorkspace } from '@/api/workspace';
@@ -24,12 +25,16 @@ export default function Page() {
 
   return (
     <div
-      className={`w-full h-screen px-5 py-11 ${
+      className={`w-full h-full px-5 py-11 ${
         open ? 'bg-[#EFF6FF]' : 'bg-[#60A5FA]'
       }`}
     >
       <div className="mb-16" onClick={() => router.back()}>
-        <Image src={x} alt="x" />
+        {open ? (
+          <Image src={blackX} alt="black-x" />
+        ) : (
+          <Image src={x} alt="x" />
+        )}
       </div>
       <div
         className={`flex flex-col justify-center items-center mb-11 ${

@@ -97,7 +97,7 @@ export default function Page() {
   const user = data?.data.workers.filter((user: any) => user.isMyself === true);
 
   const handleWorkout = async ({ userId, isMyself }: any) => {
-    if (data?.data.status !== 'IN_PROGRESS') return;
+    if (data?.data.status === 'PREPARING') return;
     setWorkout((v) => !v);
     setIsMyself(isMyself);
     const res = await missionsWorkspace(Number(workspaceId));
@@ -122,7 +122,7 @@ export default function Page() {
       const res = await startWorkspace(Number(workspaceId));
       console.log(res);
       if (res.status === 200) {
-        router.push('/workspace-list/mygroup');
+        router.refresh();
       }
     } catch (error: any) {
       alert(error.response.data.message);
@@ -241,42 +241,44 @@ export default function Page() {
               <span className="text-[10px] text-[#4B5563]">획득 점수</span>
             </div>
             {/* 여기에 유저들 매핑해주기 */}
-            {data?.data.workers
-              .sort((a: any, b: any) => (b.isMyself ? 1 : -1))
-              .map((user: any) => {
-                return (
-                  <div
-                    className="mb-4 text-[#4B5563]"
-                    key={user.id}
-                    onClick={() =>
-                      handleWorkout({
-                        userId: user.id,
-                        isMyself: user.isMyself,
-                      })
-                    }
-                  >
+            <div className="overflow-auto">
+              {data?.data.workers
+                .sort((a: any, b: any) => (b.isMyself ? 1 : -1))
+                .map((user: any) => {
+                  return (
                     <div
-                      className={`w-full h-16 ${
-                        user.isMyself ? 'bg-[#C8F68B]' : 'bg-[#DBEAFE] '
-                      } rounded-xl flex items-center justify-between px-3.5`}
+                      className="mb-4 text-[#4B5563]"
+                      key={user.id}
+                      onClick={() =>
+                        handleWorkout({
+                          userId: user.id,
+                          isMyself: user.isMyself,
+                        })
+                      }
                     >
-                      <div className="h-8 w-8 rounded-full bg-white mr-3.5 flex items-center justify-center relative">
-                        {user.isCreator && (
-                          <Image
-                            src={creator}
-                            alt="creator"
-                            className="absolute top-0 left-0"
-                          />
-                        )}
+                      <div
+                        className={`w-full h-16 ${
+                          user.isMyself ? 'bg-[#C8F68B]' : 'bg-[#DBEAFE] '
+                        } rounded-xl flex items-center justify-between px-3.5`}
+                      >
+                        <div className="h-8 w-8 rounded-full bg-white mr-3.5 flex items-center justify-center relative">
+                          {user.isCreator && (
+                            <Image
+                              src={creator}
+                              alt="creator"
+                              className="absolute top-0 left-0"
+                            />
+                          )}
 
-                        <Image src={noImage} alt="icon" />
+                          <Image src={noImage} alt="icon" />
+                        </div>
+                        <div className="flex-1">{user.name}</div>
+                        <div className="">{`${user.contributeScore} P`}</div>
                       </div>
-                      <div className="flex-1">{user.name}</div>
-                      <div className="">{`${user.contributeScore} P`}</div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
           </div>
         ) : (
           <div className="bg-white h-80 rounded-2xl relative">

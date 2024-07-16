@@ -50,7 +50,7 @@ export default function Page() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative h-screen">
       <div>
         <div className="mb-9">
           <h1 className="text-xl mb-5">워크스페이스 비밀번호 확인</h1>

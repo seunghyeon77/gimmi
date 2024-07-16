@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   emailRegex,
-  idRegex,
   nicknameRegex,
   passwordRegex,
 } from '@/constants/validation';

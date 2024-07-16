@@ -27,13 +27,14 @@ import {
   joinWorkspace,
   matchPassword,
 } from '@/api/workspace';
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { IWorkspace } from '@/types/\bworkSpace';
 import { workspaceList } from '@/constants/workSpace';
 import { useInView } from 'react-intersection-observer';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
+import NoWorkspace from './NoWorkspace';
 
 export default function AllGroupTabs() {
   const [search, setSearch] = useState('');
@@ -177,143 +178,20 @@ export default function AllGroupTabs() {
           </TabsTrigger>
         </TabsList>
         <div className="border-b-2 mt-2 w-full mb-4"></div>
-        <TabsContent value="before-p">
-          {data?.pages[0].data.map((item: any) => (
-            <Dialog
-              key={item.id}
-              open={isFirstDialogOpen}
-              onOpenChange={(open) => {
-                setError('');
-                setIsFirstDialogOpen(open);
-                setCurrentWorkspaceId(item.id); // workspaceId 저장
-              }}
-            >
-              {/* 여기에 온클릭으로 api 확인해보기 */}
-              <DialogTrigger asChild onClick={() => handleAlreadyIn(item.id)}>
-                <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
-                  <h1 className="text-[22px]">{item.name}</h1>
-                  <div>
-                    <Image src={nextArrow} alt="next-arrow" />
-                  </div>
-                </div>
-              </DialogTrigger>
-              <DialogContent className="w-9/12 rounded-lg h-40 ">
-                <DialogHeader className="text-xs">
-                  비밀번호를 입력해주세요
-                </DialogHeader>
-                <DialogDescription className="-mb-4">
-                  <div className="flex justify-center items-center">
-                    <form>
-                      <input
-                        type="number"
-                        placeholder="숫자 4자리를 입력해주세요."
-                        className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
-                        value={password}
-                        onChange={(e) => handlePassword(e)}
-                      />
-                    </form>
-                  </div>
-                  {error !== '' ? (
-                    <span className="text-[8px] text-[#EF4444] pl-4">
-                      {error}
-                    </span>
-                  ) : null}
-                </DialogDescription>
-                <DialogFooter>
-                  <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
-                    <DialogClose asChild>
-                      <span className="text-sm text-[#D1D5DB]">cancel</span>
-                    </DialogClose>
-                    <span
-                      className="text-sm text-[#3B82F6]"
-                      onClick={nextDialog}
-                    >
-                      next
-                    </span>
-                  </div>
-                </DialogFooter>
-              </DialogContent>
-              <Dialog
-                open={isSecondDialogOpen}
-                onOpenChange={() => {
-                  setError('');
-                  setIsSecondDialogOpen;
-                }}
-              >
-                <DialogContent className="w-9/12 rounded-lg h-40 ">
-                  <DialogHeader className="text-xs">
-                    테스크를 입력해주세요
-                  </DialogHeader>
-                  <DialogDescription className="-mb-4">
-                    <div className="flex justify-center items-center">
-                      <form>
-                        <input
-                          type="text"
-                          placeholder="ex) 1등에게 맛있는 밥 사주기!"
-                          className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
-                          value={task}
-                          onChange={(e) => setTask(e.target.value)}
-                        />
-                      </form>
-                    </div>
-                    {error !== '' ? (
-                      <span className="text-[8px] text-[#EF4444] pl-4">
-                        {error}
-                      </span>
-                    ) : null}
-                  </DialogDescription>
-                  <DialogFooter>
-                    <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
-                      <DialogClose asChild>
-                        <span className="text-sm text-[#D1D5DB]">cancel</span>
-                      </DialogClose>
-                      <span
-                        className="text-sm text-[#3B82F6]"
-                        onClick={onSubmit}
-                      >
-                        join
-                      </span>
-                    </div>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </Dialog>
-          ))}
-        </TabsContent>
-        <TabsContent value="ing-p">
-          {data?.pages[0].data.map((item: any) => (
-            <div
-              key={item.id}
-              className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6"
-            >
-              <h2 className="text-[22px] -mb-3 text-white">{item.name}</h2>
-              <Progress
-                className="h-1.5"
-                value={(item.achievementScore / item.goalScore) * 100}
-              />
-            </div>
-          ))}
-        </TabsContent>
-        <TabsContent value="all">
-          {data?.pages[0].data.map((item: any) => (
-            <div key={item.key}>
-              {item.status === workspaceList.inProgress ? (
-                <div className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
-                  <h2 className="text-[22px] -mb-3 text-white">{item.name}</h2>
-                  <Progress
-                    className="h-1.5"
-                    value={(item.achievementScore / item.goalScore) * 100}
-                  />
-                </div>
-              ) : (
+        <TabsContent value="before-p" className="relative">
+          {data?.pages[0].data.length !== 0 ? (
+            <div>
+              {data?.pages[0].data.map((item: any) => (
                 <Dialog
                   key={item.id}
                   open={isFirstDialogOpen}
                   onOpenChange={(open) => {
+                    setError('');
                     setIsFirstDialogOpen(open);
                     setCurrentWorkspaceId(item.id); // workspaceId 저장
                   }}
                 >
+                  {/* 여기에 온클릭으로 api 확인해보기 */}
                   <DialogTrigger
                     asChild
                     onClick={() => handleAlreadyIn(item.id)}
@@ -363,9 +241,9 @@ export default function AllGroupTabs() {
                   </DialogContent>
                   <Dialog
                     open={isSecondDialogOpen}
-                    onOpenChange={() => {
+                    onOpenChange={(open) => {
                       setError('');
-                      setIsSecondDialogOpen;
+                      setIsSecondDialogOpen(open);
                     }}
                   >
                     <DialogContent className="w-9/12 rounded-lg h-40 ">
@@ -408,9 +286,159 @@ export default function AllGroupTabs() {
                     </DialogContent>
                   </Dialog>
                 </Dialog>
-              )}
+              ))}
             </div>
-          ))}
+          ) : (
+            <NoWorkspace />
+          )}
+        </TabsContent>
+        <TabsContent value="ing-p" className="relative">
+          {data?.pages[0].data.length !== 0 ? (
+            <div>
+              {data?.pages[0].data.map((item: any) => (
+                <div
+                  key={item.id}
+                  className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6"
+                >
+                  <h2 className="text-[22px] -mb-3 text-white">{item.name}</h2>
+                  <Progress
+                    className="h-1.5"
+                    value={(item.achievementScore / item.goalScore) * 100}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <NoWorkspace />
+          )}
+        </TabsContent>
+        <TabsContent value="all" className="relative">
+          {data?.pages[0].data.length !== 0 ? (
+            <div>
+              {data?.pages[0].data.map((item: any) => (
+                <div key={item.key}>
+                  {item.status === workspaceList.inProgress ? (
+                    <div className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
+                      <h2 className="text-[22px] -mb-3 text-white">
+                        {item.name}
+                      </h2>
+                      <Progress
+                        className="h-1.5"
+                        value={(item.achievementScore / item.goalScore) * 100}
+                      />
+                    </div>
+                  ) : (
+                    <Dialog
+                      key={item.id}
+                      open={isFirstDialogOpen}
+                      onOpenChange={(open) => {
+                        setIsFirstDialogOpen(open);
+                        setCurrentWorkspaceId(item.id); // workspaceId 저장
+                      }}
+                    >
+                      <DialogTrigger
+                        asChild
+                        onClick={() => handleAlreadyIn(item.id)}
+                      >
+                        <div className="w-full h-20 bg-[#FEF9C3] rounded-lg flex justify-between items-center px-3.5 my-6">
+                          <h1 className="text-[22px]">{item.name}</h1>
+                          <div>
+                            <Image src={nextArrow} alt="next-arrow" />
+                          </div>
+                        </div>
+                      </DialogTrigger>
+                      <DialogContent className="w-9/12 rounded-lg h-40 ">
+                        <DialogHeader className="text-xs">
+                          비밀번호를 입력해주세요
+                        </DialogHeader>
+                        <DialogDescription className="-mb-4">
+                          <div className="flex justify-center items-center">
+                            <form>
+                              <input
+                                type="number"
+                                placeholder="숫자 4자리를 입력해주세요."
+                                className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
+                                value={password}
+                                onChange={(e) => handlePassword(e)}
+                              />
+                            </form>
+                          </div>
+                          {error !== '' ? (
+                            <span className="text-[8px] text-[#EF4444] pl-4">
+                              {error}
+                            </span>
+                          ) : null}
+                        </DialogDescription>
+                        <DialogFooter>
+                          <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
+                            <DialogClose asChild>
+                              <span className="text-sm text-[#D1D5DB]">
+                                cancel
+                              </span>
+                            </DialogClose>
+                            <span
+                              className="text-sm text-[#3B82F6]"
+                              onClick={nextDialog}
+                            >
+                              next
+                            </span>
+                          </div>
+                        </DialogFooter>
+                      </DialogContent>
+                      <Dialog
+                        open={isSecondDialogOpen}
+                        onOpenChange={(open) => {
+                          setError('');
+                          setIsSecondDialogOpen(open);
+                        }}
+                      >
+                        <DialogContent className="w-9/12 rounded-lg h-40 ">
+                          <DialogHeader className="text-xs">
+                            테스크를 입력해주세요
+                          </DialogHeader>
+                          <DialogDescription className="-mb-4">
+                            <div className="flex justify-center items-center">
+                              <form>
+                                <input
+                                  type="text"
+                                  placeholder="ex) 1등에게 맛있는 밥 사주기!"
+                                  className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
+                                  value={task}
+                                  onChange={(e) => setTask(e.target.value)}
+                                />
+                              </form>
+                            </div>
+                            {error !== '' ? (
+                              <span className="text-[8px] text-[#EF4444] pl-4">
+                                {error}
+                              </span>
+                            ) : null}
+                          </DialogDescription>
+                          <DialogFooter>
+                            <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
+                              <DialogClose asChild>
+                                <span className="text-sm text-[#D1D5DB]">
+                                  cancel
+                                </span>
+                              </DialogClose>
+                              <span
+                                className="text-sm text-[#3B82F6]"
+                                onClick={onSubmit}
+                              >
+                                join
+                              </span>
+                            </div>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </Dialog>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <NoWorkspace />
+          )}
         </TabsContent>
       </Tabs>
       <div ref={ref} style={{ height: 10 }} />
