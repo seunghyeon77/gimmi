@@ -24,7 +24,17 @@ export default function MyWorkspacelits() {
               }`}
             >
               <h2 className="text-2xl mb-3.5 text-white">{item.name}</h2>
-              <div className="text-[10px] text-white">{item.tag}</div>
+              <div className="text-[10px] text-white">
+                <span>{item.tag}</span>
+                {item.tag === '' ? null : <span>, </span>}
+
+                <span>
+                  {item.createdAt.replace(
+                    /(\d{4})-(\d{2})-(\d{2})T.*/,
+                    '$1$2$3',
+                  )}
+                </span>
+              </div>
               <div className="text-[10px] text-white mb-3.5">
                 <span>{`테스크 점수: ${item.goalScore}점`}</span>
                 <span>, </span>
