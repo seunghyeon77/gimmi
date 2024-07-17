@@ -111,6 +111,7 @@ export default function Page() {
     try {
       const res = await missionsRecord({ workspaceId: id, userId });
       setWorkoutRecord(res.data);
+
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -144,6 +145,7 @@ export default function Page() {
       const res = await postMissions({ workspaceId, missions: count });
       console.log(res);
       if (res.data.workingScore > 0) {
+        alert('미션완료');
         setWorkout(false);
         router.push(`/workspace/${workspaceId}`);
       }
@@ -178,7 +180,7 @@ export default function Page() {
   };
 
   return (
-    <div>
+    <div className="h-screen">
       <Link href={`/workspace/workspaceDetail/${workspaceId}`}>
         <div className="absolute right-5 top-14">
           <Image src={settings} alt="settings" />
