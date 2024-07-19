@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import BackArrow from './_components/BackArrow';
+import BackArrow from '../_components/BackArrow';
 
 type Props = {
   children: ReactNode;

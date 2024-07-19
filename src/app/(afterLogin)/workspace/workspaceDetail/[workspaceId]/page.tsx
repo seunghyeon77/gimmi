@@ -99,7 +99,7 @@ export default function Page() {
         <span className="text-red-500 text-xs">{error}</span>
       ) : null}
       {isCreator && (
-        <div className="w-full flex justify-center items-center bg-main rounded-lg py-3 absolute -bottom-80">
+        <div className="w-full flex justify-center items-center bg-main rounded-lg py-3 absolute bottom-10">
           <button className="text-white text-base" onClick={handleUpdate}>
             수정 완료하기
           </button>
