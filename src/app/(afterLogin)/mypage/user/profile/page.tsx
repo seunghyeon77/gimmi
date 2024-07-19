@@ -38,6 +38,7 @@ export default function Page() {
         <div className="flex flex-col justify-center items-center text-[#4B5563] mb-14">
           <div className="w-24 mb-5 relative">
             <Image
+              className="rounded-full"
               src={imgPath ? imgPath : basicIcon}
               alt="profil-image"
               width={imgPath ? 100 : undefined}
