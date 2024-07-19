@@ -47,7 +47,7 @@ export default function CategorySwiper() {
         </SwiperSlide>
 
         <SwiperSlide className="custom-slide1">
-          <Link href={'/mypage'}>
+          <Link href={'/mypage/user'}>
             <div className="flex flex-col items-center justify-center h-full">
               <div className="mb-2.5">
                 <Image src={myPage} alt="마이페이지" />
