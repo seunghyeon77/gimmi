@@ -61,7 +61,7 @@ export default function Page() {
 
   // 추가
   function addInput() {
-    if (inputItems.length > 16) return;
+    if (inputItems.length > 15) return;
     const input = {
       id: nextID.current,
       mission: '',
@@ -168,7 +168,7 @@ export default function Page() {
                 value={`${item.score}`}
                 onChange={(e) => scoreHandleChange(e, index)}
               />
-              <span className="absolute right-5 top-5 text-[10px]">점</span>
+              <span className="absolute right-5 top-4.5 text-xs">점</span>
             </div>
           </div>
         ))}

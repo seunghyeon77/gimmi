@@ -179,6 +179,8 @@ export default function Page() {
     );
   };
 
+  console.log(data);
+
   return (
     <div className="h-screen">
       <Link href={`/workspace/workspaceDetail/${workspaceId}`}>
@@ -379,16 +381,15 @@ export default function Page() {
 
       <Dialog>
         <DialogTrigger asChild>
-          {(data?.data.status === 'PREPARING' &&
-            data?.data.isCreator === false) ||
-            (data?.data.status === 'PREPARING' &&
-              data?.data.workers.length >= 1 && (
-                <div className="px-7 fixed bottom-11 left-0 w-full">
-                  <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
-                    그룹 나가기
-                  </button>
-                </div>
-              ))}
+          {data?.data.status === 'PREPARING' &&
+            (data?.data.isCreator === false ||
+              data?.data.workers.length === 1) && (
+              <div className="px-7 fixed bottom-11 left-0 w-full">
+                <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
+                  그룹 나가기
+                </button>
+              </div>
+            )}
         </DialogTrigger>
         <DialogContent className="w-4/6 rounded-lg h-[138px]">
           <DialogDescription className="flex items-center justify-center -mb-6">

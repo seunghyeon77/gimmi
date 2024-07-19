@@ -131,7 +131,7 @@ const completeWorkspace = async (workspaceId: number) => {
 };
 
 const alreadyIn = async (workspaceId: number) => {
-  const res = customAxios.get(`/workspaces/${workspaceId}/match-worker`);
+  const res = customAxios.get(`/workspaces/${workspaceId}/enter`);
   return res;
 };
 

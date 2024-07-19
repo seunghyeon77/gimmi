@@ -14,12 +14,6 @@ import { Progress } from '@/components/ui/progress';
 import nextArrow from '@/../public/svgs/nextArrow.svg';
 import Image from 'next/image';
 
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from '@/components/ui/input-otp';
 import { useEffect, useState } from 'react';
 import {
   allWorkspaces,
@@ -29,7 +23,7 @@ import {
 } from '@/api/workspace';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
-import { IWorkspace } from '@/types/\bworkSpace';
+
 import { workspaceList } from '@/constants/workSpace';
 import { useInView } from 'react-intersection-observer';
 import { useRouter } from 'next/navigation';
@@ -71,7 +65,8 @@ export default function AllGroupTabs() {
     },
   });
 
-  const nextDialog = async () => {
+  const nextDialog = async (e: any) => {
+    e.preventDefault();
     try {
       const res = await matchPassword({
         workspaceId: currentWorkspaceId,
@@ -90,7 +85,8 @@ export default function AllGroupTabs() {
     }
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
     try {
       //워크스페이스 아이디 받아서 전해주기
       const res = await joinWorkspace({
@@ -100,7 +96,7 @@ export default function AllGroupTabs() {
       });
       console.log(res);
       if (res.status === 200) {
-        router.push('/workspace-list/mygroup');
+        router.push(`/workspace/${currentWorkspaceId}`);
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -121,7 +117,7 @@ export default function AllGroupTabs() {
   const handleAlreadyIn = async (workspaceId: number) => {
     const res = await alreadyIn(workspaceId);
     if (res.data.isWorker === true) {
-      alert('이미 참여중인 워크스페이스입니다.');
+      router.push(`/workspace/${workspaceId}`);
     }
     console.log(res);
   };
@@ -209,7 +205,7 @@ export default function AllGroupTabs() {
                     </DialogHeader>
                     <DialogDescription className="-mb-4">
                       <div className="flex justify-center items-center">
-                        <form>
+                        <form onSubmit={nextDialog}>
                           <input
                             type="number"
                             placeholder="숫자 4자리를 입력해주세요."
@@ -217,27 +213,27 @@ export default function AllGroupTabs() {
                             value={password}
                             onChange={(e) => handlePassword(e)}
                           />
+                          {error !== '' && (
+                            <span className="text-[8px] text-[#EF4444] pl-4">
+                              {error}
+                            </span>
+                          )}
+                          <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
+                            <DialogClose asChild>
+                              <span className="text-sm text-[#D1D5DB]">
+                                cancel
+                              </span>
+                            </DialogClose>
+                            <button
+                              type="submit"
+                              className="text-sm text-[#3B82F6]"
+                            >
+                              next
+                            </button>
+                          </div>
                         </form>
                       </div>
-                      {error !== '' ? (
-                        <span className="text-[8px] text-[#EF4444] pl-4">
-                          {error}
-                        </span>
-                      ) : null}
                     </DialogDescription>
-                    <DialogFooter>
-                      <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
-                        <DialogClose asChild>
-                          <span className="text-sm text-[#D1D5DB]">cancel</span>
-                        </DialogClose>
-                        <span
-                          className="text-sm text-[#3B82F6]"
-                          onClick={nextDialog}
-                        >
-                          next
-                        </span>
-                      </div>
-                    </DialogFooter>
                   </DialogContent>
                   <Dialog
                     open={isSecondDialogOpen}
@@ -275,12 +271,13 @@ export default function AllGroupTabs() {
                               cancel
                             </span>
                           </DialogClose>
-                          <span
+
+                          <button
                             className="text-sm text-[#3B82F6]"
                             onClick={onSubmit}
                           >
                             join
-                          </span>
+                          </button>
                         </div>
                       </DialogFooter>
                     </DialogContent>
@@ -353,7 +350,7 @@ export default function AllGroupTabs() {
                         </DialogHeader>
                         <DialogDescription className="-mb-4">
                           <div className="flex justify-center items-center">
-                            <form>
+                            <form onSubmit={nextDialog}>
                               <input
                                 type="number"
                                 placeholder="숫자 4자리를 입력해주세요."
@@ -361,29 +358,27 @@ export default function AllGroupTabs() {
                                 value={password}
                                 onChange={(e) => handlePassword(e)}
                               />
+                              {error !== '' && (
+                                <span className="text-[8px] text-[#EF4444] pl-4">
+                                  {error}
+                                </span>
+                              )}
+                              <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
+                                <DialogClose asChild>
+                                  <span className="text-sm text-[#D1D5DB]">
+                                    cancel
+                                  </span>
+                                </DialogClose>
+                                <button
+                                  type="submit"
+                                  className="text-sm text-[#3B82F6]"
+                                >
+                                  next
+                                </button>
+                              </div>
                             </form>
                           </div>
-                          {error !== '' ? (
-                            <span className="text-[8px] text-[#EF4444] pl-4">
-                              {error}
-                            </span>
-                          ) : null}
                         </DialogDescription>
-                        <DialogFooter>
-                          <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
-                            <DialogClose asChild>
-                              <span className="text-sm text-[#D1D5DB]">
-                                cancel
-                              </span>
-                            </DialogClose>
-                            <span
-                              className="text-sm text-[#3B82F6]"
-                              onClick={nextDialog}
-                            >
-                              next
-                            </span>
-                          </div>
-                        </DialogFooter>
                       </DialogContent>
                       <Dialog
                         open={isSecondDialogOpen}

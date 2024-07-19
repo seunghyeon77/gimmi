@@ -94,7 +94,7 @@ export default function Page() {
             type="submit"
             className="w-full h-12 rounded-3xl bg-[#F9FAFB] text-main"
           >
-            이메일로 회원가입
+            회원가입
           </Button>
         </div>
       </Link>
