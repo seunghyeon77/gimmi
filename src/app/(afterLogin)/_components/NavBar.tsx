@@ -9,15 +9,27 @@ import myPage from '@/../public/svgs/myPage.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { checkCreation } from '@/api/check';
 
 export default function NavBar() {
   const router = useRouter();
+  const handleCreate = async () => {
+    try {
+      const res = await checkCreation();
+      console.log(res);
+      if (res.data.canCreate === false) {
+        router.replace('/error/workspace');
+      }
+      if (res.data.canCreate === true) {
+        router.replace('/create-workspace/first');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="w-full h-[96px] fixed bottom-0 flex justify-around items-start border-t-2 pt-3 bg-white">
-      <div
-        className="flex flex-col items-center"
-        onClick={() => router.replace('/create-workspace/first')}
-      >
+      <div className="flex flex-col items-center" onClick={handleCreate}>
         <Image src={createGroup} alt="createGroupIcon" className="my-0.5" />
         <span className="text-[6px] ">그룹만들기</span>
       </div>
