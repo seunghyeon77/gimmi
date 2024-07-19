@@ -25,11 +25,14 @@ export default function Page() {
           <span>@gymmi12</span>
         </div>
         <div className="flex justify-between items-center mb-6">
-          <div>
-            <button className="px-14 py-4 bg-[#F9FAFB] rounded-lg text-xs">
-              프로필 편집
-            </button>
-          </div>
+          <Link href={'/mypage/user/profile'}>
+            <div>
+              <button className="px-14 py-4 bg-[#F9FAFB] rounded-lg text-xs">
+                프로필 편집
+              </button>
+            </div>
+          </Link>
+
           <div>
             <button className="px-14 py-4 bg-[#F9FAFB] rounded-lg text-xs">
               피드 편집
