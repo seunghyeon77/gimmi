@@ -16,6 +16,7 @@ import noImage from '@/../public/svgs/noImage.svg';
 
 import good from '@/../public/svgs/good.svg';
 import creator from '@/../public/svgs/creator.svg';
+import backBlue from '@/../public/svgs/workspace/backBlue.svg';
 
 import { Progress } from '@/components/ui/progress';
 import Image from 'next/image';
@@ -154,6 +155,12 @@ export default function Page() {
     }
   };
 
+  const handleBack = () => {
+    if (workout) {
+      setWorkout((v) => !v);
+    }
+  };
+
   useEffect(() => {
     if (missionData) {
       const initialCounts = missionData.map((mission) => ({
@@ -178,6 +185,8 @@ export default function Page() {
       ),
     );
   };
+
+  console.log(data);
 
   return (
     <div className="h-screen">
@@ -344,6 +353,14 @@ export default function Page() {
                       <Image src={check} alt="check" />
                     </button>
                   </div>
+                  <div className="flex justify-center items-center absolute bottom-2 left-2">
+                    <button
+                      className="w-14 h-6 flex items-center justify-center rounded-md"
+                      onClick={handleBack}
+                    >
+                      <Image src={backBlue} alt="backButton" />
+                    </button>
+                  </div>
                 </TabsContent>
               )}
               <TabsContent value="myRecord">
@@ -358,6 +375,14 @@ export default function Page() {
                     </div>
                   </div>
                 ))}
+                <div className="flex justify-center items-center absolute bottom-2 left-2">
+                  <button
+                    className="w-14 h-6 flex items-center justify-center rounded-md"
+                    onClick={handleBack}
+                  >
+                    <Image src={backBlue} alt="backButton" />
+                  </button>
+                </div>
               </TabsContent>
             </Tabs>
           </div>
@@ -379,16 +404,15 @@ export default function Page() {
 
       <Dialog>
         <DialogTrigger asChild>
-          {(data?.data.status === 'PREPARING' &&
-            data?.data.isCreator === false) ||
-            (data?.data.status === 'PREPARING' &&
-              data?.data.workers.length >= 1 && (
-                <div className="px-7 fixed bottom-11 left-0 w-full">
-                  <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
-                    그룹 나가기
-                  </button>
-                </div>
-              ))}
+          {data?.data.status === 'PREPARING' &&
+            (data?.data.isCreator === false ||
+              data?.data.workers.length === 1) && (
+              <div className="px-7 fixed bottom-11 left-0 w-full">
+                <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
+                  그룹 나가기
+                </button>
+              </div>
+            )}
         </DialogTrigger>
         <DialogContent className="w-4/6 rounded-lg h-[138px]">
           <DialogDescription className="flex items-center justify-center -mb-6">

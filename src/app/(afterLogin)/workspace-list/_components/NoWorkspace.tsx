@@ -9,7 +9,7 @@ export default function NoWorkspace() {
       </div>
       <div className="text-xs text-[#9CA3AF] text-center">
         <h6>해당 그룹이 없어요.</h6>
-        <h6>그룹을 만들어 운동의욕을 채워보세요!</h6>
+        <h6>그룹을 만들어 보세요!</h6>
       </div>
     </div>
   );

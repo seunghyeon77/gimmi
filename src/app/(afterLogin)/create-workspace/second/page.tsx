@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import Image from 'next/image';
+import minus from '@/../public/svgs/minus.svg';
 import plus from '@/../public/svgs/plus.svg';
 import delIcon from '@/../public/svgs/delete.svg';
 import { useEffect, useRef, useState } from 'react';
@@ -61,13 +62,13 @@ export default function Page() {
 
   // 추가
   function addInput() {
-    if (inputItems.length > 16) return;
+    if (inputItems.length > 15) return;
     const input = {
       id: nextID.current,
       mission: '',
       score: 0,
     };
-    setInputItems([...inputItems, input]);
+    setInputItems([input, ...inputItems]);
     nextID.current += 1;
   }
 
@@ -116,7 +117,7 @@ export default function Page() {
             type="number"
             id="goal"
             placeholder="10 단위로만 설정가능해요"
-            className="w-full h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB]"
+            className="rounded-md w-full h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB]"
             value={goalScore}
             onChange={(e) => setGoalScore(e.currentTarget.valueAsNumber)}
           />
@@ -142,33 +143,33 @@ export default function Page() {
           <Image src={plus} alt="plus" />
         </div>
         {inputItems.map((item, index) => (
-          <div className="flex justify-between items-center mb-3" key={index}>
+          <div className="flex justify-start items-center mb-3" key={index}>
             <Input
               maxLength={15}
               type="text"
               id="mission"
-              className="w-8/12 h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB] relative"
+              className="w-52 h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB] relative rounded-l-lg"
               placeholder={item.placeholder}
               onChange={(e) => handleChange(e, index)}
               value={item.mission}
             />
 
             <div
-              className="flex justify-center items-center absolute right-40"
+              className="flex justify-center items-center absolute right-5"
               onClick={() => deleteInput(item.id)}
             >
-              <Image src={delIcon} alt="delete-icon" />
+              <Image src={minus} alt="delete-icon" />
             </div>
 
-            <div className="flex justify-center items-center w-24 h-[52px] text-[#6B7280] rounded-lg text-[12px] relative">
+            <div className="flex justify-center items-center w-24 h-[52px] text-[#6B7280] rounded-lg text-[12px] relative ">
               <Input
                 id="mission"
                 type="number"
-                className="w-full h-full bg-[#E5E7EB] text-center"
+                className="w-full h-full bg-[#E5E7EB] text-center rounded-r-lg"
                 value={`${item.score}`}
                 onChange={(e) => scoreHandleChange(e, index)}
               />
-              <span className="absolute right-5 top-5 text-[10px]">점</span>
+              <span className="absolute right-5 top-4.5 text-xs">점</span>
             </div>
           </div>
         ))}

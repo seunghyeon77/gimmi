@@ -15,7 +15,7 @@ const refreshAccessToken = async () => {
     }
 
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/reissue`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}auth/reissue`,
       {
         refreshToken,
       },
@@ -29,6 +29,7 @@ const refreshAccessToken = async () => {
       customAxios.defaults.headers.Authorization = `Bearer ${res.data.accessToken}`;
     }
   } catch (error) {
+    console.log(error);
     console.error('Failed to refresh token', error);
     // refresh token도 유효하지 않다면 로그아웃 처리 또는 사용자에게 로그인 요청
     localStorage.clear();

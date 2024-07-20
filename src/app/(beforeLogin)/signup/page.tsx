@@ -102,8 +102,6 @@ export default function Page() {
     }
   };
 
-  console.log(watch('id'));
-
   const onsubmit: SubmitHandler<FormProps> = async (data) => {
     if (!idCheck) {
       setError('id', { message: '아이디 중복확인이 필요합니다.' });
@@ -140,7 +138,7 @@ export default function Page() {
         className="w-6 absolute"
         onClick={() => router.push('/login')}
       />
-      <h1 className="text-base font-normal text-center">이메일로 회원가입</h1>
+      <h1 className="text-base font-normal text-center">회원가입</h1>
       <div className="mt-16 mb-8">
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="id" className="text-xs">
@@ -233,7 +231,7 @@ export default function Page() {
           <Input
             type="text"
             id="nickname"
-            placeholder="영어+한글+초성+숫자 2자~5자"
+            placeholder="영어/한글/초성/숫자 2자~5자"
             className="w-56 bg-[#F9FAFB] placeholder:text-xs placeholder:text-[#D1D5DB]"
             {...register('nickname', {
               required: '필수 입력 사항입니다.',
