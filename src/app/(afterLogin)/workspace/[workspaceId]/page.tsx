@@ -16,6 +16,7 @@ import noImage from '@/../public/svgs/noImage.svg';
 
 import good from '@/../public/svgs/good.svg';
 import creator from '@/../public/svgs/creator.svg';
+import backBlue from '@/../public/svgs/workspace/backBlue.svg';
 
 import { Progress } from '@/components/ui/progress';
 import Image from 'next/image';
@@ -151,6 +152,12 @@ export default function Page() {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleBack = () => {
+    if (workout) {
+      setWorkout((v) => !v);
     }
   };
 
@@ -346,6 +353,14 @@ export default function Page() {
                       <Image src={check} alt="check" />
                     </button>
                   </div>
+                  <div className="flex justify-center items-center absolute bottom-2 left-2">
+                    <button
+                      className="w-14 h-6 flex items-center justify-center rounded-md"
+                      onClick={handleBack}
+                    >
+                      <Image src={backBlue} alt="backButton" />
+                    </button>
+                  </div>
                 </TabsContent>
               )}
               <TabsContent value="myRecord">
@@ -360,6 +375,14 @@ export default function Page() {
                     </div>
                   </div>
                 ))}
+                <div className="flex justify-center items-center absolute bottom-2 left-2">
+                  <button
+                    className="w-14 h-6 flex items-center justify-center rounded-md"
+                    onClick={handleBack}
+                  >
+                    <Image src={backBlue} alt="backButton" />
+                  </button>
+                </div>
               </TabsContent>
             </Tabs>
           </div>

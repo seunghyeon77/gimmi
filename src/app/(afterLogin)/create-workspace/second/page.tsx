@@ -67,7 +67,7 @@ export default function Page() {
       mission: '',
       score: 0,
     };
-    setInputItems([...inputItems, input]);
+    setInputItems([input, ...inputItems]);
     nextID.current += 1;
   }
 
