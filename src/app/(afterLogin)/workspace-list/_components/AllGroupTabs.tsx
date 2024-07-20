@@ -116,10 +116,16 @@ export default function AllGroupTabs() {
 
   const handleAlreadyIn = async (workspaceId: number) => {
     const res = await alreadyIn(workspaceId);
+    console.log(res);
+
     if (res.data.isWorker === true) {
       router.push(`/workspace/${workspaceId}`);
+      return;
     }
-    console.log(res);
+    if (res.data.isFull) {
+      setIsFirstDialogOpen(false);
+      alert('방 인원이 전부 찼습니다!');
+    }
   };
 
   const { ref, inView } = useInView({
