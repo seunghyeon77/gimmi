@@ -101,7 +101,7 @@ export default function Page() {
         >
           선택) 그룹을 나타내는 태그를 적어주세요!
         </Label>
-        <div className="flex items-center">
+        <div className="flex items-center relative">
           <Input
             type="text"
             id="tag"
@@ -111,7 +111,7 @@ export default function Page() {
             onChange={handleFormChange}
             value={tag}
           />
-          <div className="w-full">
+          <div className="w-full absolute left-44 -bottom-6">
             <span className="text-xs text-[#D1D5DB] text-right">{`${tag.length}/10`}</span>
           </div>
         </div>

@@ -20,3 +20,10 @@ export const logout = async () => {
   localStorage.removeItem('refreshToken');
   window.location.reload();
 };
+
+export const withdraw = async (password: number) => {
+  const res = await customAxios.delete('/auth/cuage', {
+    data: { password },
+  });
+  return res;
+};
