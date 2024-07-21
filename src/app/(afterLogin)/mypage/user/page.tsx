@@ -10,23 +10,23 @@ import { useQuery } from '@tanstack/react-query';
 import { myInfo } from '@/api/mypage';
 
 type MyInfo = {
-  nickName: string;
-  id: string;
+  nickname: string;
+  loginId: string;
   profileImage: string;
   email: string;
 };
 
 export default function Page() {
-  // const { data } = useQuery({
-  //   queryKey: ['myInfo'],
-  //   queryFn: myInfo(),
-  // });
-  const data: MyInfo = {
-    nickName: '조지미',
-    id: 'asdsad',
-    profileImage: '',
-    email: 'imsif42@naver.com',
+  const { data } = useQuery<{ data: any }>({
+    queryKey: ['myInfo'],
+    queryFn: () => myInfo(),
+  });
+
+  const imageLoader = () => {
+    return `https://gymmi.rmap.store/profile-image/default.png`;
   };
+
+  console.log(data);
   return (
     <div className="flex flex-col">
       <div className="px-5 w-full">
@@ -38,21 +38,28 @@ export default function Page() {
 
         <div className="flex flex-col justify-center items-center text-[#4B5563] mb-8">
           <div className="w-24 mb-5">
-            <Image
-              src={data.profileImage === '' ? basicIcon : data.profileImage}
-              alt="profil-image"
-            />
+            {data?.data.profileImage === 'default.png' ? (
+              <Image
+                src={basicIcon}
+                alt="profil-image"
+                width={120}
+                height={120}
+              />
+            ) : (
+              <Image
+                src={data?.data?.profileImage}
+                alt="profil-image"
+                width={120}
+                height={120}
+                loader={imageLoader}
+              />
+            )}
           </div>
-          <span className="text-xl">{data.nickName}</span>
-          <span>{`@${data.id}`}</span>
+          <span className="text-xl">{data?.data.nickname}</span>
+          <span>{`@${data?.data.loginId}`}</span>
         </div>
         <div className="flex justify-between items-center mb-6">
-          <Link
-            href={{
-              pathname: '/mypage/user/profile',
-              query: { nickname: data.nickName },
-            }}
-          >
+          <Link href={'/mypage/user/profile'}>
             <div>
               <button className="px-14 py-4 bg-[#F9FAFB] rounded-lg text-xs">
                 프로필 편집

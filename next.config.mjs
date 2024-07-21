@@ -8,6 +8,9 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig = {
+  // api: {
+  //   bodyParser: false,
+  // },
   async rewrites() {
     return [
       {

@@ -6,13 +6,20 @@ import camera from '@/../public/svgs/camera.svg';
 import pencil from '@/../public/svgs/workspace/editPencil.svg';
 import EditButton from '@/app/(afterLogin)/mypage/_components/EditButton';
 import { useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+
+import { editNickname, myInfo, setProfileImg } from '@/api/mypage';
+import { AxiosError } from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Page() {
-  const searchParams = useSearchParams();
+  const { data } = useQuery<any>({
+    queryKey: ['myInfo'],
+    queryFn: () => myInfo(),
+  });
 
-  const [nickname, setNickname] = useState(searchParams.get('nickname'));
+  const [nickname, setNickname] = useState(data?.data.nickname);
   const [update, setUpdate] = useState(false);
+  const [error, setError] = useState('');
 
   const [imgFile, setImgFile] = useState<File>();
   const [imgPath, setImgPath] = useState('');
@@ -32,10 +39,25 @@ export default function Page() {
     setUpdate(true);
   };
 
-  console.log(imgFile);
-
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
+    //이미지 전송
+    const formData = new FormData();
+    formData.append('profileImage', imgFile as File);
+    const res = await setProfileImg(formData);
+    console.log(res);
     //업데이트 하는 로직 구현
+    // try {
+    //   const res = await editNickname(nickname as string);
+    //   console.log(res);
+    //   if (res.status === 200) {
+    //     setError('');
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   if (error instanceof AxiosError) {
+    //     setError(error.response?.data.message);
+    //   }
+    // }
   };
 
   return (
@@ -81,6 +103,7 @@ export default function Page() {
               <Image src={pencil} alt="edit-pencil" />
             </div>
           </form>
+          <span className="text-[10px] text-[#EF4444] pl-3">{error}</span>
         </div>
       </div>
       <div className={`${update ? null : 'hidden'}`} onClick={handleUpdate}>
