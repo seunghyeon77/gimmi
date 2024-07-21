@@ -2,20 +2,16 @@
 
 import { withdraw } from '@/api/auth';
 import EditButton from '@/app/(afterLogin)/mypage/_components/EditButton';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-} from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
 import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
 
 export default function Page() {
   const [error, setError] = useState('');
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const [password, setPasword] = useState('');
 
@@ -24,6 +20,7 @@ export default function Page() {
       const res = await withdraw(password);
       console.log(res);
       if (res.status === 200) {
+        router.push('/');
       }
     } catch (error) {
       console.error(error);

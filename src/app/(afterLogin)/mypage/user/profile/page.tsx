@@ -17,7 +17,7 @@ export default function Page() {
     queryFn: () => myInfo(),
   });
 
-  const [nickname, setNickname] = useState(data?.data.nickname);
+  const [nickname, setNickname] = useState(data?.data.nickname || '');
   const [update, setUpdate] = useState(false);
   const [error, setError] = useState('');
 
@@ -39,25 +39,31 @@ export default function Page() {
     setUpdate(true);
   };
 
+  console.log(data);
+
   const handleUpdate = async () => {
     //이미지 전송
     const formData = new FormData();
     formData.append('profileImage', imgFile as File);
-    const res = await setProfileImg(formData);
-    console.log(res);
-    //업데이트 하는 로직 구현
-    // try {
-    //   const res = await editNickname(nickname as string);
-    //   console.log(res);
-    //   if (res.status === 200) {
-    //     setError('');
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   if (error instanceof AxiosError) {
-    //     setError(error.response?.data.message);
-    //   }
-    // }
+
+    // 업데이트 하는 로직 구현
+    try {
+      const res = await editNickname(nickname as string);
+      const resImage = await setProfileImg(formData);
+      console.log(res);
+      if (res.status === 200) {
+        setError('');
+      }
+    } catch (error) {
+      console.error(error);
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.message);
+      }
+    }
+  };
+
+  const imageLoader = (url: any) => {
+    return `https://gymmi.rmap.store/profile-image/${url}.jpeg`;
   };
 
   return (
@@ -70,6 +76,7 @@ export default function Page() {
               src={imgPath ? imgPath : basicIcon}
               alt="profil-image"
               layout="fill"
+              loader={() => imageLoader(data?.data.profileImage)}
             />
 
             <div className="w-8 h-8 bg-[#DBEAFE] rounded-full absolute right-0 -bottom-1 flex justify-center items-center">
