@@ -21,7 +21,7 @@ export const logout = async () => {
   window.location.reload();
 };
 
-export const withdraw = async (password: number) => {
+export const withdraw = async (password: string) => {
   const res = await customAxios.delete('/auth/cuage', {
     data: { password },
   });

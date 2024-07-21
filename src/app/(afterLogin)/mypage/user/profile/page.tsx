@@ -6,9 +6,12 @@ import camera from '@/../public/svgs/camera.svg';
 import pencil from '@/../public/svgs/workspace/editPencil.svg';
 import EditButton from '@/app/(afterLogin)/mypage/_components/EditButton';
 import { useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
-  const [nickname, setNickname] = useState('');
+  const searchParams = useSearchParams();
+
+  const [nickname, setNickname] = useState(searchParams.get('nickname'));
   const [update, setUpdate] = useState(false);
 
   const [imgFile, setImgFile] = useState<File>();
@@ -28,6 +31,8 @@ export default function Page() {
     }
     setUpdate(true);
   };
+
+  console.log(imgFile);
 
   const handleUpdate = () => {
     //업데이트 하는 로직 구현
@@ -64,7 +69,11 @@ export default function Page() {
         <div>
           <h3 className="mb-3">닉네임</h3>
           <form className="relative">
-            <input className="w-full h-12 bg-[#F9FAFB] rounded-lg" />
+            <input
+              className="w-full h-12 bg-[#F9FAFB] rounded-lg pl-2"
+              value={nickname as string}
+              onChange={(e) => setNickname(e.target.value)}
+            />
             <div
               className="absolute right-3 bottom-4"
               onClick={() => setUpdate((v) => !v)}

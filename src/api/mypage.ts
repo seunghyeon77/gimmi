@@ -21,4 +21,4 @@ const basicProfilImg = async (profileImageId: number) => {
   return res;
 };
 
-export { myInfo, editNickname, setProfileImg };
+export { myInfo, editNickname, setProfileImg, basicProfilImg };
