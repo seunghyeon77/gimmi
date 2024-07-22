@@ -7,9 +7,15 @@ import pencil from '@/../public/svgs/workspace/editPencil.svg';
 import EditButton from '@/app/(afterLogin)/mypage/_components/EditButton';
 import { useRef, useState } from 'react';
 
-import { editNickname, myInfo, setProfileImg } from '@/api/mypage';
+import {
+  basicProfilImg,
+  editNickname,
+  myInfo,
+  setProfileImg,
+} from '@/api/mypage';
 import { AxiosError } from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { imageLoader } from '@/utils/image';
 
 export default function Page() {
   const { data } = useQuery<any>({
@@ -62,8 +68,9 @@ export default function Page() {
     }
   };
 
-  const imageLoader = (url: any) => {
-    return `https://gymmi.rmap.store/profile-image/${url}.jpeg`;
+  const handleDefaultImage = async () => {
+    const res = await basicProfilImg();
+    console.log(res);
   };
 
   return (
@@ -71,13 +78,22 @@ export default function Page() {
       <div className="px-5">
         <div className="flex flex-col justify-center items-center text-[#4B5563] mb-14">
           <div className="w-24 h-24 mb-5 relative">
-            <Image
-              className="rounded-full"
-              src={imgPath ? imgPath : basicIcon}
-              alt="profil-image"
-              layout="fill"
-              loader={() => imageLoader(data?.data.profileImage)}
-            />
+            {data?.data.profileImage === 'default.png' ? (
+              <Image
+                src={basicIcon}
+                alt="profil-image"
+                width={120}
+                height={120}
+              />
+            ) : (
+              <Image
+                className="rounded-full"
+                src={imgPath ? imgPath : basicIcon}
+                alt="profil-image"
+                layout="fill"
+                loader={() => imageLoader(data?.data.profileImage)}
+              />
+            )}
 
             <div className="w-8 h-8 bg-[#DBEAFE] rounded-full absolute right-0 -bottom-1 flex justify-center items-center">
               <label htmlFor="photo">
@@ -116,6 +132,11 @@ export default function Page() {
       <div className={`${update ? null : 'hidden'}`} onClick={handleUpdate}>
         <EditButton>수정하기</EditButton>
       </div>
+      {data?.data.profileImage !== 'default.png' && (
+        <div className={`${update ? null : null}`} onClick={handleDefaultImage}>
+          <EditButton>기본 이미지로 변경</EditButton>
+        </div>
+      )}
     </div>
   );
 }

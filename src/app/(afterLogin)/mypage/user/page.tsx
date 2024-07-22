@@ -8,6 +8,7 @@ import settings from '@/../public/svgs/workspace/settings.svg';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { myInfo } from '@/api/mypage';
+import { imageLoader } from '@/utils/image';
 
 type MyInfo = {
   nickname: string;
@@ -22,10 +23,6 @@ export default function Page() {
     queryFn: () => myInfo(),
   });
 
-  const imageLoader = (url: any) => {
-    return `https://gymmi.rmap.store/profile-image/${url}.jpeg`;
-  };
-
   console.log(data);
   return (
     <div className="flex flex-col">
@@ -38,22 +35,22 @@ export default function Page() {
 
         <div className="flex flex-col justify-center items-center text-[#4B5563] mb-8">
           <div className="w-24 h-24 mb-5 relative">
-            {/* {data?.data.profileImage === 'default.png' ? (
+            {data?.data.profileImage === 'default.png' ? (
               <Image
                 src={basicIcon}
                 alt="profil-image"
                 width={120}
                 height={120}
               />
-            ) : ( */}
-            <Image
-              className="rounded-full"
-              src={basicIcon}
-              alt="profil-image"
-              layout="fill"
-              loader={() => imageLoader(data?.data.profileImage)}
-            />
-            {/* )} */}
+            ) : (
+              <Image
+                className="rounded-full"
+                src={basicIcon}
+                alt="profil-image"
+                layout="fill"
+                loader={() => imageLoader(data?.data.profileImage)}
+              />
+            )}
           </div>
           <span className="text-xl">{data?.data.nickname}</span>
           <span>{`@${data?.data.loginId}`}</span>

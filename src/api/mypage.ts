@@ -21,8 +21,8 @@ const setProfileImg = async (formData: any) => {
   return res;
 };
 
-const basicProfilImg = async (profileImageId: number) => {
-  const res = await customAxios.delete(`/my/profile-image/${profileImageId}'`);
+const basicProfilImg = async () => {
+  const res = await customAxios.delete(`/my/profile-image`);
   return res;
 };
 
