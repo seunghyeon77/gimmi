@@ -7,9 +7,25 @@ import pencil from '@/../public/svgs/workspace/editPencil.svg';
 import EditButton from '@/app/(afterLogin)/mypage/_components/EditButton';
 import { useRef, useState } from 'react';
 
+import {
+  basicProfilImg,
+  editNickname,
+  myInfo,
+  setProfileImg,
+} from '@/api/mypage';
+import { AxiosError } from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { imageLoader } from '@/utils/image';
+
 export default function Page() {
-  const [nickname, setNickname] = useState('');
+  const { data } = useQuery<any>({
+    queryKey: ['myInfo'],
+    queryFn: () => myInfo(),
+  });
+
+  const [nickname, setNickname] = useState(data?.data.nickname || '');
   const [update, setUpdate] = useState(false);
+  const [error, setError] = useState('');
 
   const [imgFile, setImgFile] = useState<File>();
   const [imgPath, setImgPath] = useState('');
@@ -26,24 +42,58 @@ export default function Page() {
         setImgPath(reader.result as string);
       };
     }
+    setUpdate(true);
   };
 
-  const handleUpdate = () => {
-    //업데이트 하는 로직 구현
+  console.log(data);
+
+  const handleUpdate = async () => {
+    //이미지 전송
+    const formData = new FormData();
+    formData.append('profileImage', imgFile as File);
+
+    // 업데이트 하는 로직 구현
+    try {
+      const res = await editNickname(nickname as string);
+      const resImage = await setProfileImg(formData);
+      console.log(res);
+      if (res.status === 200) {
+        setError('');
+      }
+    } catch (error) {
+      console.error(error);
+      if (error instanceof AxiosError) {
+        setError(error.response?.data.message);
+      }
+    }
+  };
+
+  const handleDefaultImage = async () => {
+    const res = await basicProfilImg();
+    console.log(res);
   };
 
   return (
     <div>
       <div className="px-5">
         <div className="flex flex-col justify-center items-center text-[#4B5563] mb-14">
-          <div className="w-24 mb-5 relative">
-            <Image
-              className="rounded-full"
-              src={imgPath ? imgPath : basicIcon}
-              alt="profil-image"
-              width={imgPath ? 100 : undefined}
-              height={imgPath ? 100 : undefined}
-            />
+          <div className="w-24 h-24 mb-5 relative">
+            {data?.data.profileImage === 'default.png' ? (
+              <Image
+                src={basicIcon}
+                alt="profil-image"
+                width={120}
+                height={120}
+              />
+            ) : (
+              <Image
+                className="rounded-full"
+                src={imgPath ? imgPath : basicIcon}
+                alt="profil-image"
+                layout="fill"
+                loader={() => imageLoader(data?.data.profileImage)}
+              />
+            )}
 
             <div className="w-8 h-8 bg-[#DBEAFE] rounded-full absolute right-0 -bottom-1 flex justify-center items-center">
               <label htmlFor="photo">
@@ -64,7 +114,11 @@ export default function Page() {
         <div>
           <h3 className="mb-3">닉네임</h3>
           <form className="relative">
-            <input className="w-full h-12 bg-[#F9FAFB] rounded-lg" />
+            <input
+              className="w-full h-12 bg-[#F9FAFB] rounded-lg pl-2"
+              value={nickname as string}
+              onChange={(e) => setNickname(e.target.value)}
+            />
             <div
               className="absolute right-3 bottom-4"
               onClick={() => setUpdate((v) => !v)}
@@ -72,11 +126,17 @@ export default function Page() {
               <Image src={pencil} alt="edit-pencil" />
             </div>
           </form>
+          <span className="text-[10px] text-[#EF4444] pl-3">{error}</span>
         </div>
       </div>
       <div className={`${update ? null : 'hidden'}`} onClick={handleUpdate}>
         <EditButton>수정하기</EditButton>
       </div>
+      {data?.data.profileImage !== 'default.png' && (
+        <div className={`${update ? null : null}`} onClick={handleDefaultImage}>
+          <EditButton>기본 이미지로 변경</EditButton>
+        </div>
+      )}
     </div>
   );
 }

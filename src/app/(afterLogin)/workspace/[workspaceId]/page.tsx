@@ -43,6 +43,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
+import { imageLoader } from '@/utils/image';
 
 // import { Divide } from 'lucide-react';
 
@@ -186,7 +187,7 @@ export default function Page() {
     );
   };
 
-  console.log(data);
+  // imageLoader()
 
   return (
     <div className="h-screen">
@@ -280,8 +281,17 @@ export default function Page() {
                               className="absolute top-0 left-0"
                             />
                           )}
-
-                          <Image src={noImage} alt="icon" />
+                          {user.profileImage === 'default.png' ? (
+                            <Image src={noImage} alt="no-image" />
+                          ) : (
+                            <Image
+                              className="rounded-full"
+                              src={user.profileImage}
+                              alt="profil-image"
+                              layout="fill"
+                              loader={() => imageLoader(user.profileImage)}
+                            />
+                          )}
                         </div>
                         <div className="flex-1">{user.name}</div>
                         <div className="">{`${user.contributeScore} P`}</div>

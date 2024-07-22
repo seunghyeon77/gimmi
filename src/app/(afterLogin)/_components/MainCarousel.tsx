@@ -13,13 +13,13 @@ import { useQuery } from '@tanstack/react-query';
 import { workspace } from '@/constants/queryKey';
 import { myWorkspaces } from '@/api/workspace';
 import Image from 'next/image';
-import mainLogo from '@/../public/svgs/mainLogo.svg';
+
 import NoGroup from './NoGroup';
 
-import mainLogo0 from '@/../public/svgs/mainLogo0.svg';
-import mainLogo25 from '@/../public/svgs/mainLogo25.svg';
-import mainLogo50 from '@/../public/svgs/mainLogo50.svg';
-import mainLogo75 from '@/../public/svgs/mainLogo75.svg';
+import mainLogo0 from '@/../public/svgs/home/character0.svg';
+import mainLogo25 from '@/../public/svgs/home/character25.svg';
+import mainLogo50 from '@/../public/svgs/home/character50.svg';
+import mainLogo75 from '@/../public/svgs/home/character75.svg';
 
 export default function MainCarousel() {
   const router = useRouter();
@@ -62,7 +62,7 @@ export default function MainCarousel() {
                     </h2>
                     <Progress
                       value={(item.achievementScore / item.goalScore) * 100}
-                      className="h-1.5 mb-4"
+                      className="h-1.5 mb-8"
                     />
                     <div className="flex justify-center items-center w-full">
                       {percent < 25 && percent >= 0 ? (
