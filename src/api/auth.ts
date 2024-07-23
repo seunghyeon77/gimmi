@@ -14,7 +14,6 @@ export const postSignup = async (data: TSignup) => {
 
 export const logout = async () => {
   const res = await customAxios.post('/auth/goodbye');
-  console.log(res);
 
   localStorage.removeItem('accessToken');
   localStorage.removeItem('refreshToken');
@@ -22,7 +21,7 @@ export const logout = async () => {
 };
 
 export const withdraw = async (password: string) => {
-  const res = await customAxios.delete('/auth/cuage', {
+  const res = await customAxios.delete('/auth/cuag', {
     data: { password },
   });
   if (res.status === 200) {
