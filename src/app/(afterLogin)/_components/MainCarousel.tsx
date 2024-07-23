@@ -61,6 +61,7 @@ export default function MainCarousel() {
                       {item.name}
                     </h2>
                     <Progress
+                      indicatorColor="bg-[#60A5FA]"
                       value={(item.achievementScore / item.goalScore) * 100}
                       className="h-1.5 mb-8"
                     />

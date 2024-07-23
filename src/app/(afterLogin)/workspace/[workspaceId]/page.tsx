@@ -241,8 +241,14 @@ export default function Page() {
           ) : null}
         </div>
         <div className="flex flex-col mb-5">
-          <div className="text-[8px] text-[#4B5563] mb-3.5">목표 달성률</div>
-          <Progress className="h-1.5 bg-[#ffff] mb-1" value={percent} />
+          <div className="text-[8px] text-[#4B5563] mb-3.5 pl-0.5">
+            목표 달성률
+          </div>
+          <Progress
+            indicatorColor="bg-main"
+            className="h-1.5 bg-[#ffff] mb-1 mx-0.5"
+            value={percent}
+          />
           <div className="text-[10px] text-[#4B5563] text-right">{`${data?.data.achievementScore}/${data?.data.goalScore}점`}</div>
         </div>
 
@@ -278,7 +284,7 @@ export default function Page() {
                             <Image
                               src={creator}
                               alt="creator"
-                              className="absolute top-0 left-0"
+                              className="absolute top-0 left-0 z-10"
                             />
                           )}
                           {user.profileImage === 'default.png' ? (

@@ -305,6 +305,7 @@ export default function AllGroupTabs() {
                 >
                   <h2 className="text-[22px] -mb-3 text-white">{item.name}</h2>
                   <Progress
+                    indicatorColor="bg-[#1E40AF]"
                     className="h-1.5"
                     value={(item.achievementScore / item.goalScore) * 100}
                   />
@@ -326,6 +327,7 @@ export default function AllGroupTabs() {
                         {item.name}
                       </h2>
                       <Progress
+                        indicatorColor="bg-[#1E40AF]"
                         className="h-1.5"
                         value={(item.achievementScore / item.goalScore) * 100}
                       />
