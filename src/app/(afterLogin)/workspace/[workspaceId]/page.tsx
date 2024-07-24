@@ -11,6 +11,7 @@ import mainLogo75 from '@/../public/svgs/mainLogo75.svg';
 import settings from '@/../public/svgs/workspace/settings.svg';
 import fire from '@/../public/svgs/fire.svg';
 import chart from '@/../public/svgs/chart.svg';
+import greyChart from '@/../public/svgs/greyChart.svg';
 
 import noImage from '@/../public/svgs/noImage.svg';
 
@@ -191,7 +192,7 @@ export default function Page() {
 
   return (
     <div className="h-screen">
-      <Link href={`/workspace/workspaceDetail/${workspaceId}`}>
+      <Link href={`/workspaceDetail/${workspaceId}`}>
         <div className="absolute right-5 top-14">
           <Image src={settings} alt="settings" />
         </div>
@@ -241,7 +242,7 @@ export default function Page() {
           ) : null}
         </div>
         <div className="flex flex-col mb-5">
-          <div className="text-[8px] text-[#4B5563] mb-3.5 pl-0.5">
+          <div className="text-[10px] text-[#4B5563] mb-3.5 pl-1">
             목표 달성률
           </div>
           <Progress
@@ -405,24 +406,38 @@ export default function Page() {
         )}
       </div>
       {/* 조건으로 유저 닉네임과 방장 같으면 뭐시기 넣어주기 */}
-      {data?.data.status === 'PREPARING' &&
-        data?.data.isCreator === true &&
-        data?.data.workers.length === 1 && (
-          <div
-            className="px-7 fixed bottom-11 left-0 w-full"
-            onClick={handleStart}
-          >
-            <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
+      {data?.data.status === 'PREPARING' && data?.data.isCreator === true && (
+        <div className="px-7 fixed bottom-11 left-0 w-full flex justify-between items-center">
+          <div>
+            <button
+              // opacity & disabled
+              disabled={data?.data.workers.length === 1 ? true : false}
+              className={`w-40 py-2.5 bg-main text-white text-base rounded-lg ${
+                data?.data.workers.length === 1 && 'opacity-30'
+              }`}
+              onClick={handleStart}
+            >
               그룹 시작하기
             </button>
           </div>
-        )}
+          <div>
+            <button
+              disabled={data?.data.workers.length > 1 ? true : false}
+              className={`w-40 py-2.5 text-main text-base rounded-lg ${
+                data?.data.workers.length > 1 ? 'bg-custom-blue' : 'bg-white'
+              }`}
+              onClick={handleLeave}
+            >
+              그룹 없애기
+            </button>
+          </div>
+        </div>
+      )}
 
       <Dialog>
         <DialogTrigger asChild>
           {data?.data.status === 'PREPARING' &&
-            (data?.data.isCreator === false ||
-              data?.data.workers.length === 1) && (
+            data?.data.isCreator === false && (
               <div className="px-7 fixed bottom-11 left-0 w-full">
                 <button className="w-full py-3.5 bg-main text-white text-base rounded-lg">
                   그룹 나가기
