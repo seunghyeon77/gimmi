@@ -19,7 +19,12 @@ export default function Page() {
             로그아웃하기
           </div>
           <Link href={'/mypage/user/withdraw'}>
-            <div className="text-xl text-[#1F2937] py-7">회원 탈퇴하기</div>
+            <div className="text-xl text-[#1F2937] py-7 border-b-[1px]">
+              회원 탈퇴하기
+            </div>
+          </Link>
+          <Link href={'/feedBack'}>
+            <div className="text-xl text-[#1F2937] py-7">피드백하기 ♡</div>
           </Link>
         </div>
       </div>

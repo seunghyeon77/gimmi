@@ -262,7 +262,7 @@ export default function Page() {
             {/* 여기에 유저들 매핑해주기 */}
             <div className="overflow-auto">
               {data?.data.workers
-                .sort((a: any, b: any) => (b.isMyself ? 1 : -1))
+                // .sort((a: any, b: any) => (b.isMyself ? 1 : -1))
                 .map((user: any) => {
                   return (
                     <div

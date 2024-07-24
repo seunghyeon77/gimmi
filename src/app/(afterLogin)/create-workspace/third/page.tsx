@@ -66,8 +66,13 @@ export default function Page() {
       }
     } catch (error) {
       console.log(error);
+
       if (error instanceof AxiosError) {
-        setError(error?.response?.data.message);
+        if (error.response?.status === 500) {
+          setError('알수 없는 에러입니다.');
+        } else {
+          setError(error?.response?.data.message);
+        }
       }
     }
   };
