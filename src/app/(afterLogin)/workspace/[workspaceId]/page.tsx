@@ -100,7 +100,7 @@ export default function Page() {
   const user = data?.data.workers.filter((user: any) => user.isMyself === true);
 
   const handleWorkout = async ({ userId, isMyself }: any) => {
-    if (data?.data.status === 'PREPARING') return;
+    // if (data?.data.status === 'PREPARING') return;
     setWorkout((v) => !v);
     setIsMyself(isMyself);
     const res = await missionsWorkspace(Number(workspaceId));
@@ -262,7 +262,7 @@ export default function Page() {
             {/* 여기에 유저들 매핑해주기 */}
             <div className="overflow-auto">
               {data?.data.workers
-                .sort((a: any, b: any) => (b.isMyself ? 1 : -1))
+                // .sort((a: any, b: any) => (b.isMyself ? 1 : -1))
                 .map((user: any) => {
                   return (
                     <div
@@ -309,7 +309,7 @@ export default function Page() {
             </div>
           </div>
         ) : (
-          <div className="bg-white h-80 max-h-screen rounded-2xl relative ">
+          <div className="bg-white max-h-screen rounded-2xl relative pb-10 min-h-80">
             <Tabs
               className="w-full"
               defaultValue={isMyself ? 'workout' : 'myRecord'}
@@ -336,7 +336,7 @@ export default function Page() {
                 <TabsContent value="workout">
                   {missionData?.map((mission: MissonData, i) => (
                     <div
-                      className="flex flex-col py-5 px-5 border-b-[0.5px] text-[#4B5563]"
+                      className="flex flex-col py-5 px-5 border-b-[0.5px] text-[#4B5563] "
                       key={mission.id}
                     >
                       <div className="w-full flex justify-between text-xs">
@@ -344,7 +344,10 @@ export default function Page() {
 
                         <div className="flex justify-center items-center">
                           <button
-                            className="text-lg "
+                            disabled={
+                              data?.data.status === 'PREPARING' ? true : false
+                            }
+                            className="text-lg"
                             onClick={() => minusCount(mission.id)}
                           >
                             <Image src={minus} alt="minus" />
@@ -354,7 +357,12 @@ export default function Page() {
                               ?.count || 0}
                           </span>
 
-                          <button onClick={() => addCount(mission.id)}>
+                          <button
+                            disabled={
+                              data?.data.status === 'PREPARING' ? true : false
+                            }
+                            onClick={() => addCount(mission.id)}
+                          >
                             <Image src={plus} alt="plus" />
                           </button>
                         </div>
@@ -364,7 +372,12 @@ export default function Page() {
 
                   <div className="flex justify-center items-center absolute bottom-2 right-2">
                     <button
-                      className="w-14 h-6 bg-[#60A5FA] flex items-center justify-center rounded-md"
+                      disabled={
+                        data?.data.status === 'PREPARING' ? true : false
+                      }
+                      className={`w-14 h-6 bg-[#60A5FA] flex items-center justify-center rounded-md ${
+                        data?.data.status === 'PREPARING' && 'opacity-50'
+                      }`}
                       onClick={handleMissions}
                     >
                       <Image src={check} alt="check" />
