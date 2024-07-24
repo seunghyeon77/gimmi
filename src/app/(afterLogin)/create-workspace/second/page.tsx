@@ -96,7 +96,7 @@ export default function Page() {
 
   return (
     <>
-      <Progress value={66} className="h-[1px] mb-9" />
+      <Progress indicatorColor="bg-black" value={66} className="h-[1px] mb-9" />
       <div className="grid w-full max-w-sm items-center mb-11">
         <div className="flex items-center">
           <Label

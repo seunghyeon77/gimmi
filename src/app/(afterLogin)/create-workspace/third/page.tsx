@@ -74,7 +74,7 @@ export default function Page() {
 
   return (
     <>
-      <Progress value={99} className="h-[1px] mb-9" />
+      <Progress indicatorColor="bg-black" value={99} className="h-[1px] mb-9" />
       <div className="grid w-full max-w-sm items-center mb-11">
         <Label
           htmlFor="task"

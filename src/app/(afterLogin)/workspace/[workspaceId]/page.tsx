@@ -309,7 +309,7 @@ export default function Page() {
             </div>
           </div>
         ) : (
-          <div className="bg-white h-80 rounded-2xl relative">
+          <div className="bg-white h-80 max-h-screen rounded-2xl relative ">
             <Tabs
               className="w-full"
               defaultValue={isMyself ? 'workout' : 'myRecord'}
