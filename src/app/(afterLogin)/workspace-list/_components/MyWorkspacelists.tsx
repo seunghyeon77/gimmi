@@ -57,12 +57,15 @@ export default function MyWorkspacelits() {
                       <span>, </span>
                       <span>{`방장: ${item.name}`}</span>
                     </div>
-                    <Progress
-                      className={`h-1.5 ${
-                        item.status === 'PREPARING' && 'bg-white'
-                      }`}
-                      value={(item.achievementScore / item.goalScore) * 100}
-                    />
+                    {item.status === 'PREPARING' ? null : (
+                      <Progress
+                        indicatorColor="bg-[#1E40AF]"
+                        className={`h-1.5 ${
+                          item.status === 'PREPARING' && 'bg-white'
+                        }`}
+                        value={(item.achievementScore / item.goalScore) * 100}
+                      />
+                    )}
                   </div>
                 </div>
               </Link>

@@ -25,7 +25,7 @@ export default function Page() {
 
   return (
     <div
-      className={`w-full h-full px-5 py-11 ${
+      className={`w-full h-screen px-5 py-11 ${
         open ? 'bg-[#EFF6FF]' : 'bg-[#60A5FA]'
       }`}
     >

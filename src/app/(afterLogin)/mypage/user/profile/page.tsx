@@ -16,17 +16,18 @@ import {
 import { AxiosError } from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { imageLoader } from '@/utils/image';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const { data } = useQuery<any>({
     queryKey: ['myInfo'],
     queryFn: () => myInfo(),
   });
+  const router = useRouter();
 
-  const [nickname, setNickname] = useState(data?.data.nickname || '');
   const [update, setUpdate] = useState(false);
   const [error, setError] = useState('');
-
+  const [nickname, setNickname] = useState('');
   const [imgFile, setImgFile] = useState<File>();
   const [imgPath, setImgPath] = useState('');
   const imgRef = useRef<HTMLInputElement>(null);
@@ -48,17 +49,31 @@ export default function Page() {
   console.log(data);
 
   const handleUpdate = async () => {
-    //이미지 전송
+    // 이미지 전송
     const formData = new FormData();
-    formData.append('profileImage', imgFile as File);
+    if (imgFile) {
+      formData.append('profileImage', imgFile);
+    }
 
     // 업데이트 하는 로직 구현
     try {
-      const res = await editNickname(nickname as string);
-      const resImage = await setProfileImg(formData);
-      console.log(res);
-      if (res.status === 200) {
-        setError('');
+      if (imgFile) {
+        const resImage = await setProfileImg(formData);
+        console.log(resImage);
+        if (resImage.status === 200) {
+          location.reload();
+          setUpdate(false);
+        }
+      }
+      if (nickname !== '') {
+        const res = await editNickname(nickname);
+        console.log(res);
+        if (res.status === 200) {
+          setError('');
+          location.reload();
+          setUpdate(false);
+          setNickname('');
+        }
       }
     } catch (error) {
       console.error(error);
@@ -70,15 +85,27 @@ export default function Page() {
 
   const handleDefaultImage = async () => {
     const res = await basicProfilImg();
-    console.log(res);
+    if (res.status === 200) {
+      location.reload();
+    }
   };
+
+  console.log(imgFile);
+  console.log(update);
 
   return (
     <div>
       <div className="px-5">
         <div className="flex flex-col justify-center items-center text-[#4B5563] mb-14">
           <div className="w-24 h-24 mb-5 relative">
-            {data?.data.profileImage === 'default.png' ? (
+            {imgPath ? (
+              <Image
+                className="rounded-full"
+                src={imgPath}
+                alt="profil-image"
+                layout="fill"
+              />
+            ) : data?.data.profileImage === 'default.png' ? (
               <Image
                 src={basicIcon}
                 alt="profil-image"
@@ -88,7 +115,7 @@ export default function Page() {
             ) : (
               <Image
                 className="rounded-full"
-                src={imgPath ? imgPath : basicIcon}
+                src={data?.data.profileImage}
                 alt="profil-image"
                 layout="fill"
                 loader={() => imageLoader(data?.data.profileImage)}
@@ -116,12 +143,13 @@ export default function Page() {
           <form className="relative">
             <input
               className="w-full h-12 bg-[#F9FAFB] rounded-lg pl-2"
-              value={nickname as string}
+              value={nickname}
               onChange={(e) => setNickname(e.target.value)}
+              placeholder={data?.data.nickname}
             />
             <div
-              className="absolute right-3 bottom-4"
-              onClick={() => setUpdate((v) => !v)}
+              className="absolute right-3 bottom-4 cursor-pointer"
+              onClick={() => setUpdate(true)}
             >
               <Image src={pencil} alt="edit-pencil" />
             </div>
@@ -129,11 +157,14 @@ export default function Page() {
           <span className="text-[10px] text-[#EF4444] pl-3">{error}</span>
         </div>
       </div>
-      <div className={`${update ? null : 'hidden'}`} onClick={handleUpdate}>
-        <EditButton>수정하기</EditButton>
-      </div>
-      {data?.data.profileImage !== 'default.png' && (
-        <div className={`${update ? null : null}`} onClick={handleDefaultImage}>
+      {/* 수정하기 버튼 & 기본 이미지 변경 버튼 조건문 처리 */}
+      {update && (
+        <div onClick={handleUpdate}>
+          <EditButton>수정하기</EditButton>
+        </div>
+      )}
+      {data?.data.profileImage !== 'default.png' && update === false && (
+        <div onClick={handleDefaultImage}>
           <EditButton>기본 이미지로 변경</EditButton>
         </div>
       )}

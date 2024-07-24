@@ -205,17 +205,17 @@ export default function AllGroupTabs() {
                       </div>
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="w-9/12 rounded-lg h-40 ">
-                    <DialogHeader className="text-xs">
+                  <DialogContent className="w-9/12 rounded-lg h-44">
+                    <DialogHeader className="text-xs mb-2">
                       비밀번호를 입력해주세요
                     </DialogHeader>
-                    <DialogDescription className="-mb-4">
+                    <DialogDescription className="">
                       <div className="flex justify-center items-center">
                         <form onSubmit={nextDialog}>
                           <input
                             type="number"
                             placeholder="숫자 4자리를 입력해주세요."
-                            className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
+                            className="bg-[#F3F4F6] w-56 h-[41px] px-2 rounded-lg placeholder:text-[10px]"
                             value={password}
                             onChange={(e) => handlePassword(e)}
                           />
@@ -224,15 +224,15 @@ export default function AllGroupTabs() {
                               {error}
                             </span>
                           )}
-                          <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
+                          <div className="flex justify-around items-center border-t-[1px] -mx-6 my-2">
                             <DialogClose asChild>
-                              <span className="text-sm text-[#D1D5DB]">
+                              <span className="text-sm text-[#D1D5DB] py-2 px-12 border-r-[1px]">
                                 cancel
                               </span>
                             </DialogClose>
                             <button
                               type="submit"
-                              className="text-sm text-[#3B82F6]"
+                              className="text-sm text-[#3B82F6] py-2 px-12"
                             >
                               next
                             </button>
@@ -305,6 +305,7 @@ export default function AllGroupTabs() {
                 >
                   <h2 className="text-[22px] -mb-3 text-white">{item.name}</h2>
                   <Progress
+                    indicatorColor="bg-[#1E40AF]"
                     className="h-1.5"
                     value={(item.achievementScore / item.goalScore) * 100}
                   />
@@ -326,6 +327,7 @@ export default function AllGroupTabs() {
                         {item.name}
                       </h2>
                       <Progress
+                        indicatorColor="bg-[#1E40AF]"
                         className="h-1.5"
                         value={(item.achievementScore / item.goalScore) * 100}
                       />
@@ -350,17 +352,17 @@ export default function AllGroupTabs() {
                           </div>
                         </div>
                       </DialogTrigger>
-                      <DialogContent className="w-9/12 rounded-lg h-40 ">
-                        <DialogHeader className="text-xs">
+                      <DialogContent className="w-9/12 rounded-lg h-44">
+                        <DialogHeader className="text-xs mb-2">
                           비밀번호를 입력해주세요
                         </DialogHeader>
-                        <DialogDescription className="-mb-4">
+                        <DialogDescription className="">
                           <div className="flex justify-center items-center">
                             <form onSubmit={nextDialog}>
                               <input
                                 type="number"
                                 placeholder="숫자 4자리를 입력해주세요."
-                                className="bg-[#F3F4F6] w-full h-[41px] px-10 rounded-lg placeholder:text-[10px]"
+                                className="bg-[#F3F4F6] w-56 h-[41px] px-2 rounded-lg placeholder:text-[10px]"
                                 value={password}
                                 onChange={(e) => handlePassword(e)}
                               />
@@ -369,15 +371,15 @@ export default function AllGroupTabs() {
                                   {error}
                                 </span>
                               )}
-                              <div className="border-t-[0.5px] w-full flex items-center justify-between  px-8 pt-2.5">
+                              <div className="flex justify-around items-center border-t-[1px] -mx-6 my-2">
                                 <DialogClose asChild>
-                                  <span className="text-sm text-[#D1D5DB]">
+                                  <span className="text-sm text-[#D1D5DB] py-2 px-12 border-r-[1px]">
                                     cancel
                                   </span>
                                 </DialogClose>
                                 <button
                                   type="submit"
-                                  className="text-sm text-[#3B82F6]"
+                                  className="text-sm text-[#3B82F6] py-2 px-12"
                                 >
                                   next
                                 </button>

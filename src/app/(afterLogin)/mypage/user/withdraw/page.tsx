@@ -17,6 +17,7 @@ export default function Page() {
 
   const handleSubmit = async () => {
     try {
+      console.log(password);
       const res = await withdraw(password);
       console.log(res);
       if (res.status === 200) {

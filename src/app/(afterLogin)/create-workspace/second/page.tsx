@@ -62,7 +62,7 @@ export default function Page() {
 
   // 추가
   function addInput() {
-    if (inputItems.length > 15) return;
+    if (inputItems.length > 14) return;
     const input = {
       id: nextID.current,
       mission: '',
@@ -96,7 +96,7 @@ export default function Page() {
 
   return (
     <>
-      <Progress value={66} className="h-[1px] mb-9" />
+      <Progress indicatorColor="bg-black" value={66} className="h-[1px] mb-9" />
       <div className="grid w-full max-w-sm items-center mb-11">
         <div className="flex items-center">
           <Label
@@ -115,7 +115,7 @@ export default function Page() {
             autoFocus
             required
             type="number"
-            id="goal"
+            id="goal4"
             placeholder="10 단위로만 설정가능해요"
             className="rounded-md w-full h-[52px] bg-[#F9FAFB] placeholder:text-base placeholder:text-[#D1D5DB]"
             value={goalScore}

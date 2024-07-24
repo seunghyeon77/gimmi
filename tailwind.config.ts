@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      backgroundColor: {
+        'custom-blue': 'rgba(165, 187, 215, 0.60)',
+      },
       boxShadow: {
         'box-shadow': ' 8px 6px 4px 0px rgba(79, 79, 79, 0.25)',
       },
