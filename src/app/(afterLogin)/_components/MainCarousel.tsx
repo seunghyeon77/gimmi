@@ -30,7 +30,7 @@ export default function MainCarousel() {
 
   return (
     <div className="w-full h-full overflow-hidden">
-      {data?.data.length >= 1 ? (
+      {data?.data.length >= 1 && data?.data[0].status !== 'COMPLETED' ? (
         <Swiper
           slidesPerView={1}
           spaceBetween={18}
@@ -45,7 +45,6 @@ export default function MainCarousel() {
           {data?.data
             .filter((item: any) => item.status !== 'COMPLETED')
             .map((item: any) => {
-              console.log(item);
               let percent = (item.achievementScore / item.goalScore) * 100;
 
               if (percent > 100) {

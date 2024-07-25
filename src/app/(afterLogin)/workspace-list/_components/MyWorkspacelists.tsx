@@ -55,7 +55,7 @@ export default function MyWorkspacelits() {
                     <div className="text-[10px]  mb-3.5">
                       <span>{`테스크 점수: ${item.goalScore}점`}</span>
                       <span>, </span>
-                      <span>{`방장: ${item.name}`}</span>
+                      <span>{`방장: ${item.creator}`}</span>
                     </div>
                     {item.status === 'PREPARING' ? null : (
                       <Progress
