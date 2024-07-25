@@ -11,7 +11,7 @@ import mainLogo75 from '@/../public/svgs/mainLogo75.svg';
 import settings from '@/../public/svgs/workspace/settings.svg';
 import fire from '@/../public/svgs/fire.svg';
 import chart from '@/../public/svgs/chart.svg';
-import greyChart from '@/../public/svgs/greyChart.svg';
+// import greyChart from '@/../public/svgs/greyChart.svg';
 
 import noImage from '@/../public/images/deafultProfile.png';
 
