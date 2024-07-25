@@ -53,6 +53,11 @@ export default function Page() {
     }
   };
 
+  const adjustTextareaHeight = (e: any) => {
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
+  };
+
   return (
     <div className="px-6 py-12 h-screen">
       <BackArrow />
@@ -72,9 +77,11 @@ export default function Page() {
               disabled={!isCreator}
               id="description"
               placeholder="그룹 설명을 추가해주세요!"
-              className="w-full bg-[#F9FAFB] rounded-lg p-3 mt-5 h-12 placeholder:text-xs placeholder:pt-1"
+              className="w-full bg-[#F9FAFB] rounded-lg p-3 mt-5 placeholder:text-xs placeholder:pt-1"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              onInput={adjustTextareaHeight}
+              style={{ overflow: 'hidden' }}
             ></textarea>
             {isCreator && (
               <div

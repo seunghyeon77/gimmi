@@ -30,6 +30,7 @@ export default function MainCarousel() {
 
   return (
     <div className="w-full h-full overflow-hidden">
+      {/* 나중에 컴플리티드 한개여도 뜨게 수정하기 */}
       {data?.data.length >= 1 && data?.data[0].status !== 'COMPLETED' ? (
         <Swiper
           slidesPerView={1}
