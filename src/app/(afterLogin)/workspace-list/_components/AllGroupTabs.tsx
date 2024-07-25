@@ -119,6 +119,7 @@ export default function AllGroupTabs() {
     console.log(res);
 
     if (res.data.isWorker === true) {
+      setIsFirstDialogOpen(false);
       router.push(`/workspace/${workspaceId}`);
       return;
     }
@@ -302,6 +303,7 @@ export default function AllGroupTabs() {
                 <div
                   key={item.id}
                   className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6"
+                  onClick={() => handleAlreadyIn(item.id)}
                 >
                   <h2 className="text-[22px] -mb-3 text-white">{item.name}</h2>
                   <Progress
@@ -322,7 +324,10 @@ export default function AllGroupTabs() {
               {data?.pages[0].data.map((item: any) => (
                 <div key={item.key}>
                   {item.status === workspaceList.inProgress ? (
-                    <div className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6">
+                    <div
+                      className="w-full h-20 bg-[#60A5FA] rounded-lg flex justify-evenly items-start px-3.5 flex-col my-6"
+                      onClick={() => handleAlreadyIn(item.id)}
+                    >
                       <h2 className="text-[22px] -mb-3 text-white">
                         {item.name}
                       </h2>

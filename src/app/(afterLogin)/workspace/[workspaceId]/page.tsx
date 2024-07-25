@@ -126,7 +126,7 @@ export default function Page() {
       const res = await startWorkspace(Number(workspaceId));
       console.log(res);
       if (res.status === 200) {
-        router.refresh();
+        window.location.replace(`/workspace/${workspaceId}`);
       }
     } catch (error: any) {
       alert(error.response.data.message);
