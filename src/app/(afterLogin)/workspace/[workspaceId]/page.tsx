@@ -13,7 +13,7 @@ import fire from '@/../public/svgs/fire.svg';
 import chart from '@/../public/svgs/chart.svg';
 import greyChart from '@/../public/svgs/greyChart.svg';
 
-import noImage from '@/../public/svgs/noImage.svg';
+import noImage from '@/../public/images/deafultProfile.png';
 
 import good from '@/../public/svgs/good.svg';
 import creator from '@/../public/svgs/creator.svg';
@@ -285,7 +285,7 @@ export default function Page() {
                             <Image
                               src={creator}
                               alt="creator"
-                              className="absolute top-0 left-0 z-10"
+                              className="absolute -top-1 -left-1 z-10"
                             />
                           )}
                           {user.profileImage === 'default.png' ? (
