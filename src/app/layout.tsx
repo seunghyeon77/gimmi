@@ -117,6 +117,13 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
+        <link
+          rel="preload"
+          href="/fonts/Galmuri9.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
       </Head>
       <body>
         {children}

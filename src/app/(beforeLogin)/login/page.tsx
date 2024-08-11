@@ -7,7 +7,6 @@ import customAxios from '@/utils/cutstomAxios';
 import { AxiosError } from 'axios';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import useUser from '@/hooks/useUser';
 
 type FormProps = {
   id: string;
@@ -16,7 +15,6 @@ type FormProps = {
 
 export default function Page() {
   const router = useRouter();
-  const { addUser } = useUser();
 
   const {
     register,
@@ -51,7 +49,7 @@ export default function Page() {
   return (
     <div>
       <div className="mt-44 mb-16 flex justify-center items-center flex-col font-medium">
-        <h1 className="text-5xl mb-3 font-galmuri text-[#2563EB]">GYMMI</h1>
+        <h1 className="text-5xl mb-3 font-galmuri text-[#2563EB] ">GYMMI</h1>
         <h3 className="text-sm text-[#2563EB] font-galmuri">
           지미와 함께 운동의욕을 채워보세요!
         </h3>
