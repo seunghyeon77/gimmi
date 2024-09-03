@@ -3,9 +3,9 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
-import Link from 'next/link';
+
 import { useWorkSpaceStore } from '@/hooks/useWorkSpaceStore';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { verlifyDuplication } from '@/api/duplication';
 import { duplicationType } from '@/constants/duplication';
 import { AxiosError } from 'axios';

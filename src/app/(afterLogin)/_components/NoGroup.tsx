@@ -5,7 +5,7 @@ export default function NoGroup() {
   return (
     <div className="flex flex-col justify-center items-center h-3/4">
       <div className="flex justify-center items-center mb-7">
-        <Image src={noGroup} alt="no-image" />
+        <Image src={noGroup} alt="no-image" loading="eager" />
       </div>
       <h3 className="text-center text-xs text-[#9CA3AF]">
         진행 중인 그룹이 없어요.

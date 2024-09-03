@@ -65,7 +65,17 @@ const config = {
           foreground: 'hsl(var(--card-foreground))',
         },
       },
-      fontFamily: { galmuri: 'var(--font-galmuri)' },
+      fontFamily: {
+        galmuri: [
+          'Galmuri',
+          'var(--font-galmuri)',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+        ],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

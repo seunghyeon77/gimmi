@@ -1,6 +1,5 @@
-import Image from 'next/image';
 import MainCarousel from '../_components/MainCarousel';
-import rightArrow from '@/../public/svgs/nextArrow.svg';
+
 import Link from 'next/link';
 
 import 'swiper/css';
