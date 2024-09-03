@@ -17,6 +17,7 @@ import Image from 'next/image';
 import NoGroup from './NoGroup';
 
 import mainLogo0 from '@/../public/svgs/home/character0.svg';
+
 import mainLogo25 from '@/../public/svgs/home/character25.svg';
 import mainLogo50 from '@/../public/svgs/home/character50.svg';
 import mainLogo75 from '@/../public/svgs/home/character75.svg';
@@ -67,16 +68,33 @@ export default function MainCarousel() {
                     />
                     <div className="flex justify-center items-center w-full">
                       {percent < 25 && percent >= 0 ? (
-                        <Image src={mainLogo0} alt="mainLogo0" />
+                        <Image
+                          src={mainLogo0}
+                          alt="mainLogo0"
+                          loading="eager"
+                          priority
+                        />
                       ) : null}
                       {percent < 50 && percent >= 25 ? (
-                        <Image src={mainLogo25} alt="mainLogo25" />
+                        <Image
+                          src={mainLogo25}
+                          alt="mainLogo25"
+                          loading="eager"
+                        />
                       ) : null}
                       {percent < 75 && percent >= 50 ? (
-                        <Image src={mainLogo50} alt="mainLogo50" />
+                        <Image
+                          src={mainLogo50}
+                          alt="mainLogo50"
+                          loading="eager"
+                        />
                       ) : null}
                       {percent <= 100 && percent >= 75 ? (
-                        <Image src={mainLogo75} alt="mainLogo75" />
+                        <Image
+                          src={mainLogo75}
+                          alt="mainLogo75"
+                          loading="eager"
+                        />
                       ) : null}
                     </div>
                   </div>

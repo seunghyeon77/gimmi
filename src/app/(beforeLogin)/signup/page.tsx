@@ -4,7 +4,7 @@ import Image from 'next/image';
 import backArrow from '../../../../public/svgs/backArrow.svg';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+
 import AuthButton from '../_components/AuthButton';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
