@@ -6,6 +6,8 @@ type Props = {
   disabled?: boolean;
 };
 
+//test
+
 import { Button } from '@/components/ui/button';
 
 export default function AuthButton({ title, type, disabled }: Props) {
