@@ -3,43 +3,27 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "https://gymmi-fe.vercel.app/",
   "name": "GYMMI",
   "short_name": "GYMMI",
   "description": "지미와 함께 운동의욕을 채워봐요!",
   "icons": [
     {
-      "src": "../images/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "../images/icon-256x256.png",
-      "sizes": "256x256",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "../images/icon-384x384.png",
-      "sizes": "384X384",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "../images/icon-384x384.png",
-      "sizes": "384X384",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "../images/icon-512x512.png",
+      "purpose": "maskable",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "../images/icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "../images/icon512_rounded.png",
+      "type": "image/png"
     }
   ],
+
   "dir": "auto",
   "lang": "ko",
-  "orientation": "any"
+  "orientation": "any",
+  "id": "https://gymmi-fe.vercel.app/"
 }
