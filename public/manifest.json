@@ -27,10 +27,19 @@
       "purpose": "any maskable"
     },
     {
+      "src": "../images/icon-384x384.png",
+      "sizes": "384X384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
       "src": "../images/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "dir": "auto",
+  "lang": "ko",
+  "orientation": "any"
 }
