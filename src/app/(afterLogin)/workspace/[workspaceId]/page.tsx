@@ -225,7 +225,7 @@ export default function Page() {
 
       <div className="mb-14">
         <div className="flex items-end mb-11">
-          <h1 className="font-galmuri text-[28px]">{data?.data.name}</h1>
+          <h1 className="font-galmuri text-[28px] ml-2">{data?.data.name}</h1>
         </div>
         <div className=" flex items-center justify-center mb-11 flex-col">
           {percent < 25 && percent >= 0 ? (
@@ -245,7 +245,7 @@ export default function Page() {
           <div className="text-[10px] text-[#4B5563] mb-3.5">목표 달성률</div>
           <Progress
             indicatorColor="bg-main"
-            className="h-1.5 bg-[#ffff] mb-1 mx-0.5"
+            className="h-1.5 bg-[#ffff] mb-1"
             value={percent}
           />
           <div className="text-[10px] text-[#4B5563] text-right">{`${data?.data.achievementScore}/${data?.data.goalScore}점`}</div>
@@ -418,7 +418,7 @@ export default function Page() {
       </div>
       {/* 조건으로 유저 닉네임과 방장 같으면 뭐시기 넣어주기 */}
       {data?.data.status === "PREPARING" && data?.data.isCreator === true && (
-        <div className="px-7 fixed bottom-11 left-0 w-full flex justify-between items-center">
+        <div className="px-4 fixed bottom-11 left-0 w-full flex justify-between items-center">
           <div>
             <button
               // opacity & disabled

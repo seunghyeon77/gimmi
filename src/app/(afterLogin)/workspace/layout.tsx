@@ -8,9 +8,9 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   return (
-    <div className="px-6 py-12 bg-custom-gradient2 h-full">
+    <div className="px-4 py-12 bg-custom-gradient2 h-full">
       <BackArrow />
-      <nav className="my-5">
+      <nav className="my-3">
         <hr className="border w-screen -mx-6" />
         <ul className="flex text-sm gap-x-11 sm:gap-x-8 lg:gap-x-12 justify-center my-2.5">
           <li>그룹홈</li>
